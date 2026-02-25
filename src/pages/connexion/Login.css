@@ -13,6 +13,7 @@ body {
     justify-content: center;
     padding: 20px;
     line-height: 1.6;
+    color: black;
 }
 
 .login-container {
@@ -33,7 +34,7 @@ body {
 }
 
 .login-card:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
 }
 
 .login-header {
@@ -108,3 +109,7 @@ body {
     width: 150px;
 }
 
+.name-row{
+    display: flex;
+    gap: 16px;
+}
