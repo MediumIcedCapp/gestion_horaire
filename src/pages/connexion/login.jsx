@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import Logo from "../../assets/logoGestionHoraire.png";
-//import { LoginVerification } from "../../utils/loginVerification";
+import loginVerification from "../../utils/loginValidation"; 
 import { Link } from "react-router-dom";
 
 export default function Login() {
 
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
+  const handleSubmit = (e) => {
+    
+    e.preventDefault();
+    
+    let newErrors = {};
+
+    if (!loginVerification.validateEmail(email)) {
+      newErrors.email = "Format invalid";
+    }
+
+    if (!loginVerification.validatePassword(password)) {
+      newErrors.password = "Le mot de passe doit contenir au moins 8 caractères et inclure au moins une lettre majuscule, une lettre minuscule et un numéro";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      //Send to backend for authentication
+    }
+  }
+  
   return (
     <div className="login-container">
 
@@ -19,7 +42,7 @@ export default function Login() {
           <p>Remplissez les champs de saisie pour continuer</p>
         </div>
 
-        <form className="login-form" noValidate>
+        <form className="login-form" noValidate onSubmit={handleSubmit}>
           <div className="form-group">
             <div className="input-wrapper">
               <input
@@ -28,10 +51,12 @@ export default function Login() {
                 name="email"
                 required
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <label htmlFor="email">Email</label>
             </div>
-            <span className="error-message"></span>
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
           <div className="form-group">
@@ -42,10 +67,12 @@ export default function Login() {
                 name="password"
                 required
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <label htmlFor="password">Password</label>
             </div>
-            <span className="error-message"></span>
+            {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
 
           <button className="login-btn" type="submit" >
