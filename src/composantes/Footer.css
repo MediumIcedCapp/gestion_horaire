@@ -1,0 +1,43 @@
+.app-footer {
+  background-color: #ffffff;   /* fond blanc */
+  color: #000000;              /* texte noir */
+  padding: 15px 0;
+  width: 100%;
+  border-top: 1px solid #ddd;
+}
+
+.footer-content {
+  display: flex;               /* met tout sur une ligne */
+  justify-content: center;     /* centre horizontalement */
+  align-items: center;
+  gap: 40px;                   /* espace entre sections */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links ul {
+  display: flex;               /* liens sur une ligne */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+}
+
+.footer-links a,
+.footer-socials a {
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover,
+.footer-socials a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
