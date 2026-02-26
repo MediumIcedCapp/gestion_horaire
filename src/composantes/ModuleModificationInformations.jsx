@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import '../App.css'
 
 export default function ModuleModificationInformations({ cours, onSave, onCancel }) {
   const [formData, setFormData] = useState({
@@ -62,7 +63,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
         </div>
         <form onSubmit={handleSubmit} className="module-form">
           <div className="form-group">
-            <label htmlFor="nom">Nom du cours *</label>
+            <label htmlFor="nom">Nom du cours </label>
             <input
               type="text"
               id="nom"
@@ -75,7 +76,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
           </div>
 
           <div className="form-group">
-            <label htmlFor="professeur">Professeur *</label>
+            <label htmlFor="professeur">Professeur </label>
             <input
               type="text"
               id="professeur"
@@ -88,7 +89,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
           </div>
 
           <div className="form-group">
-            <label htmlFor="salle">Salle *</label>
+            <label htmlFor="salle">Salle </label>
             <input
               type="text"
               id="salle"
@@ -102,7 +103,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="heureDebut">Heure de debut *</label>
+              <label htmlFor="heureDebut">Heure de début</label>
               <input
                 type="time"
                 id="heureDebut"
@@ -115,7 +116,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
             </div>
 
             <div className="form-group">
-              <label htmlFor="heureFin">Heure de fin *</label>
+              <label htmlFor="heureFin">Heure de fin</label>
               <input
                 type="time"
                 id="heureFin"
@@ -129,7 +130,7 @@ export default function ModuleModificationInformations({ cours, onSave, onCancel
           </div>
 
           <div className="form-group">
-            <label htmlFor="jour">Jour *</label>
+            <label htmlFor="jour">Jour</label>
             <select
               id="jour"
               name="jour"

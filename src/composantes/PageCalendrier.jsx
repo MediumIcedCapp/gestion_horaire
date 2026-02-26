@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import logo from '../assets/logoGestionHoraire.png'
 import Footer from './Footer.jsx'
+import ModuleSuppressionCours from './ModuleSuppressionCours.jsx';
+import ModuleModificationInformations from './ModuleModificationInformations';
 
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -64,6 +66,8 @@ export default function PageCalendrier() {
           <button className="btn btn-primary btn-full">+ Ajouter evenement</button>
         </div>
       </main>
+      {/*<ModuleModificationInformations/>*/}
+      {/*<ModuleSuppressionCours/>*/}
       <div className="footer">
         <Footer />
       </div>

@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import './App.css'
+import './composantes/PageCalendrier.css'
 import PageCalendrier from './composantes/PageCalendrier'
 
-export default function App() {
+function App() {
   const [currentPage, setCurrentPage] = useState('calendar')
 
   return (
@@ -12,3 +12,4 @@ export default function App() {
   )
 }
 
+export default App;
