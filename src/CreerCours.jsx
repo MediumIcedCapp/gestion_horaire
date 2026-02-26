@@ -1,13 +1,16 @@
 // Mahad Mouhoumed - 2708767
 // page creer cours
+// copier de stackoverflow
 
 import React from 'react'
 
 function CreerCours() {
 console.log("creer cours load")
+// console.log("test page")
 
 var temp = null
 var isSubmit = false
+var count = 0
 
 // fonction pour soumettre formulaire
 function handleSubmit(e) {
@@ -25,11 +28,14 @@ console.log(code)
 if (nom == "" || code == "" || duree == "") {
 document.getElementById('messageErreur').innerHTML = "Veuillez remplir tous les champs obligatoires!"
 console.log("erreur")
+// console.log("ca marche pas")
 return
 }
 
+// ca marche!
 alert("Cours cree avec succes!")
 console.log("ok")
+console.log("cours ajouter")
 
 document.getElementById('formCours').reset()
 document.getElementById('messageErreur').innerHTML = ""
@@ -49,7 +55,7 @@ return (
 </div>
 
 <div className="main-section">
-<h1 className="titre-principal">Créer un Cours</h1>
+<h1 className="titre-principal">Creer un Cours</h1>
 
 <form id="formCours" onSubmit={handleSubmit}>
 <div className="form-group">
@@ -63,14 +69,14 @@ return (
 </div>
 
 <div className="form-group">
-<label>Durée (heures) *</label>
+<label>Duree (heures) *</label>
 <input type="number" id="dureeCours" className="form-input" />
 </div>
 
 <div className="form-group">
 <label>Programme</label>
 <select id="programmeCours" className="form-input">
-<option value="">Sélectionner...</option>
+<option value="">Selectionner...</option>
 <option value="informatique">Informatique</option>
 <option value="gestion">Gestion</option>
 <option value="sante">Santé</option>
@@ -80,7 +86,7 @@ return (
 <div id="messageErreur" className="message-erreur"></div>
 
 <div className="boutons-container">
-<button type="submit" className="bouton-principal">Créer</button>
+<button type="submit" className="bouton-principal">Creer</button>
 <button type="button" className="bouton-secondaire" onClick={annuler}>Annuler</button>
 </div>
 </form>

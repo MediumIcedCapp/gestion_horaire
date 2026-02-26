@@ -1,5 +1,6 @@
 // Mahad Mouhoumed - 2708767
 // app principal
+// TODO: ajouter navigation
 
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -10,8 +11,10 @@ import './App.css'
 
 function App() {
 console.log("app load")
+// console.log("test app")
 
 var temp = null
+var x = 0
 
 return (
 <BrowserRouter>
