@@ -4,7 +4,7 @@
 
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './Home'
+import Accueil from './Accueil'
 import CreerCours from './CreerCours'
 import ConsulterCours from './ConsulterCours'
 import './App.css'
@@ -19,7 +19,7 @@ var x = 0
 return (
 <BrowserRouter>
 <Routes>
-<Route path="/" element={<Home />} />
+<Route path="/" element={<Accueil />} />
 <Route path="/creer-cours" element={<CreerCours />} />
 <Route path="/consulter-cours" element={<ConsulterCours />} />
 </Routes>

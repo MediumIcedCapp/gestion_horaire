@@ -4,7 +4,7 @@
 
 import React from 'react'
 
-function Home() {
+function Accueil() {
 console.log("home load")
 // console.log("test")
 
@@ -59,4 +59,4 @@ return (
 )
 }
 
-export default Home
+export default Accueil
