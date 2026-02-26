@@ -1,42 +1,167 @@
+/* style pour le site - Mahad Mouhoumed */
+
+body {
+background-color: #F5D7B8;
+  font-family: Arial;
+margin: 0;
+    padding: 0;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+margin: 0;
+  padding: 0;
+}
+
+/* logo en haut */
+.logo-container {
   text-align: center;
+padding: 20px;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+width: 300px;
+  height: auto;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* section principale */
+  .main-section {
+text-align: center;
+    padding: 50px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.titre-principal {
+  font-size: 48px;
+color: darkblue;
+    margin-bottom: 10px;
 }
 
-.card {
-  padding: 2em;
+  .sous-titre {
+font-size: 24px;
+  color: gray;
+margin-bottom: 40px;
 }
 
-.read-the-docs {
-  color: #888;
+/* boutons */
+.boutons-container {
+    margin: 30px;
+}
+
+  .bouton-principal {
+background-color: #5DADE2;
+  color: white;
+padding: 15px 30px;
+    margin: 10px;
+font-size: 18px;
+  border: none;
+cursor: pointer;
+    border-radius: 5px;
+}
+
+.bouton-principal:hover {
+  background-color: #3B8FC4;
+}
+
+  .bouton-secondaire {
+background-color: gray;
+  color: white;
+padding: 15px 30px;
+    margin: 10px;
+font-size: 18px;
+  border: none;
+cursor: pointer;
+    border-radius: 5px;
+}
+
+.bouton-secondaire:hover {
+  background-color: darkgray;
+}
+
+/* section bas de page */
+.section-bas {
+  background-color: #F5D7B8;
+padding: 40px;
+}
+
+  .contenu-bas {
+display: flex;
+  justify-content: center;
+align-items: center;
+    gap: 50px;
+}
+
+.image-gauche {
+  flex: 0;
+}
+
+  .logo-bas {
+width: 250px;
+  height: auto;
+}
+
+.texte-droite {
+  flex: 1;
+text-align: left;
+}
+
+/* footer */
+  .footer {
+background-color: #333;
+  color: white;
+padding: 20px;
+    text-align: center;
+}
+
+/* formulaires */
+.form-group {
+  margin: 20px;
+}
+
+  .form-group label {
+display: block;
+  margin-bottom: 5px;
+font-weight: bold;
+}
+
+  .form-input {
+width: 300px;
+  padding: 10px;
+font-size: 16px;
+    border: 1px solid gray;
+border-radius: 5px;
+}
+
+/* message erreur */
+  .message-erreur {
+color: red;
+  margin: 10px;
+font-weight: bold;
+}
+
+/* filtres */
+.filtres-container {
+  margin: 30px;
+}
+
+/* resultats */
+  .resultats-section {
+margin: 30px;
+}
+
+  .cours-item {
+background-color: white;
+  padding: 20px;
+margin: 20px auto;
+    max-width: 600px;
+border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+text-align: left;
+}
+
+  .cours-item h3 {
+color: darkblue;
+  margin-top: 0;
+}
+
+.cours-item p {
+  margin: 5px 0;
 }
