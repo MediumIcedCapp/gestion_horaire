@@ -26,7 +26,7 @@ export default function SignUp() {
         }
     
         if (!loginVerification.validatePassword(password)) {
-            newErrors.password = "Le mot de passe doit contenir au moins 8 caractères et inclure au moins une lettre majuscule, une lettre minuscule et un numéro";
+            newErrors.password = "Le mot de passe doit contenir au moins 10 caractères et inclure au moins une lettre et un numéro";
         }
 
         if (!loginVerification.passwordMatch(password, confirmPassword)) {
@@ -42,7 +42,7 @@ export default function SignUp() {
         }
 
         if (!loginVerification.validateUsername(username)) {
-            newErrors.username = "Le nom d'utilisateur ne doit contenir que des lettres et des chiffres";
+            newErrors.username = "Le nom d'utilisateur doit contenir entre 3 et 20 caractères et ne doit contenir que des lettres, chiffres et underscores";
         }
     
         setErrors(newErrors);
@@ -75,7 +75,7 @@ return (
                         value={prenom}
                         onChange={(e) => setPrenom(e.target.value)}
                     />
-                    <label htmlFor="prenom">Prenom</label>
+                    <label htmlFor="prenom">Prénom</label>
                 </div>
                 {errors.prenom && <span className="error-message">{errors.prenom}</span>}
             </div>
@@ -138,7 +138,7 @@ return (
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Mot de passe</label>
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
         </div>

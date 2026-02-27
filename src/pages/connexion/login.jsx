@@ -21,7 +21,7 @@ export default function Login() {
     }
 
     if (!loginVerification.validatePassword(password)) {
-      newErrors.password = "Le mot de passe doit contenir au moins 8 caractères et inclure au moins une lettre majuscule, une lettre minuscule et un numéro";
+      newErrors.password = "Le mot de passe doit contenir au moins 10 caractères et inclure au moins une lettre et un numéro";
     }
 
     setErrors(newErrors);
@@ -70,7 +70,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Mot de passe</label>
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
