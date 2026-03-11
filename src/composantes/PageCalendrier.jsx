@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import logo from '../assets/logoGestionHoraire.png'
 import Footer from './Footer.jsx'
-import ModuleSuppressionCours from './ModuleSuppressionCours.jsx';
-import ModuleModificationInformations from './ModuleModificationInformations';
 
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -35,7 +33,7 @@ export default function PageCalendrier() {
         <div className="logo">
           <img src={logo} alt="Gestion des Horaires" className="logo-img" />
           <div className="header-title">
-            <h1>GESTION DES HORAIRES</h1>
+            <h1>PLANIGO</h1>
             <p>Organiseur des professeurs par les administrateurs</p>
           </div>
         </div>
@@ -63,11 +61,10 @@ export default function PageCalendrier() {
             <div className="event-item"><span className="event-time">14:00</span><span className="event-title">Cours programmation</span></div>
             <div className="event-item"><span className="event-time">16:30</span><span className="event-title">Projet Integrateur</span></div>
           </div>
-          <button className="btn btn-primary btn-full">+ Ajouter evenement</button>
+          <button className="btn btn-primary btn-full">+ Supprimer un cours</button>
+          <button className="btn btn-primary btn-full">+ Modifier une information</button>
         </div>
       </main>
-      {/*<ModuleModificationInformations/>*/}
-      {/*<ModuleSuppressionCours/>*/}
       <div className="footer">
         <Footer />
       </div>
@@ -75,4 +72,3 @@ export default function PageCalendrier() {
     </div>
   )
 }
-
