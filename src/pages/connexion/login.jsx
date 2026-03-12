@@ -9,10 +9,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loggingIn, setLoggingIn] = useState(false);
 
   const handleSubmit = (e) => {
     
     e.preventDefault();
+
+    setLoggingIn(true);
     
     let newErrors = {};
 
@@ -24,13 +27,19 @@ export default function Login() {
       newErrors.password = "Le mot de passe doit contenir au moins 10 caractères et inclure au moins une lettre et un numéro";
     }
 
-    setErrors(newErrors);
+    setTimeout(() => setErrors(newErrors), 1000);
 
     if (Object.keys(newErrors).length === 0) {
       //Send to backend for authentication
     }
+
+
+
+    setLoggingIn(false);
+
   }
-  
+
+
   return (
     <div className="login-container">
 
@@ -75,8 +84,8 @@ export default function Login() {
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
 
-          <button className="login-btn" type="submit" >
-            Log In
+          <button className="login-btn" type="submit">
+            {loggingIn ? "Connexion..." : "Se connecter"}
           </button>
         </form>
           <div className="detailCreerCompte" style={{ marginTop:"20px", fontSize:"12px"}}>
