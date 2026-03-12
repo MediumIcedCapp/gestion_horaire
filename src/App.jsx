@@ -1,14 +1,19 @@
-//importations
-import { useState } from 'react'
-import './composantes/PageCalendrier.css'
-import PageCalendrier from './composantes/PageCalendrier.jsx'
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import Login from "./pages/connexion/login.jsx";
+import SignUp from "./pages/connexion/SignUp.jsx";
+import Accueil from "./Accueil.jsx";
+import PageCalendrier from "./composantes/PageCalendrier.jsx";
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState('calendar')
 
+function App() {
   return (
-    <div className="App">
-      <PageCalendrier />
-    </div>
-  )
+      <Routes>
+        <Route path="/" element={<Accueil />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/pageCalendrier" element={<PageCalendrier />} />
+      </Routes>
+  );
 }
+
+export default App;
