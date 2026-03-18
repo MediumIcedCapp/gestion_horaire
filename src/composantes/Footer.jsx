@@ -1,12 +1,12 @@
 import React from 'react';
-import "./Footer.css";
+import styles from "./Footer.module.css";
 
 const Footer = () => {
   return (
-    <footer className="app-footer">
-      <div className="footer-content">
+    <footer className={styles.app_footer}>
+      <div className={styles.footer_content}>
 
-        <div className="footer-socials">
+        <div className={styles.footer_socials}>
           <h4>Connect With Us</h4>
           <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
             Facebook
@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer-bottom">
+      <div className={styles.footer_bottom}>
         <p>&copy; {new Date().getFullYear()} Planigo. All rights reserved.</p>
       </div>
     </footer>

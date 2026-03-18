@@ -1,12 +1,14 @@
-.app-footer {
-  background-color: #ffffff;  
+.app_footer {
+  position: absolute;
+  bottom: 0;
+  background-color: #ffffff;
   color: #000000;              
   padding: 15px 0;
   width: 100%;
   border-top: 1px solid #ddd;
 }
 
-.footer-content {
+.footer_content {
   display: flex;               
   justify-content: center;     
   align-items: center;
@@ -15,7 +17,7 @@
   margin: 0 auto;
 }
 
-.footer-links ul {
+.footer_links ul {
   display: flex;              
   list-style: none;
   padding: 0;
@@ -23,19 +25,19 @@
   gap: 20px;
 }
 
-.footer-links a,
-.footer-socials a {
+.footer_links a,
+.footer_socials a {
   color: #000000;
   text-decoration: none;
   font-size: 14px;
 }
 
-.footer-links a:hover,
-.footer-socials a:hover {
+.footer_links a:hover,
+.footer_socials a:hover {
   text-decoration: underline;
 }
 
-.footer-bottom {
+.footer_bottom {
   text-align: center;
   margin-top: 10px;
   font-size: 13px;

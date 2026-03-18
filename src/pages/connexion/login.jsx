@@ -3,6 +3,7 @@ import styles from "./Login.module.css";
 import Logo from "../../assets/logoGestionHoraire.png";
 import loginVerification from "../../utils/loginValidation"; 
 import { Link } from "react-router-dom";
+import Footer from "../../composantes/Footer.jsx";
 
 export default function Login() {
 
