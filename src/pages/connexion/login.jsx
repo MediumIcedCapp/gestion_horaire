@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Login.css";
+import styles from "./Login.module.css";
 import Logo from "../../assets/logoGestionHoraire.png";
 import loginVerification from "../../utils/loginValidation"; 
 import { Link } from "react-router-dom";
