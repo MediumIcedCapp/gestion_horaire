@@ -7,8 +7,9 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .dropdown_button { background: none; border: none;}
 .dropdown_icon { position: relative; height: 30px; cursor: pointer;}
 .dropdown_content { height:fit-content; width: 250px; background: rgba(255, 255, 255); box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 1000;}
-.dropdown_content ul:hover li { opacity : 0.2; }
+.dropdown_content ul:hover > li { opacity : 0.2; }
 .dropdown_content ul li {
+    position: relative;
   list-style: none;
   padding: 10px;
   width: 100%;
@@ -24,7 +25,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   color: #fff;
   opacity: 1;
 }
-.dropdown_content ul li:hover a {
+
+.dropdown_content ul li:hover .submenu {
+  display: block;
+  pointer-events: auto;
+}
+.dropdown_content ul li:hover > a {
   color: white;
   font-weight: bold;
 }
@@ -89,3 +95,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .event_item { display: flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.5rem; }
 .event_time { color: #5DADE2; font-weight: bold; }
 .event_title { color: #333; }
+
+.submenu {
+    position:absolute;
+    top: 0;
+    left: 100%;
+    width: 200px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    display: none;
+    pointer-events: none;
+    transition: 0.2s;
+    color: black;
+}

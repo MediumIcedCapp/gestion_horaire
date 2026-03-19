@@ -73,9 +73,27 @@ export default function PageCalendrier() {
           <div className={styles.dropdown_elements}>
             <ul>
               <li><a href="#">Calendrier</a></li>
-              <li><a href="#">Gérer un cours</a></li>
-              <li><a href="#">Gérer un professeur</a></li>
-              <li><a href="#">Gérer une salle</a></li>
+              <li><a href="#">Gérer un cours</a>
+                <ul className={styles.submenu}>
+                  <li><a href="#">Ajouter un cours</a></li>
+                  <li><a href="#">Modifier un cours</a></li>
+                  <li><a href="#">Supprimer un cours</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Gérer un professeur</a>
+                <ul className={styles.submenu}>
+                  <li><a href="#">Ajouter un professeur</a></li>
+                  <li><a href="#">Modifier un professeur</a></li>
+                  <li><a href="#">Supprimer un professeur</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Gérer une salle</a>
+                <ul className={styles.submenu}>
+                  <li><a href="#">Ajouter une salle</a></li>
+                  <li><a href="#">Modifier une salle</a></li>
+                  <li><a href="#">Supprimer une salle</a></li>
+                </ul>
+              </li>
               <li><a href="#">Déconnexion</a></li>
             </ul>
             </div>
