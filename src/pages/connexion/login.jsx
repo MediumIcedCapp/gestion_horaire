@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import "./Login.css";
+import styles from "./Login.module.css";
 import Logo from "../../assets/logoGestionHoraire.png";
 import loginVerification from "../../utils/loginValidation"; 
 import { Link } from "react-router-dom";
+import Footer from "../../composantes/Footer.jsx";
 
 export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loggingIn, setLoggingIn] = useState(false);
 
   const handleSubmit = (e) => {
     
     e.preventDefault();
+
+    setLoggingIn(true);
     
     let newErrors = {};
 
@@ -24,27 +28,34 @@ export default function Login() {
       newErrors.password = "Le mot de passe doit contenir au moins 10 caractères et inclure au moins une lettre et un numéro";
     }
 
-    setErrors(newErrors);
+    setTimeout(() => setErrors(newErrors), 1000);
 
     if (Object.keys(newErrors).length === 0) {
       //Send to backend for authentication
     }
-  }
-  
-  return (
-    <div className="login-container">
 
-        <img src={Logo} alt="Logo" className="login-logo" />
+
+
+    setLoggingIn(false);
+
+  }
+
+
+  return (
+    <div className={styles.login_page}>
+      <div className={styles.login_container}>
+
+        <img src={Logo} alt="Logo" className={styles.login_logo} />
         
-      <div className="login-card">
-        <div className="login-header">
-          <h2>Log In</h2>
+      <div className={styles.login_card}>
+        <div className={styles.login_header}>
+          <h2>Se Connecter</h2>
           <p>Remplissez les champs de saisie pour continuer</p>
         </div>
 
-        <form className="login-form" noValidate onSubmit={handleSubmit}>
-          <div className="form-group">
-            <div className="input-wrapper">
+        <form className={styles.login_form} noValidate onSubmit={handleSubmit}>
+          <div className={styles.form_group}>
+            <div className={styles.input_wrapper}>
               <input
                 type="email"
                 id="email"
@@ -56,11 +67,11 @@ export default function Login() {
               />
               <label htmlFor="email">Email</label>
             </div>
-            {errors.email && <span className="error-message">{errors.email}</span>}
+            {errors.email && <span className={styles.error_message}>{errors.email}</span>}
           </div>
 
-          <div className="form-group">
-            <div className="input-wrapper">
+          <div className={styles.form_group}>
+            <div className={styles.input_wrapper}>
               <input
                 type="password"
                 id="password"
@@ -72,20 +83,21 @@ export default function Login() {
               />
               <label htmlFor="password">Mot de passe</label>
             </div>
-            {errors.password && <span className="error-message">{errors.password}</span>}
+            {errors.password && <span className={styles.error_message}>{errors.password}</span>}
           </div>
 
-          <button className="login-btn" type="submit" >
-            Log In
+          <button className={styles.login_btn} type="submit">
+            {loggingIn ? "Connexion..." : "Se connecter"}
           </button>
         </form>
-          <div className="detailCreerCompte" style={{ marginTop:"20px", fontSize:"12px"}}>
+          <div className={styles.detailCreerCompte} style={{ marginTop:"20px", fontSize:"12px"}}>
             <p>Besoin de{" "}
               <Link to="/signup" style={{color:"Blue", textDecoration:"underline"}}>
               créer un compte?
               </Link>
             </p>
           </div>
+      </div>
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import Login from "./pages/connexion/login.jsx";
 import SignUp from "./pages/connexion/SignUp.jsx";
-import Accueil from "./Accueil.jsx";
+import Accueil from "./pages/accueil/Accueil.jsx";
 import PageCalendrier from "./composantes/PageCalendrier.jsx";
+import CompteUtilisateur from "./composantes/CompteUtilisateur.jsx";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/pageCalendrier" element={<PageCalendrier />} />
+        <Route path="/compteutilisateur" element={<CompteUtilisateur />} />
       </Routes>
   );
 }

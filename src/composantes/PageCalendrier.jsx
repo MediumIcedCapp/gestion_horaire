@@ -1,10 +1,17 @@
-import { useState } from 'react';
+//importations 
+import { useState } from 'react'; 
 import logo from '../assets/logoGestionHoraire.png'
 import Footer from './Footer.jsx'
+import styles from './PageCalendrier.module.css'
+import UserProfile from '../assets/UserProfile.png'
+import DropDownButtonLines from '../assets/DropDownLines.png'
+import DropDownButtonArrow from '../assets/DropDownArrow.png'
+import { Link } from 'react-router-dom';
 
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  
+  const [toggleMenu, setToggleMenu] = useState(false)
+
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
     const month = date.getMonth()
@@ -27,48 +34,82 @@ export default function PageCalendrier() {
     setSelectedDate(newDate)
   }
 
+  function ToggleNavMenu() {
+    if(toggleMenu) {
+      document.getElementById("toggleNavMenu").style.width = "250px";
+      document.getElementById("calendar_main").style.marginLeft = "250px";
+    } else {
+      document.getElementById("toggleNavMenu").style.width = "0";
+      document.getElementById("calendar_main").style.marginLeft = "0";
+    }
+  }
+
   return (
-    <div className="calendar-page">
-      <header className="header">
-        <div className="logo">
-          <img src={logo} alt="Gestion des Horaires" className="logo-img" />
-          <div className="header-title">
+    <div className={styles.calendar_page}>
+      <header className={styles.header}>
+        <div className={styles.header_content}>
+          
+          <div className={styles.dropdown_wrapper}>
+            <button className={styles.dropdown_button} onClick={() => setToggleMenu(!toggleMenu)}>
+              <img className={styles.dropdown_icon} src={toggleMenu ? DropDownButtonArrow : DropDownButtonLines} alt="Menu" />
+            </button>
+          </div>
+
+          <img src={logo} alt="Gestion des Horaires" className={styles.logo_img} />
+          <div className={styles.header_title}>
             <h1>PLANIGO</h1>
             <p>Organiseur des professeurs par les administrateurs</p>
           </div>
+          <div className={styles.header_account}>
+            <Link to="/compteutilisateur">
+              <img src={UserProfile} alt="Profil" className={styles.user_profile} />
+            </Link>
+          </div>
         </div>
       </header>
-      <main className="calendar-main">
-        <div className="calendar-container">
-          <div className="calendar-header">
-            <button className="btn btn-icon" onClick={() => changeMonth(-1)}>Prec</button>
+      <div className={styles.main_content}>
+      {toggleMenu && (
+        <div id='toggleNavMenu' className={styles.dropdown_content}>
+          <div className={styles.dropdown_elements}>
+            <ul>
+              <li><a href="#">Calendrier</a></li>
+              <li><a href="#">Gérer un cours</a></li>
+              <li><a href="#">Gérer un professeur</a></li>
+              <li><a href="#">Gérer une salle</a></li>
+              <li><a href="#">Déconnexion</a></li>
+            </ul>
+            </div>
+        </div>
+      )}
+      <main id="calendar_main" className={styles.calendar_main}>
+        <div className={styles.calendar_container}>
+          <div className={styles.calendar_header}>
+            <button className={styles.btn} onClick={() => changeMonth(-1)}>Prec</button>
             <h2>{monthNames[selectedDate.getMonth()]} {selectedDate.getFullYear()}</h2>
-            <button className="btn btn-icon" onClick={() => changeMonth(1)}>Suiv</button>
+            <button className={styles.btn} onClick={() => changeMonth(1)}>Suiv</button>
           </div>
-          <div className="calendar-grid">
-            {dayNames.map(day => (<div key={day} className="calendar-day-name">{day}</div>))}
+          <div className={styles.calendar_grid}>
+            {dayNames.map(day => (<div key={day} className={styles.calendar_day_name}>{day}</div>))}
             {getDaysInMonth(selectedDate).map((day, index) => (
-              <div key={index} className={`calendar-day ${day ? 'has-day' : ''} ${day === new Date().getDate() && selectedDate.getMonth() === new Date().getMonth() ? 'today' : ''}`}
+              <div key={index} className={`${styles.calendar_day} ${day ? styles.has_day : ''} ${day === new Date().getDate() && selectedDate.getMonth() === new Date().getMonth() ? styles.today : ''}`}
                 onClick={() => day && alert(`Selectionne: ${day} ${monthNames[selectedDate.getMonth()]}`)}
               >{day}</div>
             ))}
           </div>
         </div>
-        <div className="calendar-sidebar">
+        <div className={`${styles.calendar_container} ${styles.today_event}`}>
           <h3>Evenements du jour</h3>
-          <div className="event-list">
-            <div className="event-item"><span className="event-time">09:00</span><span className="event-title">Reunion equipe</span></div>
-            <div className="event-item"><span className="event-time">14:00</span><span className="event-title">Cours programmation</span></div>
-            <div className="event-item"><span className="event-time">16:30</span><span className="event-title">Projet Integrateur</span></div>
+          <div className={styles.event_list}>
+            <div className={styles.event_item}><span className={styles.event_time}>09:00</span><span className={styles.event_title}>Reunion equipe</span></div>
+            <div className={styles.event_item}><span className={styles.event_time}>14:00</span><span className={styles.event_title}>Cours programmation</span></div>
+            <div className={styles.event_item}><span className={styles.event_time}>16:30</span><span className={styles.event_title}>Projet Integrateur</span></div>
           </div>
-          <button className="btn btn-primary btn-full">+ Supprimer un cours</button>
-          <button className="btn btn-primary btn-full">+ Modifier une information</button>
         </div>
       </main>
-      <div className="footer">
+      <div className={Footer}>
         <Footer />
       </div>
-      
+      </div>
     </div>
   )
 }
