@@ -1,0 +1,100 @@
+.accueil_page {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.accueil_container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.header_section{
+    padding-bottom: 5px;
+    width: 100vw;
+    background: #ffca9c;
+}
+
+.logo {
+    margin-top: 20px;
+    height: 80px;
+    align-items: center;
+}
+
+.main_section {
+    text-align: center;
+}
+
+.titre_principal {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.sous_titre {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+}
+
+.boutons_container {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.bouton_principal {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bouton_principal:hover {
+    background-color:#ff5555;
+    transition: all 0.3s 0.1s;
+    transform: translateY(-2px) scale(1.05);
+}
+
+.section_description {
+    margin-top: 60px;
+    border-radius: 150px;
+    display: flex;
+    gap: 40px;
+    width: 75%;
+    height: 300px;
+    background-color: #f8f9fa;
+    align-content:left;
+}
+
+.showcase_image {
+    border-radius: 150px;
+    padding: 5px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.texte_description {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+}

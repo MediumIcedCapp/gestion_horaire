@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./Login.css";
+import styles from "./Login.module.css";
 import Logo from "../../assets/logoGestionHoraire.png";
-import LoginVerification from "../../utils/loginValidation";
 import { Link } from "react-router-dom";
 import loginVerification from "../../utils/loginValidation"; 
 
@@ -53,20 +52,22 @@ export default function SignUp() {
     }
 
 return (
-    <div className="login-container">
+<div className={styles.login_page}>
 
-        <img src={Logo} alt="Logo" className="login-logo" />
+    <div className={styles.login_container}>
+
+        <img src={Logo} alt="Logo" className={styles.login_logo} />
         
-        <div className="login-card">
-            <div className="login-header">
+        <div className={styles.login_card}>
+            <div className={styles.login_header}>
             <h2>Sign Up</h2>
             <p>Remplissez les champs de saisie pour continuer</p>
         </div>
 
-    <form className="login-form" noValidate onSubmit={handleSubmit}>
-        <div className="name-row">
-            <div className="form-group">
-                <div className="input-wrapper">
+    <form className={styles.login_form} noValidate onSubmit={handleSubmit}>
+        <div className={styles.name_row}>
+            <div className={styles.form_group}>
+                <div className={styles.input_wrapper}>
                     <input 
                         type="text"
                         id="prenom"
@@ -77,11 +78,11 @@ return (
                     />
                     <label htmlFor="prenom">Prénom</label>
                 </div>
-                {errors.prenom && <span className="error-message">{errors.prenom}</span>}
+                {errors.prenom && <span className={styles.error_message}>{errors.prenom}</span>}
             </div>
 
-            <div className="form-group">
-                <div className="input-wrapper">
+            <div className={styles.form_group}>
+                <div className={styles.input_wrapper}>
                     <input 
                         type="text"
                         id="nom"
@@ -92,12 +93,12 @@ return (
                     />
                     <label htmlFor="nom">Nom</label>
                 </div>
-                {errors.nom && <span className="error-message">{errors.nom}</span>}
+                {errors.nom && <span className={styles.error_message}>{errors.nom}</span>}
             </div>
         </div>
 
-        <div className="form-group">
-                <div className="input-wrapper">
+        <div className={styles.form_group}>
+                <div className={styles.input_wrapper}>
                     <input 
                         type="text"
                         id="username"
@@ -108,11 +109,11 @@ return (
                     />
                     <label htmlFor="username">Nom d'utilisateur</label>
                 </div>
-                {errors.username && <span className="error-message">{errors.username}</span>}
+                {errors.username && <span className={styles.error_message}>{errors.username}</span>}
             </div>
 
-        <div className="form-group">
-            <div className="input-wrapper">
+        <div className={styles.form_group}>
+            <div className={styles.input_wrapper}>
                 <input
                     type="email"
                     id="email"
@@ -124,11 +125,11 @@ return (
                 />
                 <label htmlFor="email">Email</label>
             </div>
-            {errors.email && <span className="error-message">{errors.email}</span>}
+            {errors.email && <span className={styles.error_message}>{errors.email}</span>}
         </div>
 
-        <div className="form-group">
-            <div className="input-wrapper">
+        <div className={styles.form_group}>
+            <div className={styles.input_wrapper}>
                 <input
                     type="password"
                     id="password"
@@ -140,37 +141,38 @@ return (
                 />
                 <label htmlFor="password">Mot de passe</label>
             </div>
-            {errors.password && <span className="error-message">{errors.password}</span>}
+            {errors.password && <span className={styles.error_message}>{errors.password}</span>}
         </div>
 
-        <div className="form-group">
-            <div className="input-wrapper">
+        <div className={styles.form_group}>
+            <div className={styles.input_wrapper}>
                 <input
                     type="password"
-                    id="confimPassword"
-                    name="confimPassword"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     required
                     autoComplete="current-password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <label htmlFor="confimPassword">Confirmer votre mot de passe</label>
+                <label htmlFor="confirmPassword">Confirmer votre mot de passe</label>
             </div>
-            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+            {errors.confirmPassword && <span className={styles.error_message}>{errors.confirmPassword}</span>}
         </div>
 
-        <button className="login-btn" type="submit">
+        <button className={styles.login_btn} type="submit">
             Sign Up
         </button>
     </form>
 
-        <div className="detailCreerCompte" style={{ marginTop:"20px", fontSize:"12px"}}>
+        <div className={styles.detailCreerCompte} style={{ marginTop:"20px", fontSize:"12px"}}>
             <p>Tu as deja{" "}
                 <Link to="/login" style={{color:"Blue", textDecoration:"underline"}}>
                 un compte?
                 </Link>
             </p>
         </div>
+    </div>
     </div>
 </div>
 );
