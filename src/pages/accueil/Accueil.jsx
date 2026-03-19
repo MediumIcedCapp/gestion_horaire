@@ -7,6 +7,7 @@ import styles from './Accueil.module.css'
 import Footer from '../../composantes/Footer'
 import Logo from "../../assets/logoGestionHoraire.png";
 import ShowcaseImage from "../../assets/AccueilCalendarShowcase.jpg";
+import { Link } from "react-router-dom";
 
 export default function Accueil() {
     console.log("home load")
@@ -37,8 +38,12 @@ return (
                 </div>
 
                 <div className={styles.boutons_container}>
-                    <button className={styles.bouton_principal} onClick={creerCompte}>Creer Un Compte</button>
-                    <button className={styles.bouton_principal} onClick={seConnecter}>Se connecter</button>
+                    <Link to="/signup">
+                        <button className={styles.bouton_principal}>Créer Un Compte</button>
+                    </Link>
+                    <Link to="/login">
+                        <button className={styles.bouton_principal}>Se Connecter</button>
+                    </Link>
                 </div>
             </div>
 
