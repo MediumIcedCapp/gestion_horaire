@@ -10,20 +10,6 @@ import ShowcaseImage from "../../assets/AccueilCalendarShowcase.jpg";
 import { Link } from "react-router-dom";
 
 export default function Accueil() {
-    console.log("home load")
-
-    // fonction creer compte
-    function creerCompte() {
-    console.log("creer compte")
-    // TODO ca marche pas encore
-    alert("Creer un compte - pas encore implementer")
-    }
-
-    // fonction se connecter  
-    function seConnecter() {
-    console.log("se connecter")
-    alert("Se connecter - pas encore implementer")
-    }
 
 return (
     <div className={styles.accueil_page}>

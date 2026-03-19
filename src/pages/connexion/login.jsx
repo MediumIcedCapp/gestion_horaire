@@ -49,7 +49,7 @@ export default function Login() {
         
       <div className={styles.login_card}>
         <div className={styles.login_header}>
-          <h2>Log In</h2>
+          <h2>Se Connecter</h2>
           <p>Remplissez les champs de saisie pour continuer</p>
         </div>
 

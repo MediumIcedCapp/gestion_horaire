@@ -60,7 +60,7 @@ return (
         
         <div className={styles.login_card}>
             <div className={styles.login_header}>
-            <h2>Sign Up</h2>
+            <h2>Créer un compte</h2>
             <p>Remplissez les champs de saisie pour continuer</p>
         </div>
 
@@ -161,7 +161,7 @@ return (
         </div>
 
         <button className={styles.login_btn} type="submit">
-            Sign Up
+            Créer un compte
         </button>
     </form>
 
