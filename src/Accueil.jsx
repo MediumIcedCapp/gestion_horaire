@@ -60,5 +60,3 @@ return (
 }
 
 export default Accueil
-cd C:\Users\lemah\Videos\gestion_horaire
-npm run devicePixelRatio
