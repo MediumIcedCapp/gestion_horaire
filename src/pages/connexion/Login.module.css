@@ -10,7 +10,7 @@
     padding: 20px;
     line-height: 1.6;
     color: black;
-    background: linear-gradient(90deg,rgba(155, 42, 97, 1) 0%, rgba(199, 139, 87, 1) 50%, rgba(237, 222, 83, 1) 100%);
+    background: #FFDAB9;
 }
 
 .login_container {
