@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import Login from "./pages/connexion/login.jsx";
 import SignUp from "./pages/connexion/SignUp.jsx";
 import Accueil from "./pages/accueil/Accueil.jsx";
@@ -15,6 +15,7 @@ function App() {
         <Route path="/pageCalendrier" element={<PageCalendrier />} />
         <Route path="/compteutilisateur" element={<CompteUtilisateur />} />
       </Routes>
+      
   );
 }
 
