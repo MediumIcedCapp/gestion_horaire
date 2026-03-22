@@ -1,1 +1,1 @@
-//Danick A
+//Danick A: Consulter les salles avec filtres par code et type.

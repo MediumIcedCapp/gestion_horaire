@@ -1,1 +1,1 @@
-//Danick A
+//Danick A: Ajouter une salle avec un code unique, un type et une capacité.

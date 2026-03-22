@@ -1,1 +1,1 @@
-//Queren D
+//Queren D: Créer un cours en définissant : nom, code, durée, programme, étape d’étude et type de salle.

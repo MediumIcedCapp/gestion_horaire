@@ -1,1 +1,1 @@
-// Mahad M 
+// Mahad M: Ajouter un professeur avec ses informations personnelles (matricule, nom, prénom, spécialité).

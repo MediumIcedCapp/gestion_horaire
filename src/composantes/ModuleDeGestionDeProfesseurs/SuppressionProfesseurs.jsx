@@ -1,1 +1,1 @@
-// Mahad M 
+// Mahad M: Supprimer un professeur après vérification de ses affectations.

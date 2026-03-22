@@ -1,1 +1,1 @@
-// Mahad M 
+// Mahad M: Définir les disponibilités du professeur (jours et plages horaires). 

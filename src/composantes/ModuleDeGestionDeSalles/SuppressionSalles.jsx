@@ -1,1 +1,1 @@
-//Danick A
+//Danick A: Supprimer une salle après vérification de son occupation.

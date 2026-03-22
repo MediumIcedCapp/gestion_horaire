@@ -1,1 +1,1 @@
-// Mahad M 
+// Mahad M: Consulter la liste des professeurs avec filtres (spécialité, disponibilité).

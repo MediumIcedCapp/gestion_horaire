@@ -1,4 +1,4 @@
-//Queren D
+//Queren D: Supprimer un cours avec confirmation et archivage.
 import { useState } from 'react'
 
 export default function ModuleSuppressionCours({ cours, onConfirm, onCancel, onArchive }) {

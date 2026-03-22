@@ -1,1 +1,1 @@
-//Danick A
+//Danick A: Modifier le type ou la capacité d’une salle.

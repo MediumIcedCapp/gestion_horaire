@@ -1,4 +1,4 @@
-//Queren D
+//Queren D: Modifier les informations d’un cours existant.
 import { useState } from 'react'
 
 export default function ModificationCours({ cours, onSave, onCancel }) {

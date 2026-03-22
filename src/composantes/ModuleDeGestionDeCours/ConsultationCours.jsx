@@ -1,1 +1,1 @@
-//Queren D
+//Queren D: Consulter les cours avec filtres (programme, étape, durée, type de salle, période).
