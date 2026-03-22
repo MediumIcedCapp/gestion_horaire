@@ -70,10 +70,6 @@ app.post("/api/login", async (req, res) => {
 
             const user = results[0];
 
-            // DEBUG
-            console.log("Mot de passe reçu :", motDePasse);
-            console.log("Mot de passe DB :", user.motDePasse);
-
             const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
 
             if (!isPasswordValid) {

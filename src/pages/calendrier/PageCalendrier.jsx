@@ -1,11 +1,11 @@
 //importations 
 import { useState } from 'react'; 
-import logo from '../assets/logoGestionHoraire.png'
-import Footer from './Footer.jsx'
+import logo from '../../assets/logoGestionHoraire.png'
+import Footer from '../../composantes/Footer.jsx'
 import styles from './PageCalendrier.module.css'
-import UserProfile from '../assets/UserProfile.png'
-import DropDownButtonLines from '../assets/DropDownLines.png'
-import DropDownButtonArrow from '../assets/DropDownArrow.png'
+import UserProfile from '../../assets/UserProfile.png'
+import DropDownButtonLines from '../../assets/DropDownLines.png'
+import DropDownButtonArrow from '../../assets/DropDownArrow.png'
 import { Link } from 'react-router-dom';
 
 export default function PageCalendrier() {
@@ -78,13 +78,16 @@ export default function PageCalendrier() {
                   <li><a href="#">Ajouter un cours</a></li>
                   <li><a href="#">Modifier un cours</a></li>
                   <li><a href="#">Supprimer un cours</a></li>
+                  <li><a href="#">Consulter un cours</a></li>
                 </ul>
               </li>
               <li><a href="#">Gérer un professeur</a>
                 <ul className={styles.submenu}>
                   <li><a href="#">Ajouter un professeur</a></li>
+                  <li><a href="#">Définir disponibilité</a></li>
                   <li><a href="#">Modifier un professeur</a></li>
                   <li><a href="#">Supprimer un professeur</a></li>
+                  <li><a href="#">Consulter un professeur</a></li>
                 </ul>
               </li>
               <li><a href="#">Gérer une salle</a>
@@ -92,6 +95,7 @@ export default function PageCalendrier() {
                   <li><a href="#">Ajouter une salle</a></li>
                   <li><a href="#">Modifier une salle</a></li>
                   <li><a href="#">Supprimer une salle</a></li>
+                  <li><a href="#">Consulter une salle</a></li>
                 </ul>
               </li>
               <li><a href="#">Déconnexion</a></li>

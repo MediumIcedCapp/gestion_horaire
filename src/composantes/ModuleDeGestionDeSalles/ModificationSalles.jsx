@@ -1,6 +1,7 @@
+//Queren De Souza
 import { useState } from 'react'
 
-export default function ModuleModificationInformations({ cours, onSave, onCancel }) {
+export default function ModificationSalle({ cours, onSave, onCancel }) {
   const [formData, setFormData] = useState({
     nom: cours?.nom || '',
     professeur: cours?.professeur || '',
