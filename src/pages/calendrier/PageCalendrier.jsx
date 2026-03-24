@@ -1,4 +1,4 @@
-//importations 
+//importations d`images, de style et de footer
 import { useState } from 'react'; 
 import logo from '../../assets/logoGestionHoraire.png'
 import Footer from '../../composantes/Footer.jsx'
@@ -7,6 +7,8 @@ import UserProfile from '../../assets/UserProfile.png'
 import DropDownButtonLines from '../../assets/DropDownLines.png'
 import DropDownButtonArrow from '../../assets/DropDownArrow.png'
 import { Link } from 'react-router-dom';
+
+//Importation des composantes de gestion de salles 
 import AjoutSalles from '../../composantes/ModuleDeGestionDeSalles/AjoutSalles.jsx';
 import ModificationSalles from '../../composantes/ModuleDeGestionDeSalles/ModificationSalles.jsx';
 import ConsultationSalles from '../../composantes/ModuleDeGestionDeSalles/ConsultationSalles.jsx';
@@ -21,6 +23,12 @@ import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/Consulta
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [toggleMenu, setToggleMenu] = useState(false)
+  const [showAjouterSalle, setShowAjouterSalle] = useState(false)
+  const [showModificationSalle, setShowModificationSalle] = useState(false)
+  const [showConsultationSalle, setShowConsultationSalle] = useState(false)
+  const [showSuppressionSalle, setShowSuppressionSalle] = useState(false)
+  const [selectedCours, setSelectedCours] = useState(null)
+  const [activeView, setActiveView] = useState(null)
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -103,7 +111,7 @@ export default function PageCalendrier() {
                 <ul className={styles.submenu}>
                   <li><a onClick={() => setShowAjouterSalle(true)}
                       href="#">Ajouter une salle</a></li>
-                  <li><a onClick={() => setShowModifierSalle(true)}
+                  <li><a onClick={() => setShowModificationSalle(true)}
                       href="#">Modifier une salle</a></li>
                   <li><a onClick={() => setShowSuppressionSalle(true)}
                       href="#">Supprimer une salle</a></li>
@@ -172,7 +180,7 @@ export default function PageCalendrier() {
       {showAjouterSalle && (
             <AjoutSalles onClose={() => setShowAjouterSalle(false)} />
       )}
-      {showModifierSalle && (
+      {showModificationSalle && (
             <ModificationSalles onClose={() => setShowModifierSalle(false)} />
       )}
       {showConsultationSalle && (
