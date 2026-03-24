@@ -7,6 +7,10 @@ import UserProfile from '../../assets/UserProfile.png'
 import DropDownButtonLines from '../../assets/DropDownLines.png'
 import DropDownButtonArrow from '../../assets/DropDownArrow.png'
 import { Link } from 'react-router-dom';
+import AjoutSalles from '../../composantes/ModuleDeGestionDeSalles/AjoutSalles.jsx';
+import ModificationSalles from '../../composantes/ModuleDeGestionDeSalles/ModificationSalles.jsx';
+import ConsultationSalles from '../../composantes/ModuleDeGestionDeSalles/ConsultationSalles.jsx';
+import SuppressionSalles from '../../composantes/ModuleDeGestionDeSalles/SuppressionSalles.jsx';
 
 // Import des composants de gestion de cours
 import AjoutCours from '../../composantes/ModuleDeGestionDeCours/AjoutCours.jsx';
@@ -17,10 +21,6 @@ import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/Consulta
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [toggleMenu, setToggleMenu] = useState(false)
-  
-  // States pour les modals de gestion de cours
-  const [activeView, setActiveView] = useState('calendrier')
-  const [selectedCours, setSelectedCours] = useState(null)
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -101,10 +101,14 @@ export default function PageCalendrier() {
               </li>
               <li><a href="#">Gerer une salle</a>
                 <ul className={styles.submenu}>
-                  <li><a href="#">Ajouter une salle</a></li>
-                  <li><a href="#">Modifier une salle</a></li>
-                  <li><a href="#">Supprimer une salle</a></li>
-                  <li><a href="#">Consulter une salle</a></li>
+                  <li><a onClick={() => setShowAjouterSalle(true)}
+                      href="#">Ajouter une salle</a></li>
+                  <li><a onClick={() => setShowModifierSalle(true)}
+                      href="#">Modifier une salle</a></li>
+                  <li><a onClick={() => setShowSuppressionSalle(true)}
+                      href="#">Supprimer une salle</a></li>
+                  <li><a onClick={() => setShowConsultationSalle(true)}
+                      href="#">Consulter une salle</a></li>
                 </ul>
               </li>
               <li><a href="#">Ajout d'un evenement</a></li>
@@ -165,6 +169,20 @@ export default function PageCalendrier() {
         <Footer />
       </div>
       </div>
+      {showAjouterSalle && (
+            <AjoutSalles onClose={() => setShowAjouterSalle(false)} />
+      )}
+      {showModifierSalle && (
+            <ModificationSalles onClose={() => setShowModifierSalle(false)} />
+      )}
+      {showConsultationSalle && (
+            <ConsultationSalles onClose={() => setShowConsultationSalle(false)} />
+      )}
+      {showSuppressionSalle && (
+            <SuppressionSalles onClose={() => setShowSuppressionSalle(false)} />
+      )}
+
+      
     </div>
   )
 }

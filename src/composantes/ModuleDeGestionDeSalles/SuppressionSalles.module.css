@@ -1,0 +1,82 @@
+.suppression_salles_page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.suppression_salles_container {
+  background: #fff;
+  border-radius: 15px;
+  padding: 2rem;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.suppression_salles_container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close_btn {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+}
+
+.close_btn:hover {
+    color: #ff0000;
+}
+
+.salle_select {
+  width: 300px;
+  height: 40px;
+  display: inline-block;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+  transition: all .5s ease;
+  position: relative;
+  font-size: 14px;
+  color: #474747;
+  text-align: middle;
+  line-height: 100px;
+}
+
+.supprimer_btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff5d5d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.supprimer_btn:hover {
+    background-color:#ff0000;
+    transition: all 0.3s 0.1s;
+    transform: translateY(-2px) scale(1.05);
+}
