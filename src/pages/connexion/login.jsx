@@ -39,7 +39,7 @@ export default function Login() {
 
         if (data.success) {
           // Sauvegarder les données utilisateur dans localStorage
-          localStorage.setItem('utilisateur', JSON.stringify(data.user));
+          localStorage.setItem('utilisateur', JSON.stringify(data.user));          
           alert("Connexion réussie");
           navigate("/pageCalendrier");
         } else {
@@ -111,7 +111,7 @@ export default function Login() {
               <Link to="/signup" style={{ color:"Blue", textDecoration:"underline" }}>
                 créer un compte?
               </Link>
-            </p>
+            </p>login.jsx
           </div>
         </div>
       </div>
