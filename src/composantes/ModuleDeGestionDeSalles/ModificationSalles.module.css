@@ -1,0 +1,113 @@
+.modification_salles_page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modification_salles_container {
+  background: #fff;
+  border-radius: 15px;
+  padding: 2rem;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modification_salles_container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modification_salle_box select {
+    width: 300px;
+  height: 40px;
+  display: inline-block;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+  transition: all .5s ease;
+  position: relative;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #474747;
+  text-align: middle;
+  line-height: 100px;
+}
+
+.close_btn {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+}
+
+.close_btn:hover {
+    color: #ff0000;
+}
+
+.ajout_salles_container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.form_group {
+  margin-bottom: 1.5rem;
+}
+
+.form_group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form_group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form_group input:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.modifier_btn {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modifier_btn:hover {
+    background-color:#ff5555;
+    transition: all 0.3s 0.1s;
+    transform: translateY(-2px) scale(1.05);
+}

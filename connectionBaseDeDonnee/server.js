@@ -44,7 +44,6 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-
 //  LOGIN
 
 app.post("/api/login", async (req, res) => {
@@ -88,6 +87,71 @@ app.post("/api/login", async (req, res) => {
   catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// Ajouter salle
+
+app.post('/api/salles', (req, res) => {
+    const { code, type, capacity } = req.body;
+
+    const query = 'INSERT INTO module_gestion_salle (code, type, capacity) VALUES (?, ?, ?)';
+    db.query(query, [code, type, capacity], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de l\'ajout de la salle.' });
+        }
+        res.json({ message: 'Salle ajoutée avec succès !', id: result.insertId });
+    });
+});
+
+//fetch salles
+
+app.get('/api/salles', (req, res) => {
+    db.query('SELECT * FROM module_gestion_salle', (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: err.message });
+        }
+        res.json(results);
+    });
+});
+
+
+//modifier salle
+
+app.put('/api/salles/:id', (req, res) => {
+    const { id } = req.params;
+    const { code, type, capacity } = req.body;
+
+    const query = 'UPDATE module_gestion_salle SET code = ?, type = ?, capacity = ? WHERE idSalle = ?';
+    db.query(query, [code, type, capacity, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de la modification de la salle.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Salle non trouvée.' });
+        }
+        res.json({ message: 'Salle modifiée avec succès !' });
+    });
+});
+
+//supprimer salle
+
+app.delete('/api/salles/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = 'DELETE FROM module_gestion_salle WHERE idSalle = ?';
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de la suppression de la salle.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Salle non trouvée.' });
+        }
+        res.json({ message: 'Salle supprimée avec succès !' });
+    });
 });
 
 // 
