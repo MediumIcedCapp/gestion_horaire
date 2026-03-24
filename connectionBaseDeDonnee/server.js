@@ -44,7 +44,6 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-
 //  LOGIN
 
 app.post("/api/login", async (req, res) => {
@@ -88,6 +87,21 @@ app.post("/api/login", async (req, res) => {
   catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// Ajouter salle
+
+app.post('/api/salles', (req, res) => {
+    const { code, type, capacity } = req.body;
+
+    const query = 'INSERT INTO module_gestion_salle (code, type, capacity) VALUES (?, ?, ?)';
+    db.query(query, [code, type, capacity], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de l\'ajout de la salle.' });
+        }
+        res.json({ message: 'Salle ajoutée avec succès !', id: result.insertId });
+    });
 });
 
 // 
