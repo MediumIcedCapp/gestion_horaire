@@ -1,0 +1,124 @@
+.consultation_page {
+  min-height: 100vh;
+  background: linear-gradient(135deg,  #f5c499 0%, #f6c989 100%);
+  padding: 20px;
+}
+
+.consultation_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  padding: 30px;
+}
+
+.consultation_header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.consultation_header h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.consultation_header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.filters_card {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.filters_card h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.filters_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.filter_group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter_group label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.filter_group input,
+.filter_group select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.reset_btn {
+  margin-top: 20px;
+  background: #eea71a;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.results_card {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.results_card h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.cours_table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.cours_table th,
+.cours_table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.cours_table th {
+  background: #667eea;
+  color: white;
+}
+
+.cours_table tr:hover {
+  background: #f5f5f5;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+}
+
+.no_results {
+  text-align: center;
+  padding: 30px;
+  color: #999;
+}

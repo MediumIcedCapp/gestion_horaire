@@ -8,9 +8,19 @@ import DropDownButtonLines from '../../assets/DropDownLines.png'
 import DropDownButtonArrow from '../../assets/DropDownArrow.png'
 import { Link } from 'react-router-dom';
 
+// Import des composants de gestion de cours
+import AjoutCours from '../../composantes/ModuleDeGestionDeCours/AjoutCours.jsx';
+import ModificationCours from '../../composantes/ModuleDeGestionDeCours/ModificationCours.jsx';
+import SuppressionCours from '../../composantes/ModuleDeGestionDeCours/SuppressionCours.jsx';
+import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/ConsultationCours.jsx';
+
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [toggleMenu, setToggleMenu] = useState(false)
+  
+  // States pour les modals de gestion de cours
+  const [activeView, setActiveView] = useState('calendrier')
+  const [selectedCours, setSelectedCours] = useState(null)
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -34,14 +44,13 @@ export default function PageCalendrier() {
     setSelectedDate(newDate)
   }
 
-  function ToggleNavMenu() {
-    if(toggleMenu) {
-      document.getElementById("toggleNavMenu").style.width = "250px";
-      document.getElementById("calendar_main").style.marginLeft = "250px";
-    } else {
-      document.getElementById("toggleNavMenu").style.width = "0";
-      document.getElementById("calendar_main").style.marginLeft = "0";
-    }
+  const handleMenuClick = (view) => {
+    setActiveView(view)
+  }
+
+  const handleClosePanel = () => {
+    setActiveView('calendrier')
+    setSelectedCours(null)
   }
 
   return (
@@ -72,25 +81,25 @@ export default function PageCalendrier() {
         <div id='toggleNavMenu' className={styles.dropdown_content}>
           <div className={styles.dropdown_elements}>
             <ul>
-              <li><a href="#">Calendrier</a></li>
-              <li><a href="#">Gérer un cours</a>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('calendrier'); }}>Calendrier</a></li>
+              <li><a href="#">Gerer un cours</a>
                 <ul className={styles.submenu}>
-                  <li><a href="#">Ajouter un cours</a></li>
-                  <li><a href="#">Modifier un cours</a></li>
-                  <li><a href="#">Supprimer un cours</a></li>
-                  <li><a href="#">Consulter un cours</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('ajoutCours'); }}>Ajouter un cours</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('modificationCours'); }}>Modifier un cours</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('suppressionCours'); }}>Supprimer un cours</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationCours'); }}>Consulter un cours</a></li>
                 </ul>
               </li>
-              <li><a href="#">Gérer un professeur</a>
+              <li><a href="#">Gerer un professeur</a>
                 <ul className={styles.submenu}>
                   <li><a href="#">Ajouter un professeur</a></li>
-                  <li><a href="#">Définir disponibilité</a></li>
+                  <li><a href="#">Definir disponibilite</a></li>
                   <li><a href="#">Modifier un professeur</a></li>
                   <li><a href="#">Supprimer un professeur</a></li>
                   <li><a href="#">Consulter un professeur</a></li>
                 </ul>
               </li>
-              <li><a href="#">Gérer une salle</a>
+              <li><a href="#">Gerer une salle</a>
                 <ul className={styles.submenu}>
                   <li><a href="#">Ajouter une salle</a></li>
                   <li><a href="#">Modifier une salle</a></li>
@@ -98,9 +107,10 @@ export default function PageCalendrier() {
                   <li><a href="#">Consulter une salle</a></li>
                 </ul>
               </li>
-              <li><a href="#">Déconnexion</a></li>
+              <li><a href="#">Ajout d'un evenement</a></li>
+              <li><a href="#">Deconnexion</a></li>
             </ul>
-            </div>
+          </div>
         </div>
       )}
       <main id="calendar_main" className={styles.calendar_main}>
@@ -119,16 +129,39 @@ export default function PageCalendrier() {
             ))}
           </div>
         </div>
-        <div className={`${styles.calendar_container} ${styles.today_event}`}>
-          <h3>Evenements du jour</h3>
-          <div className={styles.event_list}>
-            <div className={styles.event_item}><span className={styles.event_time}>09:00</span><span className={styles.event_title}>Reunion equipe</span></div>
-            <div className={styles.event_item}><span className={styles.event_time}>14:00</span><span className={styles.event_title}>Cours programmation</span></div>
-            <div className={styles.event_item}><span className={styles.event_time}>16:30</span><span className={styles.event_title}>Projet Integrateur</span></div>
+        
+        {/* Panneau lateral pour les composants de cours */}
+        {activeView === 'ajoutCours' && (
+          <div className={styles.side_panel}>
+            <AjoutCours onSave={handleClosePanel} onCancel={handleClosePanel} />
           </div>
-        </div>
+        )}
+        {activeView === 'modificationCours' && (
+          <div className={styles.side_panel}>
+            <ModificationCours cours={selectedCours} onSave={handleClosePanel} onCancel={handleClosePanel} />
+          </div>
+        )}
+        {activeView === 'suppressionCours' && (
+          <div className={styles.side_panel}>
+            <SuppressionCours cours={selectedCours} onConfirm={handleClosePanel} onCancel={handleClosePanel} />
+          </div>
+        )}
+        {activeView === 'consultationCours' && (
+          <div className={styles.side_panel}>
+            <ConsultationCours />
+          </div>
+        )}
+        
+        {activeView === 'calendrier' && (
+          <div className={`${styles.calendar_container} ${styles.today_event}`}>
+            <h3>Évènements du jour</h3>
+            <div className={styles.event_list}>
+              
+            </div>
+          </div>
+        )}
       </main>
-      <div className={Footer}>
+      <div className={styles.footer}>
         <Footer />
       </div>
       </div>

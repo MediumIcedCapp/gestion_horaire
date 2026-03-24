@@ -1,0 +1,137 @@
+.ajout_page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5c499 0%, #f6c989 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ajout_container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.ajout_card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  padding: 40px;
+}
+
+.ajout_header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.ajout_header h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.ajout_header p {
+  color: #666;
+  font-size: 14px;
+}
+
+.ajout_form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form_group {
+  position: relative;
+}
+
+.input_wrapper {
+  position: relative;
+}
+
+.input_wrapper input,
+.input_wrapper select {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.input_wrapper input:focus,
+.input_wrapper select:focus {
+  outline: none;
+  border-color: #020515;
+}
+
+.input_wrapper label {
+  position: absolute;
+  left: 15px;
+  top: -10px;
+  background: white;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #01030d;
+  font-weight: 500;
+}
+
+.error_message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.form_actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.submit_btn {
+  flex: 1;
+  padding: 15px;
+  background: linear-gradient(135deg, #f5c499 0%, #f6c989 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancel_btn {
+  flex: 1;
+  padding: 15px;
+  background: #f5f5f5;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel_btn:hover {
+  background: #e0e0e0;
+}
+
+.cancel_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

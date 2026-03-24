@@ -1,48 +1,302 @@
 .app { min-height: 100vh; }
-.header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.header_content { display: flex; align-items: center; gap: 1rem; }
-.logo_img { height: 60px; }
-.header_title h1 { color: #5DADE2; font-size: 1.5rem; margin: 0; }
-.header_title p { color: #666; font-size: 0.8rem; margin: 0; }
 
-.side_menu { height:fit-content; width: 250px; background: rgba(255, 255, 255); box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 1000;}
+.compte_page {
+    min-height: 100vh;
+    background: #f5e6d3;
+}
+
+.compte_container {
+    min-height: 100vh;
+}
+
+.header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1rem 2rem; 
+    background: white; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+}
+
+.header_content { 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+}
+
+.logo_img { height: 60px; }
+
+.header_title h1 { 
+    color: #5DADE2; 
+    font-size: 1.5rem; 
+    margin: 0; 
+}
+
+.header_title p { 
+    color: #666; 
+    font-size: 0.8rem; 
+    margin: 0; 
+}
+
+.header_avatar {
+    margin-right: 1rem;
+}
+
+.header_avatar_img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.compte_content {
+    display: flex;
+    min-height: calc(100vh - 100px);
+}
+
+.side_menu { 
+    width: 250px; 
+    background: #ffffff;
+    padding: 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
+}
 
 .side_menu h2 {
     color: #333;
     font-size: 1.2rem;
+    font-weight: bold;
     margin: 0;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.side_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side_menu ul li {
+    padding: 0;
+    margin: 0;
 }
 
 .side_menu a { 
-    display: flex; 
-    flex-direction: column; 
-    padding: 1rem; 
-    gap: 1rem; 
+    display: block;
+    padding: 1rem 1.5rem; 
     color: #333; 
     text-decoration: none;
-    justify-items: center;
+    font-size: 0.95rem;
 }
 
-.side_menu ul:hover li { opacity : 0.2; }
-.side_menu ul li {
-  list-style: none;
-  padding: 10px;
-  width: 100%;
-  height: 100px;
-  background: #fff;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-  transition: transform 0.5s;
+.modifier_btn {
+    background: #d4e6f1;
+    border-left: 4px solid #5dade2;
 }
-.side_menu ul li:hover {
-  transform: scale(1.1);
-  z-index: 5;
-  background: #25bcff;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  opacity: 1;
+
+.modifier_btn:hover {
+    background: #aed6f1;
 }
-.side_menu ul li:hover a {
-  color: white;
-  font-weight: bold;
+
+.supprimer_btn {
+    background: #d5f5e3;
+    border-left: 4px solid #58d68d;
+}
+
+.supprimer_btn:hover {
+    background: #abebc6;
+}
+
+.retour_btn {
+    background: #e8daef;
+    border-left: 4px solid #9b59b6;
+}
+
+.retour_btn:hover {
+    background: #d2b4de;
+}
+
+.deconnexion_btn {
+    cursor: pointer;
+    background: #f3beab;
+    border-left: 4px solid #f8aa8d;
+}
+
+.deconnexion_btn:hover {
+    background: #fad7a0;
+}
+
+.profile_section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 2rem;
+    background: #f5e6d3;
+}
+
+.avatar_container {
+    margin-bottom: 1rem;
+}
+
+.avatar_img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.user_fullname {
+    color: #333;
+    font-size: 1.8rem;
+    margin: 0.5rem 0 2rem 0;
+    font-weight: 600;
+}
+
+.info_section {
+    background: transparent;
+    padding: 2rem 0;
+    width: 100%;
+    max-width: 500px;
+}
+
+.info_item {
+    display: flex;
+    padding: 0.5rem 0;
+}
+
+.info_label {
+    font-weight: 600;
+    color: #333;
+    width: 180px;
+}
+
+.info_value {
+    color: #333;
+}
+
+
+/* Styles pour le mode edition */
+.edit_input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    flex: 1;
+    max-width: 300px;
+}
+
+.edit_input:focus {
+    outline: none;
+    border-color: #5dade2;
+    box-shadow: 0 0 5px rgba(93, 173, 226, 0.3);
+}
+
+.edit_buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.save_btn {
+    padding: 0.75rem 2rem;
+    background: #5dade2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.save_btn:hover {
+    background: #3498db;
+}
+
+.cancel_btn {
+    padding: 0.75rem 2rem;
+    background: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.cancel_btn:hover {
+    background: #7f8c8d;
+}
+
+/* Styles pour le modal de suppression */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal_content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal_content h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.modal_content p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.modal_buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.confirm_delete_btn {
+    padding: 0.75rem 1.5rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.confirm_delete_btn:hover {
+    background: #c0392b;
+}
+
+.cancel_delete_btn {
+    padding: 0.75rem 1.5rem;
+    background: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.cancel_delete_btn:hover {
+    background: #7f8c8d;
 }

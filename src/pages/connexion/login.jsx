@@ -38,6 +38,8 @@ export default function Login() {
         const data = await response.json();
 
         if (data.success) {
+          // Sauvegarder les données utilisateur dans localStorage
+          localStorage.setItem('utilisateur', JSON.stringify(data.user));
           alert("Connexion réussie");
           navigate("/pageCalendrier");
         } else {

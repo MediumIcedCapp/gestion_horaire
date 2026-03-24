@@ -1,3 +1,4 @@
+//Importations
 import mysql from "mysql2";
 
 const baseDeDonnees = mysql.createConnection({
