@@ -11,6 +11,7 @@ export default function AjoutSalles({ onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+    // Cherche la salle dans la base de données pour vérifier l'unicité du code
     try {
         const response = await fetch('http://localhost:5000/api/salles', {
             method: 'POST',
@@ -40,9 +41,11 @@ export default function AjoutSalles({ onClose }) {
                 <div className={styles.close_btn} onClick={onClose}>
                     x
                 </div>
+
                 <div className={styles.ajout_salle_box}>
                     <h2>Ajouter une salle</h2>
                     <form onSubmit={handleSubmit}>
+
                         <div className={styles.form_group}>
                             <label htmlFor="code">Code de la salle:</label>
                             <input type="text" id="code" value={code} onChange={e => setCode(e.target.value)}  required />

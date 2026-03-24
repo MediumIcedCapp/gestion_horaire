@@ -8,11 +8,17 @@ import DropDownButtonLines from '../../assets/DropDownLines.png'
 import DropDownButtonArrow from '../../assets/DropDownArrow.png'
 import { Link } from 'react-router-dom';
 import AjoutSalles from '../../composantes/ModuleDeGestionDeSalles/AjoutSalles.jsx';
+import ModificationSalles from '../../composantes/ModuleDeGestionDeSalles/ModificationSalles.jsx';
+import ConsultationSalles from '../../composantes/ModuleDeGestionDeSalles/ConsultationSalles.jsx';
+import SuppressionSalles from '../../composantes/ModuleDeGestionDeSalles/SuppressionSalles.jsx';
 
 export default function PageCalendrier() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [toggleMenu, setToggleMenu] = useState(false)
   const [showAjouterSalle, setShowAjouterSalle] = useState(false);
+  const [showModifierSalle, setShowModifierSalle] = useState(false);
+  const [showConsultationSalle, setShowConsultationSalle] = useState(false);
+  const [showSuppressionSalle, setShowSuppressionSalle] = useState(false);
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -96,9 +102,12 @@ export default function PageCalendrier() {
                 <ul className={styles.submenu}>
                   <li><a onClick={() => setShowAjouterSalle(true)}
                       href="#">Ajouter une salle</a></li>
-                  <li><a href="#">Modifier une salle</a></li>
-                  <li><a href="#">Supprimer une salle</a></li>
-                  <li><a href="#">Consulter une salle</a></li>
+                  <li><a onClick={() => setShowModifierSalle(true)}
+                      href="#">Modifier une salle</a></li>
+                  <li><a onClick={() => setShowSuppressionSalle(true)}
+                      href="#">Supprimer une salle</a></li>
+                  <li><a onClick={() => setShowConsultationSalle(true)}
+                      href="#">Consulter une salle</a></li>
                 </ul>
               </li>
               <li><a href="#">Déconnexion</a></li>
@@ -138,6 +147,17 @@ export default function PageCalendrier() {
       {showAjouterSalle && (
             <AjoutSalles onClose={() => setShowAjouterSalle(false)} />
       )}
+      {showModifierSalle && (
+            <ModificationSalles onClose={() => setShowModifierSalle(false)} />
+      )}
+      {showConsultationSalle && (
+            <ConsultationSalles onClose={() => setShowConsultationSalle(false)} />
+      )}
+      {showSuppressionSalle && (
+            <SuppressionSalles onClose={() => setShowSuppressionSalle(false)} />
+      )}
+
+      
     </div>
   )
 }

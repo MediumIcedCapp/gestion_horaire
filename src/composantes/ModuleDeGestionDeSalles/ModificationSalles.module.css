@@ -1,4 +1,4 @@
-.ajout_salles_page {
+.modification_salles_page {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   z-index: 10000;
 }
 
-.ajout_salles_container {
+.modification_salles_container {
   background: #fff;
   border-radius: 15px;
   padding: 2rem;
@@ -19,12 +19,35 @@
   max-width: 90%;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   position: relative;
-  animation: slideDown 0.6s ease-out;
+  animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
   from { transform: translateY(-50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+.modification_salles_container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modification_salle_box select {
+    width: 300px;
+  height: 40px;
+  display: inline-block;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+  transition: all .5s ease;
+  position: relative;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #474747;
+  text-align: middle;
+  line-height: 100px;
 }
 
 .close_btn {
@@ -64,11 +87,15 @@
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1rem;
 }
 
+.form_group input:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
 
-.ajouter_btn {
+.modifier_btn {
     padding: 15px 30px;
     font-size: 1.2em;
     color: white;
@@ -79,7 +106,7 @@
     transition: background-color 0.3s ease;
 }
 
-.ajouter_btn:hover {
+.modifier_btn:hover {
     background-color:#ff5555;
     transition: all 0.3s 0.1s;
     transform: translateY(-2px) scale(1.05);

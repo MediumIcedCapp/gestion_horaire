@@ -104,5 +104,55 @@ app.post('/api/salles', (req, res) => {
     });
 });
 
+//fetch salles
+
+app.get('/api/salles', (req, res) => {
+    db.query('SELECT * FROM module_gestion_salle', (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: err.message });
+        }
+        res.json(results);
+    });
+});
+
+
+//modifier salle
+
+app.put('/api/salles/:id', (req, res) => {
+    const { id } = req.params;
+    const { code, type, capacity } = req.body;
+
+    const query = 'UPDATE module_gestion_salle SET code = ?, type = ?, capacity = ? WHERE idSalle = ?';
+    db.query(query, [code, type, capacity, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de la modification de la salle.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Salle non trouvée.' });
+        }
+        res.json({ message: 'Salle modifiée avec succès !' });
+    });
+});
+
+//supprimer salle
+
+app.delete('/api/salles/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = 'DELETE FROM module_gestion_salle WHERE idSalle = ?';
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur lors de la suppression de la salle.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Salle non trouvée.' });
+        }
+        res.json({ message: 'Salle supprimée avec succès !' });
+    });
+});
+
 // 
 app.listen(5000, () => console.log("Server running on port 5000"));
