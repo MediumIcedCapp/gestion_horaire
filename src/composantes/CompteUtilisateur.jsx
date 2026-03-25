@@ -50,6 +50,7 @@ export default function CompteUtilisateur() {
   const [editEmail, setEditEmail] = useState("");
   const [editMotDePasse, setEditMotDePasse] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showDeconnexionConfirm, setShowDeconnexionConfirm] = useState(false);
 
   // Recuperer les donnees de l'utilisateur depuis localStorage
   useEffect(() => {
@@ -122,6 +123,10 @@ export default function CompteUtilisateur() {
   };
 
   const handleDeconnexion = () => {
+      setShowDeconnexionConfirm(true);
+      }
+
+        const confirmDeconnexion = () => {
     localStorage.removeItem("utilisateur");
     navigate("/login");
   };
@@ -341,6 +346,29 @@ export default function CompteUtilisateur() {
               <div className={styles.modal_buttons}>
                 <button onClick={handleDeleteAccount} className={styles.confirm_delete_btn}>Supprimer</button>
                 <button onClick={() => setShowDeleteConfirm(false)} className={styles.cancel_delete_btn}>Annuler</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+                {/* Modal de confirmation de deconnexion */}
+        {showDeconnexionConfirm && (
+          <div className={styles.modal_overlay}>
+            <div className={styles.modal_content}>
+              <div className={styles.modal_header}>
+                <h3>Deconnexion</h3>
+                <button className={styles.close_btn} onClick={() => setShowDeconnexionConfirm(false)}>&times;</button>
+              </div>
+              <div className={styles.modal_body}>
+                <div className={styles.warning_icon}>
+                  <span role="img" aria-label="warning">&#9888;</span>
+                </div>
+                <p className={styles.warning_text}>Etes-vous sur de vouloir vous deconnecter ?</p>
+                <p className={styles.info_text}>Vous serez redirige vers la page de connexion.</p>
+              </div>
+              <div className={styles.modal_buttons}>
+                <button onClick={() => setShowDeconnexionConfirm(false)} className={styles.cancel_delete_btn}>Annuler</button>
+                <button onClick={confirmDeconnexion} className={styles.confirm_delete_btn}>Se deconnecter</button>
               </div>
             </div>
           </div>

@@ -300,3 +300,57 @@
 .cancel_delete_btn:hover {
     background: #7f8c8d;
 }
+
+
+
+/* Styles pour le modal de deconnexion */
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal_header h3 {
+  font-size: 22px;
+  color: #eea71a;
+  margin: 0;
+}
+
+.close_btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.close_btn:hover {
+  color: #333;
+}
+
+.modal_body {
+  text-align: center;
+}
+
+.warning_icon {
+  font-size: 60px;
+  color: #ffc107;
+  margin-bottom: 15px;
+}
+
+.warning_text {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.info_text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}

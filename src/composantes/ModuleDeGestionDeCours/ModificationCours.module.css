@@ -44,30 +44,42 @@
   border-bottom: 1px solid #eee;
 }
 
-.modification_header h2 {
-  font-size: 24px;
-  color: #333;
-  margin: 0;
-}
-
 .close_btn {
   background: none;
   border: none;
-  font-size: 28px;
-  color: #999;
+  font-size: 24px;
   cursor: pointer;
-  padding: 0;
-  line-height: 1;
+  color: #999;
 }
 
-.close_btn:hover {
-  color: #333;
+.selection_section {
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.select_label_text {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.main_select {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
 }
 
 .modification_form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 22px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .form_group {
@@ -85,60 +97,61 @@
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 15px;
-  transition: border-color 0.3s;
+  background: transparent;
   box-sizing: border-box;
 }
 
+/* Changement de couleur au focus : Orange */
 .input_wrapper input:focus,
 .input_wrapper select:focus {
   outline: none;
-  border-color: #2196F3;
+  border-color: #ff9800;
 }
 
 .input_wrapper label {
   position: absolute;
-  left: 14px;
+  left: 12px;
   top: -10px;
   background: white;
-  padding: 0 5px;
+  padding: 0 6px;
   font-size: 12px;
-  color: #2196F3;
-  font-weight: 500;
+  color: #ff9800; /* Label orange */
+  font-weight: 600;
+  pointer-events: none;
 }
 
 .error_message {
-  color: #dc3545;
-  font-size: 12px;
-  margin-top: 5px;
+  color: #f44336;
+  font-size: 11px;
+  margin-top: 4px;
   display: block;
 }
 
 .form_actions {
   display: flex;
   gap: 12px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
+/* Bouton principal en Orange */
 .submit_btn {
-  flex: 1;
+  flex: 2;
   padding: 14px;
-  background: #2196F3;
+  background: #ff9800;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .submit_btn:hover {
-  background: #1976D2;
+  background: #e68a00;
 }
 
 .submit_btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+  background: #ccc;
 }
 
 .cancel_btn {
@@ -148,17 +161,11 @@
   color: #333;
   border: none;
   border-radius: 8px;
-  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.cancel_btn:hover {
-  background: #e0e0e0;
-}
-
-.cancel_btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

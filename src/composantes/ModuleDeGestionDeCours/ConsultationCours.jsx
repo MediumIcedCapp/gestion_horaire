@@ -1,4 +1,3 @@
-//Queren D: Consulter les cours avec filtres (programme, étape, durée, type de salle, période).
 import React, { useState, useEffect } from "react";
 import styles from "./ConsultationCours.module.css";
 
@@ -27,42 +26,40 @@ export default function ConsultationCours() {
     try {
       const response = await fetch("http://localhost:5000/api/cours");
       const data = await response.json();
-      if (data.success) {
-        setCours(data.cours);
-        setFilteredCours(data.cours);
-      }
+      // On s'adapte à la structure de ta réponse API
+      const coursData = Array.isArray(data) ? data : (data.cours || []);
+      setCours(coursData);
+      setFilteredCours(coursData);
     } catch (err) {
       console.error("Erreur chargement cours:", err);
-      alert("Erreur lors du chargement des cours");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Logique de filtrage dynamique
+  useEffect(() => {
+    const result = cours.filter((item) => {
+      return (
+        (filters.programme === "" || 
+          item.programme?.toLowerCase().includes(filters.programme.toLowerCase())) &&
+        (filters.etapeEtude === "" || 
+          String(item.etapeEtude) === String(filters.etapeEtude)) &&
+        (filters.duree === "" || 
+          Number(item.duree) === Number(filters.duree)) &&
+        (filters.typeSalle === "" || 
+          item.typeSalle === filters.typeSalle) &&
+        (filters.periode === "" || 
+          item.periode === filters.periode)
+      );
+    });
+    setFilteredCours(result);
+  }, [filters, cours]);
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
-
-  useEffect(() => {
-    let result = cours;
-    if (filters.programme) {
-      result = result.filter((c) => c.programme.toLowerCase().includes(filters.programme.toLowerCase()));
-    }
-    if (filters.etapeEtude) {
-      result = result.filter((c) => c.etapeEtude === filters.etapeEtude);
-    }
-    if (filters.duree) {
-      result = result.filter((c) => c.duree === parseInt(filters.duree));
-    }
-    if (filters.typeSalle) {
-      result = result.filter((c) => c.typeSalle === filters.typeSalle);
-    }
-    if (filters.periode) {
-      result = result.filter((c) => c.periode === filters.periode);
-    }
-    setFilteredCours(result);
-  }, [filters, cours]);
 
   const resetFilters = () => {
     setFilters({ programme: "", etapeEtude: "", duree: "", typeSalle: "", periode: "" });
@@ -73,81 +70,91 @@ export default function ConsultationCours() {
       <div className={styles.consultation_container}>
         <div className={styles.consultation_header}>
           <h2>Consultation des cours</h2>
-          <p>Filtrez et consultez les cours disponibles</p>
+          <p>Utilisez les filtres pour affiner les résultats en temps réel.</p>
         </div>
 
+        {/* Section des Filtres */}
         <div className={styles.filters_card}>
-          <h3>Filtres</h3>
           <div className={styles.filters_grid}>
             <div className={styles.filter_group}>
-              <label htmlFor="programme">Programme</label>
-              <input type="text" id="programme" name="programme" value={filters.programme} onChange={handleFilterChange} placeholder="Rechercher par programme" />
+              <label>Programme</label>
+              <input 
+                type="text" 
+                name="programme" 
+                value={filters.programme} 
+                onChange={handleFilterChange} 
+                placeholder="Rechercher..." 
+              />
             </div>
 
             <div className={styles.filter_group}>
-              <label htmlFor="etapeEtude">Étape d'étude</label>
-              <select id="etapeEtude" name="etapeEtude" value={filters.etapeEtude} onChange={handleFilterChange}>
-                <option value="">Toutes les étapes</option>
-                {etapes.map((etape) => (<option key={etape} value={etape}>Étape {etape}</option>))}
+              <label>Étape</label>
+              <select name="etapeEtude" value={filters.etapeEtude} onChange={handleFilterChange}>
+                <option value="">Toutes</option>
+                {etapes.map((e) => <option key={e} value={e}>Étape {e}</option>)}
               </select>
             </div>
 
             <div className={styles.filter_group}>
-              <label htmlFor="duree">Durée (heures)</label>
-              <input type="number" id="duree" name="duree" value={filters.duree} onChange={handleFilterChange} placeholder="Durée" min="1" />
+              <label>Durée (h)</label>
+              <input 
+                type="number" 
+                name="duree" 
+                value={filters.duree} 
+                onChange={handleFilterChange} 
+                placeholder="H" 
+              />
             </div>
 
             <div className={styles.filter_group}>
-              <label htmlFor="typeSalle">Type de salle</label>
-              <select id="typeSalle" name="typeSalle" value={filters.typeSalle} onChange={handleFilterChange}>
-                <option value="">Tous les types</option>
-                {typesSalle.map((type) => (<option key={type} value={type}>{type}</option>))}
-              </select>
-            </div>
-
-            <div className={styles.filter_group}>
-              <label htmlFor="periode">Période</label>
-              <select id="periode" name="periode" value={filters.periode} onChange={handleFilterChange}>
-                <option value="">Toutes les périodes</option>
-                {periodes.map((p) => (<option key={p} value={p}>{p}</option>))}
+              <label>Type de Salle</label>
+              <select name="typeSalle" value={filters.typeSalle} onChange={handleFilterChange}>
+                <option value="">Tous</option>
+                {typesSalle.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
           </div>
           <button className={styles.reset_btn} onClick={resetFilters}>Réinitialiser les filtres</button>
         </div>
 
-        <div className={styles.results_card}>
-          <h3>Résultats ({filteredCours.length} cours)</h3>
-          {isLoading ? (
-            <p className={styles.loading}>Chargement...</p>
-          ) : filteredCours.length === 0 ? (
-            <p className={styles.no_results}>Aucun cours trouvé</p>
-          ) : (
+        {/* Tableau des Résultats */}
+        <div className={styles.results_section}>
+          <div className={styles.results_count}>
+            {filteredCours.length} cours trouvés
+          </div>
+          
+          <div className={styles.table_wrapper}>
             <table className={styles.cours_table}>
               <thead>
                 <tr>
                   <th>Code</th>
-                  <th>Nom</th>
+                  <th>Nom du Cours</th>
                   <th>Programme</th>
                   <th>Étape</th>
                   <th>Durée</th>
-                  <th>Type de salle</th>
+                  <th>Type de Salle</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredCours.map((c) => (
-                  <tr key={c.id || c.code}>
-                    <td>{c.code}</td>
-                    <td>{c.nom}</td>
-                    <td>{c.programme}</td>
-                    <td>{c.etapeEtude}</td>
-                    <td>{c.duree}h</td>
-                    <td>{c.typeSalle}</td>
-                  </tr>
-                ))}
+                {isLoading ? (
+                  <tr><td colSpan="6" className={styles.center_text}>Chargement...</td></tr>
+                ) : filteredCours.length > 0 ? (
+                  filteredCours.map((c, index) => (
+                    <tr key={index}>
+                      <td className={styles.orange_text}><strong>{c.code}</strong></td>
+                      <td>{c.nomDuCours}</td>
+                      <td>{c.programme}</td>
+                      <td><span className={styles.orange_badge}>Étape {c.etapeEtude}</span></td>
+                      <td>{c.duree} h</td>
+                      <td>{c.typeSalle}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr><td colSpan="6" className={styles.center_text}>Aucun cours ne correspond aux critères.</td></tr>
+                )}
               </tbody>
             </table>
-          )}
+          </div>
         </div>
       </div>
     </div>

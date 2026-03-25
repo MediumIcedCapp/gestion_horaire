@@ -36,7 +36,7 @@ export default function ConsultationSalles({ onClose }) {
                             <tr key={salle.idSalle}>
                                 <td>{salle.code}</td>
                                 <td>{salle.type}</td>
-                                <td>{salle.capacity}</td>
+                                <td>{salle.capacite}</td>
                             </tr>
                         ))}
                     </tbody>

@@ -58,7 +58,7 @@ export default function SuppressionSalles({ onClose }) {
                     <option value="">Sélectionnez une salle</option>
                     {salles.map((salle) => (
                         <option key={salle.idSalle} value={salle.idSalle}>
-                            {salle.code} - {salle.type} - Capacité: {salle.capacity}
+                            {salle.code} - {salle.type} - Capacité: {salle.capacite}
                         </option>
                     ))}
                 </select>

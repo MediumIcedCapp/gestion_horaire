@@ -8,6 +8,8 @@ export default function ModificationSalles({ onClose }) {
     const [code, setCode] = useState('');
     const [salles, setSalles] = useState([]);
     const [selectedSalleId, setSelectedSalleId] = useState('');
+    const [ancienCode, setAncienCode] = useState('');
+    
 
     //fetch toutes les salles
     useEffect(() => {
@@ -29,12 +31,15 @@ export default function ModificationSalles({ onClose }) {
             return;
         }
 
-        //fetch la salle avec le id spécifier
+        //fetch la salle avec le code spécifier
         try {
-            const response = await fetch(`http://localhost:5000/api/salles/${selectedSalleId}`, {
+            const response = await fetch(`http://localhost:5000/api/salles`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type, code, capacity })
+                body: JSON.stringify({ ancienCode: ancienCode,
+                nouveauCode: code,
+                type: type,
+                capacite: Number(capacity) })
             });
 
             const data = await response.json();
@@ -47,7 +52,7 @@ export default function ModificationSalles({ onClose }) {
             }
         } catch (error) {
             console.error(error);
-            alert('Erreur de connexion au serveur');
+            
         }
     };
 
@@ -64,9 +69,15 @@ export default function ModificationSalles({ onClose }) {
                     onChange={(e) => {
                         const selected = salles.find(s => s.idSalle == e.target.value);
                         setSelectedSalleId(e.target.value);
-                        setCode(selected.code);
-                        setType(selected.type);
-                        setCapacity(selected.capacity);
+
+                        if (selected) {
+                            setCode(selected.code || "");
+                            setAncienCode(selected.code || ""); 
+                            setType(selected.type || "");
+                            setCapacity(selected.capacite || "");
+                        } else {
+                            console.log("Salle non trouvée");
+                        }
                     }}
                     >
                     <option value="">-- Choisir une salle --</option>

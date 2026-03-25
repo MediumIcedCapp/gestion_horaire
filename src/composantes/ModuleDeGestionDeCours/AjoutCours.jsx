@@ -8,7 +8,7 @@ export default function AjoutCours({ onSave, onCancel }) {
     code: "",
     duree: "",
     programme: "",
-    etapeEtude: "",
+    etape: "",
     typeSalle: ""
   });
 
@@ -44,15 +44,25 @@ export default function AjoutCours({ onSave, onCancel }) {
         const response = await fetch("http://localhost:5000/api/cours", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            nom: formData.nom,
+            code: formData.code,
+            duree: Number(formData.duree),      
+            programme: formData.programme,
+            etape: Number(formData.etape),      
+            typeSalle: formData.typeSalle
+          }),
         });
+
         const data = await response.json();
-        if (data.success) {
+
+        if (response.ok) { 
           alert("Cours créé avec succès");
-          if (onSave) onSave(data.cours);
+          if (onSave) onSave(data);
         } else {
           alert(data.message || "Erreur lors de la création du cours");
         }
+
       } catch (err) {
         console.error("Erreur création cours:", err);
         alert("Erreur lors de la création du cours : " + err.message);
