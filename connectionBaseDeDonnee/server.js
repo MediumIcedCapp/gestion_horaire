@@ -114,6 +114,134 @@ app.put("/api/utilisateur/:email", async (req, res) => {
   }
 });
 
+app.get("/api/professeurs", (req, res) => {
+  const specialite = req.query.specialite?.trim() || "";
+  const disponibilite = req.query.disponibilite?.trim() || "";
+  const conditions = [];
+  const params = [];
+  let query = "SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite FROM module_gestion_professeur";
+
+  if (specialite !== "") {
+    conditions.push("specialite LIKE ?");
+    params.push(`%${specialite}%`);
+  }
+
+  if (disponibilite !== "") {
+    conditions.push("disponibilite = ?");
+    params.push(disponibilite);
+  }
+
+  if (conditions.length > 0) {
+    query += ` WHERE ${conditions.join(" AND ")}`;
+  }
+
+  query += " ORDER BY nom ASC, prenom ASC";
+
+  db.query(query, params, (err, results) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    res.json({
+      success: true,
+      data: results,
+      count: results.length,
+      filters: {
+        specialite: specialite || null,
+        disponibilite: disponibilite || null
+      }
+    });
+  });
+});
+
+app.get("/api/professeurs/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.query(
+    "SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite FROM module_gestion_professeur WHERE idProfesseur = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: err.message });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ success: false, message: "Professeur non trouve" });
+      }
+
+      res.json({ success: true, data: results[0] });
+    }
+  );
+});
+
+app.put("/api/professeurs/:id", (req, res) => {
+  const { id } = req.params;
+  const { matricule, nom, prenom, specialite, disponibilite } = req.body;
+  const updates = [];
+  const params = [];
+
+  if (typeof matricule === "string" && matricule.trim() !== "") {
+    updates.push("matricule = ?");
+    params.push(matricule.trim());
+  }
+
+  if (typeof nom === "string" && nom.trim() !== "") {
+    updates.push("nom = ?");
+    params.push(nom.trim());
+  }
+
+  if (typeof prenom === "string" && prenom.trim() !== "") {
+    updates.push("prenom = ?");
+    params.push(prenom.trim());
+  }
+
+  if (typeof specialite === "string" && specialite.trim() !== "") {
+    updates.push("specialite = ?");
+    params.push(specialite.trim());
+  }
+
+  if (typeof disponibilite === "string" && disponibilite.trim() !== "") {
+    updates.push("disponibilite = ?");
+    params.push(disponibilite.trim());
+  }
+
+  if (updates.length === 0) {
+    return res.status(400).json({ success: false, message: "Aucune donnee modifiable fournie" });
+  }
+
+  params.push(id);
+
+  db.query(
+    `UPDATE module_gestion_professeur SET ${updates.join(", ")} WHERE idProfesseur = ?`,
+    params,
+    (updateErr, result) => {
+      if (updateErr) {
+        return res.status(500).json({ success: false, message: updateErr.message });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Professeur non trouve" });
+      }
+
+      db.query(
+        "SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite FROM module_gestion_professeur WHERE idProfesseur = ?",
+        [id],
+        (selectErr, results) => {
+          if (selectErr) {
+            return res.status(500).json({ success: false, message: selectErr.message });
+          }
+
+          res.json({
+            success: true,
+            message: "Professeur modifie avec succes",
+            data: results[0]
+          });
+        }
+      );
+    }
+  );
+});
+
 // Ajouter salle
 
 app.post('/api/salles', (req, res) => {
@@ -298,7 +426,7 @@ app.post('/api/evenements', (req, res) => {
     const { date, cours, salle, heureDebut, heureFin } = req.body;
     const sql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES (?, ?, ?, ?, ?)";
     
-    db.query(sql, [date, cours, salle, heureDebut, heureFin], (err, result) => {
+    db.query(sql, [date, cours, salle, heureDebut, heureFin], (err) => {
         if (err) return res.status(500).json(err);
         res.status(200).json({ message: "Événement ajouté !" });
     });
@@ -315,4 +443,8 @@ app.get('/api/evenements/:date', (req, res) => {
     });
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+if (typeof globalThis.process === "undefined" || globalThis.process.env.NODE_ENV !== "test") {
+  app.listen(5000, () => console.log("Server running on port 5000"));
+}
+
+export default app;
