@@ -6,8 +6,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background: #ffd5b0;
-    transition: background 0.35s ease, color 0.35s ease;
 }
 
 .accueil_container {
@@ -24,7 +22,6 @@
     padding-bottom: 5px;
     width: 100vw;
     background: #ffca9c;
-    transition: background 0.35s ease;
 }
 
 .logo {
@@ -72,142 +69,32 @@
 }
 
 .section_description {
-    position: relative;
     margin-top: 60px;
     border-radius: 150px;
+    display: flex;
+    gap: 40px;
     width: 75%;
-    min-height: 300px;
-    background-color: #f8f9fa;
-    overflow: hidden;
-    transition: background-color 0.35s ease, box-shadow 0.35s ease;
-}
-
-.image_handle {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 300px;
     height: 300px;
-    border-radius: 50%;
-    cursor: ew-resize;
-    z-index: 2;
-    touch-action: none;
+    background-color: #f8f9fa;
+    align-content:left;
 }
 
 .showcase_image {
-    border-radius: 50%;
+    border-radius: 150px;
     padding: 5px;
-    width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
 .texte_description {
-    min-height: 300px;
-    padding: 70px 60px 90px 410px;
+    flex: 1;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.texte_description h2 {
-    margin: 0 0 12px;
-}
-
-.texte_description p {
-    margin: 0;
-    max-width: 720px;
-    line-height: 1.6;
-}
-
-.swipe_instruction {
-    position: absolute;
-    left: 410px;
-    right: 40px;
-    bottom: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-}
-
-.swipe_label {
-    margin: 0;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-}
-
-.swipe_hint_left,
-.swipe_hint_right {
-    font-size: 13px;
-    font-weight: 700;
-    color: #8a4600;
-    letter-spacing: 0.04em;
-}
-
 .footer {
     width: 100%;
     text-align: center;
-}
-
-.dark_theme {
-    background: radial-gradient(circle at top, #231246 0%, #0d1e4f 58%, #081126 100%);
-    color: white;
-}
-
-.dark_theme .header_section {
-    background: linear-gradient(90deg, #241047 0%, #10255e 100%);
-}
-
-.dark_theme .titre_principal,
-.dark_theme .sous_titre,
-.dark_theme .texte_description h2,
-.dark_theme .texte_description p,
-.dark_theme .swipe_label,
-.dark_theme .swipe_hint_left,
-.dark_theme .swipe_hint_right {
-    color: #eef2ff;
-}
-
-.dark_theme .section_description {
-    background: rgba(10, 14, 35, 0.82);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-}
-
-.dark_theme .bouton_principal {
-    background: linear-gradient(135deg, #4f1d95 0%, #1d4ed8 100%);
-}
-
-.dark_theme .bouton_principal:hover {
-    background: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
-}
-
-@media (max-width: 1100px) {
-    .section_description {
-        width: 90%;
-        min-height: 560px;
-        border-radius: 40px;
-    }
-
-    .image_handle {
-        left: 50% !important;
-        top: 24px;
-        transform: translateX(-50%);
-        width: 260px;
-        height: 260px;
-    }
-
-    .texte_description {
-        min-height: 560px;
-        padding: 320px 30px 90px;
-        text-align: center;
-        align-items: center;
-    }
-
-    .swipe_instruction {
-        left: 24px;
-        right: 24px;
-        flex-direction: column;
-    }
 }
