@@ -23,6 +23,35 @@ import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/Consulta
 // Import du nouveau composant d'événement
 import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
 
+//Importation des photos de l'utilisateur 
+import lettreAProfilePic from "../assets/lettreAProfilePic.png";
+import lettreBProfilePic from "../assets/lettreBProfilePic.png";
+import lettreCProfilePic from "../assets/lettreCProfilePic.png";
+import lettreDProfilePic from "../assets/lettreDProfilePic.png";
+import lettreEProfilePic from "../assets/lettreEProfilePic.png";
+import lettreFProfilePic from "../assets/lettreFProfilePic.png";
+import lettreGProfilePic from "../assets/lettreGProfilePic.png";
+import lettreHProfilePic from "../assets/lettreHProfilePic.png";
+import lettreIProfilePic from "../assets/lettreIProfilePic.png";
+import lettreJProfilePic from "../assets/lettreJProfilePic.png";
+import lettreKProfilePic from "../assets/lettreKProfilePic.png";
+import lettreLProfilePic from "../assets/lettreLProfilePic.png";
+import lettreMProfilePic from "../assets/lettreMProfilePic.png";
+import lettreNProfilePic from "../assets/lettreNProfilePic.png";
+import lettreOProfilePic from "../assets/lettreOProfilePic.png";
+import lettrePProfilePic from "../assets/lettrePProfilePic.png";
+import lettreQProfilePic from "../assets/lettreQProfilePic.png";
+import lettreRProfilePic from "../assets/lettreRProfilePic.png";
+import lettreSProfilePic from "../assets/lettreSProfilePic.png";
+import lettreTProfilePic from "../assets/lettreTProfilePic.png";
+import lettreUProfilePic from "../assets/lettreUProfilePic.png";
+import lettreVProfilePic from "../assets/lettreVProfilePic.png";
+import lettreWProfilePic from "../assets/lettreWProfilePic.png";
+import lettreXProfilePic from "../assets/lettreXProfilePic.png";
+import lettreYProfilePic from "../assets/lettreYProfilePic.png";
+import lettreZProfilePic from "../assets/lettreZProfilePic.png";
+
+
 export default function PageCalendrier() {
   const navigate = useNavigate();
 
@@ -42,6 +71,9 @@ export default function PageCalendrier() {
   const [showConsultationSalle, setShowConsultationSalle] = useState(false);
   const [showSuppressionSalle, setShowSuppressionSalle] = useState(false);
 
+  //État pour stocker le prénom de l'utiilisateur
+  const [prenom, setPrenom] = useState("");
+
 
   // Fonction pour récupérer les événements depuis l'API
   const fetchEvenements = async (dateObj) => {
@@ -59,6 +91,41 @@ export default function PageCalendrier() {
   useEffect(() => {
     fetchEvenements(selectedDate);
   }, [selectedDate]);
+
+  // Récupérer le prénom au chargement
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('utilisateur'));
+    if (storedUser && storedUser.email) {
+      fetch(`http://localhost:5000/api/utilisateur/${encodeURIComponent(storedUser.email)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.utilisateur) {
+            setPrenom(data.utilisateur.prenom || "");
+          }
+        })
+        .catch(err => console.error("Erreur profil:", err));
+    }
+  }, []);
+
+  // La fonction de sélection d'image 
+  const getProfilePic = (prenom) => {
+    if (!prenom) return lettreAProfilePic;
+    const firstLetter = prenom.charAt(0).toUpperCase();
+    const profilePics = {
+      A: lettreAProfilePic, B: lettreBProfilePic, C: lettreCProfilePic,
+      D: lettreDProfilePic, E: lettreEProfilePic, F: lettreFProfilePic,
+      G: lettreGProfilePic, H: lettreHProfilePic, I: lettreIProfilePic,
+      J: lettreJProfilePic, K: lettreKProfilePic, L: lettreLProfilePic,
+      M: lettreMProfilePic, N: lettreNProfilePic, O: lettreOProfilePic,
+      P: lettrePProfilePic, Q: lettreQProfilePic, R: lettreRProfilePic,
+      S: lettreSProfilePic, T: lettreTProfilePic, U: lettreUProfilePic,
+      V: lettreVProfilePic, W: lettreWProfilePic, X: lettreXProfilePic,
+      Y: lettreYProfilePic, Z: lettreZProfilePic
+    };
+    return profilePics[firstLetter] || lettreAProfilePic;
+  };
+
+  //Use effect pour récupérer le prénom de l'utilisateur connecté
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -128,8 +195,13 @@ export default function PageCalendrier() {
             <p>Organiseur des professeurs par les administrateurs</p>
           </div>
           <div className={styles.header_account}>
-            <Link to="/compteutilisateur">
-              <img src={UserProfile} alt="Profil" className={styles.user_profile} />
+            <Link to="/compteutilisateur" className={styles.profile_link}>
+              <span className={styles.welcome_text}>Bienvenue, {prenom}</span>
+              <img 
+                src={getProfilePic(prenom)} 
+                alt="Profil" 
+                className={styles.user_profile} 
+              />
             </Link>
           </div>
         </div>

@@ -1,7 +1,12 @@
+//Résumé du fichier: 
+//  Autheur: Queren D
+//  Tâche: Ajouter une composante pour modifier les informations d'un cours existant
 import React, { useState, useEffect } from "react";
 import styles from "./ModificationCours.module.css";
 
+// Composante pour modifier les informations d'un cours existant
 export default function ModificationCours({ onSave, onCancel }) {
+  // State pour stocker la liste des cours, le nom du cours sélectionné et les données du formulaire
   const [coursList, setCoursList] = useState([]);
   const [selectedCoursNom, setSelectedCoursNom] = useState("");
   const [formData, setFormData] = useState({
@@ -13,6 +18,7 @@ export default function ModificationCours({ onSave, onCancel }) {
     typeSalle: ""
   });
 
+  // State pour les erreurs de validation et l'état de soumission
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,6 +35,7 @@ export default function ModificationCours({ onSave, onCancel }) {
     const nomSelectionne = e.target.value;
     setSelectedCoursNom(nomSelectionne);
 
+    // Trouver le cours sélectionné dans la liste et remplir le formulaire avec ses données
     if (nomSelectionne) {
       const cours = coursList.find((c) => c.nomDuCours === nomSelectionne);
       if (cours) {
@@ -44,12 +51,14 @@ export default function ModificationCours({ onSave, onCancel }) {
     }
   };
 
+  // Fonction pour gérer les changements dans les champs du formulaire et mettre à jour le state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
+  // Fonction pour valider les données du formulaire avant soumission
   const validateForm = () => {
     let newErrors = {};
     if (!formData.nom.trim()) newErrors.nom = "Le nom est requis";
@@ -62,6 +71,7 @@ export default function ModificationCours({ onSave, onCancel }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Fonction pour gérer la soumission du formulaire, valider les données et envoyer la requête de modification au backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -82,6 +92,7 @@ export default function ModificationCours({ onSave, onCancel }) {
         }),
       });
 
+      // Traiter la réponse du backend pour afficher un message de succès ou d'erreur
       const data = await response.json();
       if (data.success) {
         alert("Cours modifié avec succès !");
@@ -97,12 +108,16 @@ export default function ModificationCours({ onSave, onCancel }) {
     }
   };
 
+  // Listes de valeurs pour les filtres de type salle, étape d'étude et période
   const typesSalle = ["Laboratoire", "Salle de cours", "Amphithéâtre", "Salle informatique"];
   const etapes = ["1", "2", "3", "4", "5", "6"];
 
+  // State pour les filtres de consultation des cours
   return (
     <div className={styles.modification_page}>
       <div className={styles.modification_overlay} onClick={onCancel}></div>
+
+      // Conteneur principal pour la modification d'un cours avec formulaire et sélection du cours à modifier
       <div className={styles.modification_container}>
         <div className={styles.modification_card}>
           <div className={styles.modification_header}>
@@ -110,6 +125,7 @@ export default function ModificationCours({ onSave, onCancel }) {
             <button className={styles.close_btn} onClick={onCancel}>&times;</button>
           </div>
 
+          // Section de sélection du cours à modifier avec un menu déroulant
           <div className={styles.selection_section}>
             <label className={styles.select_label_text}>Choisir le cours à modifier :</label>
             <select 
@@ -126,6 +142,7 @@ export default function ModificationCours({ onSave, onCancel }) {
             </select>
           </div>
 
+          // Afficher le formulaire de modification uniquement si un cours est sélectionné, avec validation et gestion des erreurs
           {selectedCoursNom && (
             <form className={styles.modification_form} onSubmit={handleSubmit} noValidate>
               <div className={styles.form_group}>
@@ -136,6 +153,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.nom && <span className={styles.error_message}>{errors.nom}</span>}
               </div>
 
+              // Champ de saisie pour le code du cours, avec validation et affichage des erreurs
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="text" name="code" required value={formData.code} onChange={handleChange} />
@@ -144,6 +162,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.code && <span className={styles.error_message}>{errors.code}</span>}
               </div>
 
+              // Champ de saisie pour la durée du cours, avec validation et affichage des erreurs
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="number" name="duree" required value={formData.duree} onChange={handleChange} />
@@ -152,6 +171,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.duree && <span className={styles.error_message}>{errors.duree}</span>}
               </div>
 
+              // Champ de saisie pour le programme du cours, avec validation et affichage des erreurs
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="text" name="programme" required value={formData.programme} onChange={handleChange} />
@@ -160,6 +180,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.programme && <span className={styles.error_message}>{errors.programme}</span>}
               </div>
 
+              // Menu déroulant pour sélectionner l'étape d'étude, avec validation et affichage des erreurs
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <select name="etapeEtude" required value={formData.etapeEtude} onChange={handleChange}>
@@ -171,6 +192,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.etapeEtude && <span className={styles.error_message}>{errors.etapeEtude}</span>}
               </div>
 
+              // Menu déroulant pour sélectionner le type de salle, avec validation et affichage des erreurs
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <select name="typeSalle" required value={formData.typeSalle} onChange={handleChange}>
@@ -182,6 +204,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.typeSalle && <span className={styles.error_message}>{errors.typeSalle}</span>}
               </div>
 
+              // Boutons d'action pour annuler ou soumettre les modifications, avec état de soumission pour désactiver le bouton pendant l'enregistrement
               <div className={styles.form_actions}>
                 <button type="button" className={styles.cancel_btn} onClick={onCancel}>Annuler</button>
                 <button type="submit" className={styles.submit_btn} disabled={isSubmitting}>

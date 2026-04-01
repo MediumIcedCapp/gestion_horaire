@@ -1,3 +1,4 @@
+/* Styles pour la page d'ajout de cours */
 .ajout_page {
   min-height: 100vh;
   background: linear-gradient(135deg, #f5c499 0%, #f6c989 100%);
@@ -6,6 +7,7 @@
   justify-content: center;
   padding: 20px;
 }
+
 
 .ajout_container {
   width: 100%;
@@ -41,6 +43,7 @@
   gap: 20px;
 }
 
+/* Styles pour les groupes de champs du formulaire, les entrées, les messages d'erreur et les boutons d'action */
 .form_group {
   position: relative;
 }

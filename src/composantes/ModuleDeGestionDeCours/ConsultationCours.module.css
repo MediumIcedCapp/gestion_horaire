@@ -1,3 +1,6 @@
+/* Styles pour la page de consultation des cours, y compris les conteneurs, les en-têtes, les cartes de filtres 
+et de résultats, les tableaux et les états de chargement ou d'absence de résultats */
+
 .consultation_page {
   min-height: 100vh;
   background: linear-gradient(135deg,  #f5c499 0%, #f6c989 100%);
