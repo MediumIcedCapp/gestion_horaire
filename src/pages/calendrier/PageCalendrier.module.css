@@ -225,3 +225,21 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   background: #d4940f;
 }
 
+.profile_link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: inherit;
+}
+
+.welcome_text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.user_profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}

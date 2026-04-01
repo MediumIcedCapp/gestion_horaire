@@ -1,8 +1,15 @@
-// Queren D: Supprimer un cours avec sélection préalable, confirmation et archivage.
+//Résumé du fichier: 
+//  Autheur: Queren D
+//  Tâche: Supprimer un cours avec sélection préalable, confirmation et archivage.
+
+//importations des bibliothèques et des styles
 import React, { useState, useEffect } from "react";
 import styles from "./SuppressionCours.module.css";
 
+// Composante pour supprimer un cours avec sélection préalable, confirmation et archivage
 export default function SuppressionCours({ onConfirm, onCancel, onArchive }) {
+  /* State pour stocker la liste des cours, le nom du cours sélectionné, les données du cours 
+   sélectionné, l'étape du processus de suppression, la raison de l'archivage et l'état de traitement*/
   const [coursList, setCoursList] = useState([]);
   const [selectedCoursNom, setSelectedCoursNom] = useState("");
   const [selectedCoursData, setSelectedCoursData] = useState(null);
@@ -67,6 +74,7 @@ export default function SuppressionCours({ onConfirm, onCancel, onArchive }) {
     }
   };
 
+  // Rendu de la page de suppression des cours avec les différentes étapes du processus (sélection, confirmation, archivage)
   return (
     <div className={styles.suppression_page}>
       <div className={styles.suppression_overlay} onClick={onCancel}></div>

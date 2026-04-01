@@ -1,3 +1,6 @@
+/* Styles pour le composant de compte utilisateur, y compris les conteneurs, les en-têtes, 
+les menus latéraux, les sections de profil, les champs d'information, les boutons d'édition et 
+de suppression, ainsi que les modaux de confirmation */
 .app { min-height: 100vh; }
 
 .compte_page {

@@ -1,7 +1,15 @@
+//Résumé du fichier: 
+//  Autheur: Queren D 
+//  Tâche: Ajouter des composante de consultation des cours avec filtres dynamiques et affichage en temps réel
+
+//importations des bibliothèques et des styles
 import React, { useState, useEffect } from "react";
 import styles from "./ConsultationCours.module.css";
 
+// Composante pour consulter les cours avec des filtres dynamiques
 export default function ConsultationCours() {
+
+  // State pour stocker les cours, les cours filtrés, l'état de chargement et les critères de filtrage
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,14 +21,17 @@ export default function ConsultationCours() {
     periode: ""
   });
 
+  // Listes de valeurs pour les filtres de type salle, étape d'étude et période
   const typesSalle = ["Laboratoire", "Salle de cours", "Amphithéâtre", "Salle informatique"];
   const etapes = ["1", "2", "3", "4", "5", "6"];
   const periodes = ["Matin", "Après-midi", "Soir"];
 
+  // Chargement initial des cours depuis l'API au montage de la composante
   useEffect(() => {
     fetchCours();
   }, []);
 
+  // Fonction pour récupérer les cours depuis l'API et gérer l'état de chargement
   const fetchCours = async () => {
     setIsLoading(true);
     try {
@@ -56,17 +67,21 @@ export default function ConsultationCours() {
     setFilteredCours(result);
   }, [filters, cours]);
 
+  // Fonction pour gérer les changements dans les champs de filtrage et mettre à jour le state des filtres
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Fonction pour réinitialiser tous les filtres et afficher à nouveau tous les cours
   const resetFilters = () => {
     setFilters({ programme: "", etapeEtude: "", duree: "", typeSalle: "", periode: "" });
   };
 
+  // Rendu de la page de consultation des cours avec les filtres et le tableau des résultats
   return (
     <div className={styles.consultation_page}>
+      // Conteneur principal pour la consultation des cours avec filtres et résultats
       <div className={styles.consultation_container}>
         <div className={styles.consultation_header}>
           <h2>Consultation des cours</h2>

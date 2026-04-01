@@ -1,3 +1,4 @@
+// Composant de pied de page pour l'application, incluant des liens vers les réseaux sociaux et des informations de copyright
 import React from 'react';
 import styles from "./Footer.module.css";
 

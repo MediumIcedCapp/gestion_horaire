@@ -55,6 +55,7 @@ export default function CompteUtilisateur() {
   // Recuperer les donnees de l'utilisateur depuis localStorage
   useEffect(() => {
     const fetchUserData = async () => {
+      // On suppose que l'email de l'utilisateur est stocké dans localStorage après la connexion
       try {
         const storedUser = JSON.parse(localStorage.getItem('utilisateur'));
 
@@ -122,6 +123,8 @@ export default function CompteUtilisateur() {
     return profilePics[firstLetter] || lettreAProfilePic;
   };
 
+  /* Fonction pour gérer la deconnexion, en affichant une confirmation avant de supprimer les données 
+  de l'utilisateur et rediriger vers la page de connexion*/
   const handleDeconnexion = () => {
       setShowDeconnexionConfirm(true);
       }
@@ -169,6 +172,7 @@ export default function CompteUtilisateur() {
 
       const data = await response.json();
 
+      // Traiter la réponse du backend pour afficher un message de succès ou d'erreur
       if (data.success) {
         setNom(editNom);
         setPrenom(editPrenom);
@@ -216,9 +220,13 @@ export default function CompteUtilisateur() {
     }
   };
 
+  /* Rendu du composant de gestion du compte utilisateur, avec affichage des informations, 
+   mode édition et confirmation pour la suppression et la deconnexion*/
   return (
     <div className={styles.compte_page}>
       <div className={styles.compte_container}>
+
+        // Header avec logo, titre et photo de profile base sur le prenom de l'utilisateur
         <header className={styles.header}>
           <div className={styles.header_content}>
             <img src={logo} alt="Gestion des Horaires" className={styles.logo_img} />
@@ -232,6 +240,7 @@ export default function CompteUtilisateur() {
           </div>
         </header>
 
+        // Contenu principal du compte utilisateur avec les informations et les actions disponibles
         <div className={styles.compte_content}>
           <div className={styles.side_menu}>
             <h2>Compte Planigo</h2>
@@ -251,6 +260,7 @@ export default function CompteUtilisateur() {
             </ul>
           </div>
           
+          // Section d'affichage des informations de l'utilisateur, avec un mode édition pour modifier les données
           <div className={styles.profile_section}>
             <div className={styles.avatar_container}>
               <img src={getProfilePic(prenom)} alt="Lettre" className={styles.avatar_img} />
@@ -291,6 +301,9 @@ export default function CompteUtilisateur() {
                     className={styles.edit_input}
                   />
                 </div>
+
+                {/* Champs de saisie pour le nom, le prenom, l'email et le mot de passe, avec des inputs pour permettre 
+                la modification des données */}
                 <div className={styles.info_item}>
                   <span className={styles.info_label}>Nom:</span>
                   <input
@@ -300,6 +313,7 @@ export default function CompteUtilisateur() {
                     className={styles.edit_input}
                   />
                 </div>
+
                 <div className={styles.info_item}>
                   <span className={styles.info_label}>Prenom:</span>
                   <input

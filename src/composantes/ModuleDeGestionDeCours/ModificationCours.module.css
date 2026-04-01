@@ -1,3 +1,5 @@
+/* Styles pour la page de modification des cours, y compris les conteneurs, les cartes, les formulaires, 
+les champs de saisie, les boutons et les messages d'erreur */
 .modification_page {
   position: fixed;
   top: 0;
@@ -44,6 +46,8 @@
   border-bottom: 1px solid #eee;
 }
 
+/* Styles pour les champs de saisie du formulaire, les menus déroulants, les messages d'erreur et les boutons d'action, 
+avec des animations pour une meilleure expérience utilisateur */
 .close_btn {
   background: none;
   border: none;
@@ -115,7 +119,7 @@
   background: white;
   padding: 0 6px;
   font-size: 12px;
-  color: #ff9800; /* Label orange */
+  color: #ff9800; 
   font-weight: 600;
   pointer-events: none;
 }
