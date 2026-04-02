@@ -230,7 +230,13 @@ export default function PageCalendrier() {
                     <li><a onClick={(e) => { e.preventDefault(); setShowConsultationSalle(true); }} href="#">Consulter une salle</a></li>
                   </ul>
                 </li>
-                <li><a href="#" onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); }}>Ajout d'un événement</a></li>
+
+                <ul>
+                  <li>
+                    <h2>Ajout d'un événement</h2>
+                  </li>
+                </ul>
+
                 <li>
                   <a href="#" onClick={(e) => { e.preventDefault(); handleDeconnexion(); }}>Déconnexion</a>
                 </li>
@@ -289,7 +295,6 @@ export default function PageCalendrier() {
           
           {activeView === 'calendrier' && (
             <div className={`${styles.calendar_container} ${styles.today_event}`}>
-              {/* Le titre est maintenant fixe comme demandé */}
               <h3>Événements du jour</h3>
               
               <div className={styles.event_list}>
@@ -352,6 +357,8 @@ export default function PageCalendrier() {
           </div>
         </div>
       )}
+
+      {/*Ajouter le controle des pages ici */}
     </div>
   );
 
