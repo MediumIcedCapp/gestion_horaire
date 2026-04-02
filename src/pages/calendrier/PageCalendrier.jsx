@@ -24,32 +24,32 @@ import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/Consulta
 import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
 
 //Importation des photos de l'utilisateur 
-import lettreAProfilePic from "../assets/lettreAProfilePic.png";
-import lettreBProfilePic from "../assets/lettreBProfilePic.png";
-import lettreCProfilePic from "../assets/lettreCProfilePic.png";
-import lettreDProfilePic from "../assets/lettreDProfilePic.png";
-import lettreEProfilePic from "../assets/lettreEProfilePic.png";
-import lettreFProfilePic from "../assets/lettreFProfilePic.png";
-import lettreGProfilePic from "../assets/lettreGProfilePic.png";
-import lettreHProfilePic from "../assets/lettreHProfilePic.png";
-import lettreIProfilePic from "../assets/lettreIProfilePic.png";
-import lettreJProfilePic from "../assets/lettreJProfilePic.png";
-import lettreKProfilePic from "../assets/lettreKProfilePic.png";
-import lettreLProfilePic from "../assets/lettreLProfilePic.png";
-import lettreMProfilePic from "../assets/lettreMProfilePic.png";
-import lettreNProfilePic from "../assets/lettreNProfilePic.png";
-import lettreOProfilePic from "../assets/lettreOProfilePic.png";
-import lettrePProfilePic from "../assets/lettrePProfilePic.png";
-import lettreQProfilePic from "../assets/lettreQProfilePic.png";
-import lettreRProfilePic from "../assets/lettreRProfilePic.png";
-import lettreSProfilePic from "../assets/lettreSProfilePic.png";
-import lettreTProfilePic from "../assets/lettreTProfilePic.png";
-import lettreUProfilePic from "../assets/lettreUProfilePic.png";
-import lettreVProfilePic from "../assets/lettreVProfilePic.png";
-import lettreWProfilePic from "../assets/lettreWProfilePic.png";
-import lettreXProfilePic from "../assets/lettreXProfilePic.png";
-import lettreYProfilePic from "../assets/lettreYProfilePic.png";
-import lettreZProfilePic from "../assets/lettreZProfilePic.png";
+import lettreAProfilePic from "../../assets/lettreAProfilePic.png";
+import lettreBProfilePic from "../../assets/lettreBProfilePic.png";
+import lettreCProfilePic from "../../assets/lettreCProfilePic.png";
+import lettreDProfilePic from "../../assets/lettreDProfilePic.png";
+import lettreEProfilePic from "../../assets/lettreEProfilePic.png";
+import lettreFProfilePic from "../../assets/lettreFProfilePic.png";
+import lettreGProfilePic from "../../assets/lettreGProfilePic.png";
+import lettreHProfilePic from "../../assets/lettreHProfilePic.png";
+import lettreIProfilePic from "../../assets/lettreIProfilePic.png";
+import lettreJProfilePic from "../../assets/lettreJProfilePic.png";
+import lettreKProfilePic from "../../assets/lettreKProfilePic.png";
+import lettreLProfilePic from "../../assets/lettreLProfilePic.png";
+import lettreMProfilePic from "../../assets/lettreMProfilePic.png";
+import lettreNProfilePic from "../../assets/lettreNProfilePic.png";
+import lettreOProfilePic from "../../assets/lettreOProfilePic.png";
+import lettrePProfilePic from "../../assets/lettrePProfilePic.png";
+import lettreQProfilePic from "../../assets/lettreQProfilePic.png";
+import lettreRProfilePic from "../../assets/lettreRProfilePic.png";
+import lettreSProfilePic from "../../assets/lettreSProfilePic.png";
+import lettreTProfilePic from "../../assets/lettreTProfilePic.png";
+import lettreUProfilePic from "../../assets/lettreUProfilePic.png";
+import lettreVProfilePic from "../../assets/lettreVProfilePic.png";
+import lettreWProfilePic from "../../assets/lettreWProfilePic.png";
+import lettreXProfilePic from "../../assets/lettreXProfilePic.png";
+import lettreYProfilePic from "../../assets/lettreYProfilePic.png";
+import lettreZProfilePic from "../../assets/lettreZProfilePic.png";
 
 
 export default function PageCalendrier() {
