@@ -315,8 +315,9 @@ app.get('/api/evenements/:date', (req, res) => {
     });
 });
 
-//Changer l'affichage dépendemment à l'authentification de l'utilisateur./
+/*Changer l'affichage dépendemment à l'authentification de l'utilisateur./
 //Dans ce cas-ci, on renvoit l'utilisateur vers la page d'acceuil
+
 app.get ('/', (request, response) => {
   response.render('/', {
     title: 'Page dacceuil', 
@@ -326,5 +327,6 @@ app.get ('/', (request, response) => {
     idAdmin: request.session && request.session.utilisateur && request.session.utilisateur.role === "administrateur"
   });
 });
+*/
 
 app.listen(5000, () => console.log("Server running on port 5000"));
