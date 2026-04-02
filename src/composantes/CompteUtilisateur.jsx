@@ -226,7 +226,7 @@ export default function CompteUtilisateur() {
     <div className={styles.compte_page}>
       <div className={styles.compte_container}>
 
-        // Header avec logo, titre et photo de profile base sur le prenom de l'utilisateur
+        {/* Header avec logo, titre et photo de profile base sur le prenom de l'utilisateur */}
         <header className={styles.header}>
           <div className={styles.header_content}>
             <img src={logo} alt="Gestion des Horaires" className={styles.logo_img} />
@@ -240,7 +240,7 @@ export default function CompteUtilisateur() {
           </div>
         </header>
 
-        // Contenu principal du compte utilisateur avec les informations et les actions disponibles
+        {/* Contenu principal du compte utilisateur avec les informations et les actions disponibles */}
         <div className={styles.compte_content}>
           <div className={styles.side_menu}>
             <h2>Compte Planigo</h2>
@@ -260,7 +260,7 @@ export default function CompteUtilisateur() {
             </ul>
           </div>
           
-          // Section d'affichage des informations de l'utilisateur, avec un mode édition pour modifier les données
+          {/* Section d'affichage des informations de l'utilisateur, avec un mode édition pour modifier les données */}
           <div className={styles.profile_section}>
             <div className={styles.avatar_container}>
               <img src={getProfilePic(prenom)} alt="Lettre" className={styles.avatar_img} />

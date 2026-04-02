@@ -20,36 +20,43 @@ import ModificationCours from '../../composantes/ModuleDeGestionDeCours/Modifica
 import SuppressionCours from '../../composantes/ModuleDeGestionDeCours/SuppressionCours.jsx';
 import ConsultationCours from '../../composantes/ModuleDeGestionDeCours/ConsultationCours.jsx';
 
+// Import des composants de gestion de professeurs
+import AjoutProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/AjoutProfesseurs.jsx';
+import ModificationProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/ModificationProfesseurs.jsx';
+import SuppressionProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/SuppressionProfesseurs.jsx';
+import ConsultationProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/ConsultationProfesseurs.jsx';
+import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/DisponibilitesProfesseurs.jsx';
+
 // Import du nouveau composant d'événement
 import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
 
 //Importation des photos de l'utilisateur 
-import lettreAProfilePic from "../assets/lettreAProfilePic.png";
-import lettreBProfilePic from "../assets/lettreBProfilePic.png";
-import lettreCProfilePic from "../assets/lettreCProfilePic.png";
-import lettreDProfilePic from "../assets/lettreDProfilePic.png";
-import lettreEProfilePic from "../assets/lettreEProfilePic.png";
-import lettreFProfilePic from "../assets/lettreFProfilePic.png";
-import lettreGProfilePic from "../assets/lettreGProfilePic.png";
-import lettreHProfilePic from "../assets/lettreHProfilePic.png";
-import lettreIProfilePic from "../assets/lettreIProfilePic.png";
-import lettreJProfilePic from "../assets/lettreJProfilePic.png";
-import lettreKProfilePic from "../assets/lettreKProfilePic.png";
-import lettreLProfilePic from "../assets/lettreLProfilePic.png";
-import lettreMProfilePic from "../assets/lettreMProfilePic.png";
-import lettreNProfilePic from "../assets/lettreNProfilePic.png";
-import lettreOProfilePic from "../assets/lettreOProfilePic.png";
-import lettrePProfilePic from "../assets/lettrePProfilePic.png";
-import lettreQProfilePic from "../assets/lettreQProfilePic.png";
-import lettreRProfilePic from "../assets/lettreRProfilePic.png";
-import lettreSProfilePic from "../assets/lettreSProfilePic.png";
-import lettreTProfilePic from "../assets/lettreTProfilePic.png";
-import lettreUProfilePic from "../assets/lettreUProfilePic.png";
-import lettreVProfilePic from "../assets/lettreVProfilePic.png";
-import lettreWProfilePic from "../assets/lettreWProfilePic.png";
-import lettreXProfilePic from "../assets/lettreXProfilePic.png";
-import lettreYProfilePic from "../assets/lettreYProfilePic.png";
-import lettreZProfilePic from "../assets/lettreZProfilePic.png";
+import lettreAProfilePic from "../../assets/lettreAProfilePic.png";
+import lettreBProfilePic from "../../assets/lettreBProfilePic.png";
+import lettreCProfilePic from "../../assets/lettreCProfilePic.png";
+import lettreDProfilePic from "../../assets/lettreDProfilePic.png";
+import lettreEProfilePic from "../../assets/lettreEProfilePic.png";
+import lettreFProfilePic from "../../assets/lettreFProfilePic.png";
+import lettreGProfilePic from "../../assets/lettreGProfilePic.png";
+import lettreHProfilePic from "../../assets/lettreHProfilePic.png";
+import lettreIProfilePic from "../../assets/lettreIProfilePic.png";
+import lettreJProfilePic from "../../assets/lettreJProfilePic.png";
+import lettreKProfilePic from "../../assets/lettreKProfilePic.png";
+import lettreLProfilePic from "../../assets/lettreLProfilePic.png";
+import lettreMProfilePic from "../../assets/lettreMProfilePic.png";
+import lettreNProfilePic from "../../assets/lettreNProfilePic.png";
+import lettreOProfilePic from "../../assets/lettreOProfilePic.png";
+import lettrePProfilePic from "../../assets/lettrePProfilePic.png";
+import lettreQProfilePic from "../../assets/lettreQProfilePic.png";
+import lettreRProfilePic from "../../assets/lettreRProfilePic.png";
+import lettreSProfilePic from "../../assets/lettreSProfilePic.png";
+import lettreTProfilePic from "../../assets/lettreTProfilePic.png";
+import lettreUProfilePic from "../../assets/lettreUProfilePic.png";
+import lettreVProfilePic from "../../assets/lettreVProfilePic.png";
+import lettreWProfilePic from "../../assets/lettreWProfilePic.png";
+import lettreXProfilePic from "../../assets/lettreXProfilePic.png";
+import lettreYProfilePic from "../../assets/lettreYProfilePic.png";
+import lettreZProfilePic from "../../assets/lettreZProfilePic.png";
 
 
 export default function PageCalendrier() {
@@ -221,7 +228,15 @@ export default function PageCalendrier() {
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationCours'); }}>Consulter un cours</a></li>
                   </ul>
                 </li>
-                <li><a href="#">Gérer un professeur</a></li>
+                <li><a href="#">Gérer un professeur</a>
+                  <ul className={styles.submenu}>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('ajoutProfesseurs'); }}>Ajouter un professeur</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('modificationProfesseurs'); }}>Modifier un professeur</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('suppressionProfesseurs'); }}>Supprimer un professeur</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationProfesseurs'); }}>Consulter un professeur</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('disponibilitesProfesseurs'); }}>Gérer les disponibilités</a></li>
+                  </ul>
+                </li>
                 <li><a href="#">Gérer une salle</a>
                   <ul className={styles.submenu}>
                     <li><a onClick={(e) => { e.preventDefault(); setShowAjouterSalle(true); }} href="#">Ajouter une salle</a></li>
