@@ -111,7 +111,7 @@ export default function Login() {
               <Link to="/signup" style={{ color:"Blue", textDecoration:"underline" }}>
                 créer un compte?
               </Link>
-            </p>login.jsx
+            </p>
           </div>
         </div>
       </div>
