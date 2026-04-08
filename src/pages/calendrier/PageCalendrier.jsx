@@ -246,11 +246,18 @@ export default function PageCalendrier() {
                   </ul>
                 </li>
 
-                <ul>
-                  <li>
-                    <h2>Ajout d'un événement</h2>
-                  </li>
-                </ul>
+                <li>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowAjoutEvenement(true);
+                      setToggleMenu(false);
+                    }}
+                  >
+                    Ajout d'un événement
+                  </a>
+                </li>
 
                 <li>
                   <a href="#" onClick={(e) => { e.preventDefault(); handleDeconnexion(); }}>Déconnexion</a>
