@@ -1,3 +1,6 @@
+/*Ajout du css pour la page calendrier en commencant par l'affichage du corps, des éléments du menu déroulant et de ses composantes
+plus encore, plusieurs bouttons et modals sont ajoutés*/
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #root { width: 100%; min-height: 100vh; }
 body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100vh; }
@@ -17,6 +20,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.5s;
 }
+
+
 .dropdown_content ul li:hover {
   transform: scale(1.1);
   z-index: 5;
@@ -36,6 +41,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 }
 
 .dropdown_elements a { display: flex; flex-direction: column; padding: 1rem; gap: 1rem; color: #333; text-decoration: none; }
+
+
 .main_content { display: flex; }
 .logo_img { height: 60px; }
 .header_title h1 { color: #5DADE2; font-size: 1.5rem; margin: 0; }
@@ -43,6 +50,21 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .header_account { position: absolute; right: 50px; color: #666; font-size: 0.8rem;}
 .user_profile { align-content: center; align-items: center; height: 40px; border-radius: 50%; }
 .nav_buttons { display: flex; gap: 1rem; }
+.footer {
+   position: absolute; 
+   bottom: 0; 
+   left: 0; 
+   right: 0; 
+   width: 100%; 
+   margin: 0; 
+   padding: 1rem 2rem; 
+   background: transparent; 
+   color: white; 
+   text-align: 
+   center; z-index: 1000;
+}
+
+
 .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
 .btn_primary { background: #FFF9C4; color: #333; border: none; }
 .btn_primary:hover { background: #FFF59D; color: #333; }
@@ -51,6 +73,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .btn_large { padding: 1rem 2rem; font-size: 1.1rem; }
 .btn_full { width: 100%; }
 .btn_icon { padding: 0.5rem 1rem; background: #5DADE2; color: white; }
+
+/*Les différents avatars, logo et liens  avec leur taille sont défini */
 .hero { display: flex; justify-content: space-around; align-items: center; padding: 4rem 2rem; background: white; min-height: 60vh; }
 .hero_content { max-width: 500px; }
 .hero_content h2 { font-size: 2.5rem; color: #333; margin-bottom: 1rem; }
@@ -69,15 +93,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .auth_form h2 { text-align: center; color: #333; margin-bottom: 2rem; }
 .form_group { margin-bottom: 1.5rem; }
 .form_group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
+.form_group input:focus { outline: none; border-color: #667eea; }
 .form_group input { width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; }
-
-.footer { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; margin: 0; padding: 1rem 2rem; background: transparent; color: white; text-align: center; z-index: 1000; }
 .form_group input:focus { outline: none; border-color: #667eea; }
 .form_row { display: flex; gap: 1rem; }
 .form_row .form_group { flex: 1; }
+
 .auth_link { text-align: center; margin-top: 1.5rem; color: #666; }
 .auth_link span { color: #667eea; cursor: pointer; font-weight: 500; }
 .auth_link span:hover { text-decoration: underline; }
+
+
 .calendar_page { min-height: 100vh; background: #FFDAB9; width: 100vw; }
 .calendar_main { display: flex; padding: 2rem; gap: 2rem; width: 100%; }
 .calendar_container { flex: 3; border: 1px solid #e2e8f0; border-radius: 100px; background: rgba(255, 255, 255, 0.55); border-radius: 20px; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); max-height: 60vh; }
@@ -97,6 +123,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .event_time { color: #5DADE2; font-weight: bold; }
 .event_title { color: #333; }
 
+/*les sous-menus (pas nécéssaire présentement)*/
 .submenu {
     position:absolute;
     top: 0;
@@ -149,6 +176,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   margin: 0;
 }
 
+/**/
 .close_btn {
   background: none;
   border: none;
@@ -163,33 +191,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   color: #333;
 }
 
-.modal_body {
-  text-align: center;
-}
-
-.warning_icon {
-  font-size: 60px;
-  color: #ffc107;
-  margin-bottom: 15px;
-}
-
-.warning_text {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.info_text {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.modal_buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
 
 .cancel_btn {
   flex: 1;
@@ -223,6 +224,38 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 
 .confirm_btn:hover {
   background: #d4940f;
+}
+
+
+/**/
+
+.modal_body {
+  text-align: center;
+}
+
+.warning_icon {
+  font-size: 60px;
+  color: #ffc107;
+  margin-bottom: 15px;
+}
+
+.warning_text {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/**/
+.info_text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.modal_buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
 .profile_link {
