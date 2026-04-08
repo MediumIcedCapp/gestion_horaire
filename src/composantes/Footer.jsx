@@ -8,7 +8,7 @@ const Footer = () => {
       <div className={styles.footer_content}>
 
         <div className={styles.footer_socials}>
-          <h4>Connect With Us</h4>
+          <h4>Suivez-nous</h4>
           <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
             Facebook
           </a>
@@ -22,7 +22,7 @@ const Footer = () => {
       </div>
 
       <div className={styles.footer_bottom}>
-        <p>&copy; {new Date().getFullYear()} Planigo. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Planigo. Tous droits réservés.</p>
       </div>
     </footer>
   );
