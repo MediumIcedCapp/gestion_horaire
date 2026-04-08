@@ -81,7 +81,7 @@ export default function ConsultationCours() {
   // Rendu de la page de consultation des cours avec les filtres et le tableau des résultats
   return (
     <div className={styles.consultation_page}>
-      // Conteneur principal pour la consultation des cours avec filtres et résultats
+      {/* Conteneur principal pour la consultation des cours avec filtres et résultats */}
       <div className={styles.consultation_container}>
         <div className={styles.consultation_header}>
           <h2>Consultation des cours</h2>

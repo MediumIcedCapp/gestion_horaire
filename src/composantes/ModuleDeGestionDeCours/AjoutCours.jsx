@@ -93,7 +93,7 @@ export default function AjoutCours({ onSave, onCancel }) {
   // Rendu du formulaire d'ajout de cours avec validation et gestion des erreurs
   return (
     <div className={styles.ajout_page}>
-      {/* Cette partie décrit le conteneur principal pour le formulaire d'ajout de cours*/} 
+      {/* Conteneur principal pour le formulaire d'ajout de cours */}
       <div className={styles.ajout_container}>
         <div className={styles.ajout_card}>
           <div className={styles.ajout_header}>
@@ -101,7 +101,7 @@ export default function AjoutCours({ onSave, onCancel }) {
             <p>Remplissez les champs pour créer un nouveau cours</p>
           </div>
 
-          {/* Formulaire d'ajout de cours avec validation et gestion des erreurs */} 
+          {/* Formulaire d'ajout de cours avec validation et gestion des erreurs */}
           <form className={styles.ajout_form} noValidate onSubmit={handleSubmit}>
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
@@ -111,7 +111,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.nom && <span className={styles.error_message}>{errors.nom}</span>}
             </div>
 
-            {/* Champ de saisie pour le code du cours */} 
+            {/* Champ de saisie pour le code du cours */}
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <input type="text" id="code" name="code" required value={formData.code} onChange={handleChange} />
@@ -120,7 +120,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.code && <span className={styles.error_message}>{errors.code}</span>}
             </div>
 
-            {/* Champ de saisie pour la durée du cours */} 
+            {/* Champ de saisie pour la durée du cours */}
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <input type="number" id="duree" name="duree" required min="1" value={formData.duree} onChange={handleChange} />
@@ -129,7 +129,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.duree && <span className={styles.error_message}>{errors.duree}</span>}
             </div>
 
-            {/*  Champ de saisie pour le programme du cours */}
+            {/* Champ de saisie pour le programme du cours */}
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <input type="text" id="programme" name="programme" required value={formData.programme} onChange={handleChange} />
@@ -138,7 +138,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.programme && <span className={styles.error_message}>{errors.programme}</span>}
             </div>
 
-            {/* Menu déroulant pour sélectionner l'étape d'étude */} 
+            {/* Menu déroulant pour sélectionner l'étape d'étude */}
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <select id="etapeEtude" name="etapeEtude" required value={formData.etapeEtude} onChange={handleChange}>
@@ -150,7 +150,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.etapeEtude && <span className={styles.error_message}>{errors.etapeEtude}</span>}
             </div>
 
-            {/* Menu déroulant pour sélectionner le type de salle */} 
+            {/* Menu déroulant pour sélectionner le type de salle */}
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <select id="typeSalle" name="typeSalle" required value={formData.typeSalle} onChange={handleChange}>
@@ -162,7 +162,7 @@ export default function AjoutCours({ onSave, onCancel }) {
               {errors.typeSalle && <span className={styles.error_message}>{errors.typeSalle}</span>}
             </div>
 
-            {/* Actions du formulaire pour annuler ou soumettre la création du cours*/}
+            {/* Actions du formulaire pour annuler ou soumettre la création du cours */}
             <div className={styles.form_actions}>
               <button type="button" className={styles.cancel_btn} onClick={onCancel} disabled={isSubmitting}>Annuler</button>
               <button className={styles.submit_btn} type="submit" disabled={isSubmitting}>

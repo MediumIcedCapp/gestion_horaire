@@ -107,7 +107,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   };
 
   /* Rendu du formulaire d'ajout d'événement avec validation et gestion des erreurs, en utilisant 
-   les données chargées pour les cours et les salles*/
+  les données chargées pour les cours et les salles*/
   return (
     <div className={styles.modal_overlay}>
       <div className={styles.modal_container}>

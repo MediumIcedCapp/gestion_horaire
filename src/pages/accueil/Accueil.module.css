@@ -1,100 +1,217 @@
 .accueil_page {
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 .accueil_container {
-    flex: 1;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
-    min-height: 100vh;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.header_section{
-    padding-bottom: 5px;
-    width: 100vw;
-    background: #ffca9c;
+.header_section {
+  padding-bottom: 5px;
+  width: 100vw;
+  background: #ffca9c;
 }
 
 .logo {
-    margin-top: 20px;
-    height: 80px;
-    align-items: center;
+  margin-top: 20px;
+  height: 80px;
+  align-items: center;
 }
 
 .main_section {
-    text-align: center;
+  text-align: center;
+  width: 100%;
 }
 
 .titre_principal {
-    font-size: 3em;
-    margin-bottom: 20px;
+  font-size: 3em;
+  margin-bottom: 20px;
 }
 
 .sous_titre {
-    font-size: 1.5em;
-    margin-bottom: 40px;
+  font-size: 1.5em;
+  margin-bottom: 40px;
 }
 
 .boutons_container {
-    padding-top: 20px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
+  padding-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
 .bouton_principal {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    color: white;
-    background-color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .bouton_principal:hover {
-    background-color:#ff5555;
-    transition: all 0.3s 0.1s;
-    transform: translateY(-2px) scale(1.05);
+  background-color: #ff5555;
+  transition: all 0.3s 0.1s;
+  transform: translateY(-2px) scale(1.05);
 }
 
 .section_description {
-    margin-top: 60px;
-    border-radius: 150px;
-    display: flex;
-    gap: 40px;
-    width: 75%;
-    height: 300px;
-    background-color: #f8f9fa;
-    align-content:left;
+  margin-top: 60px;
+  border-radius: 150px;
+  display: flex;
+  gap: 40px;
+  width: min(75%, 1180px);
+  min-height: 300px;
+  padding: 18px 26px 18px 18px;
+  align-items: center;
+  transition: background 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
+  overflow: hidden;
+}
+
+/* Default card appearance before the image handle is dragged to the dark theme. */
+.section_light {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Alternate dark card palette revealed by the swipe interaction. */
+.section_dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #312e81 100%);
+  box-shadow: 0 22px 46px rgba(25, 20, 72, 0.34);
+}
+
+.image_handle {
+  width: 280px;
+  height: 280px;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+  border-radius: 999px;
+  cursor: grab;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.image_handle:focus-visible {
+  outline: 4px solid rgba(74, 144, 226, 0.42);
+  outline-offset: 6px;
+}
+
+.handle_light {
+  box-shadow: 0 16px 34px rgba(255, 180, 126, 0.38);
+}
+
+.handle_dark {
+  box-shadow: 0 18px 38px rgba(76, 91, 255, 0.4), 0 0 0 6px rgba(161, 137, 255, 0.18);
+}
+
+.handle_dragging {
+  cursor: grabbing;
+  transition: none;
 }
 
 .showcase_image {
-    border-radius: 150px;
-    padding: 5px;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  border: 5px solid rgba(255, 255, 255, 0.95);
+  object-fit: cover;
+  display: block;
 }
 
 .texte_description {
-    flex: 1;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  flex: 1;
+  padding: 18px 12px 18px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  transition: color 0.35s ease;
+}
+
+.texte_description h2 {
+  margin: 0;
+  font-size: 2.1rem;
+}
+
+.texte_description p {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.section_light .texte_description h2,
+.section_light .texte_description p {
+  color: #20242d;
+}
+
+.section_dark .texte_description h2,
+.section_dark .texte_description p {
+  color: #f4f7ff;
+}
+
+.swipe_hint {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.section_light .swipe_hint {
+  background: rgba(255, 202, 156, 0.52);
+  color: #864b1e;
+}
+
+.section_dark .swipe_hint {
+  background: rgba(129, 140, 248, 0.18);
+  color: #dbe6ff;
 }
 
 .footer {
-    width: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
+}
+
+@media (max-width: 960px) {
+  .section_description {
+    width: min(92%, 680px);
+    min-height: unset;
+    border-radius: 42px;
+    flex-direction: column;
+    padding: 22px;
+    gap: 22px;
+  }
+
+  .image_handle {
+    width: min(72vw, 260px);
+    height: min(72vw, 260px);
+  }
+
+  .texte_description {
+    padding: 0 10px 6px;
     text-align: center;
+    align-items: center;
+  }
 }

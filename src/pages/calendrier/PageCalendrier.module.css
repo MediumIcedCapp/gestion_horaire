@@ -106,7 +106,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 
 .calendar_page { min-height: 100vh; background: #FFDAB9; width: 100vw; }
 .calendar_main { display: flex; padding: 2rem; gap: 2rem; width: 100%; }
-.calendar_container { flex: 3; border: 1px solid #e2e8f0; border-radius: 100px; background: rgba(255, 255, 255, 0.55); border-radius: 20px; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); }
+.calendar_container { flex: 3; border: 1px solid #e2e8f0; border-radius: 100px; background: rgba(255, 255, 255, 0.55); border-radius: 20px; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); max-height: 60vh; }
 .calendar_header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 .calendar_header h2 { color: #333; }
 .calendar_grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
@@ -118,7 +118,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .today_event h3 { color: #333; margin-bottom: 1.5rem; }
 
 .calendar_sidebar { flex: 2; background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-.event_list { margin-bottom: 2rem; }
+.event_list { margin-bottom: 2rem;}
 .event_item { display: flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.5rem; }
 .event_time { color: #5DADE2; font-weight: bold; }
 .event_title { color: #333; }

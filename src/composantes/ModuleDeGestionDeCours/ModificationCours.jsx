@@ -117,7 +117,7 @@ export default function ModificationCours({ onSave, onCancel }) {
     <div className={styles.modification_page}>
       <div className={styles.modification_overlay} onClick={onCancel}></div>
 
-      {/* */} Conteneur principal pour la modification d'un cours avec formulaire et sélection du cours à modifier
+      {/* Conteneur principal pour la modification d'un cours avec formulaire et sélection du cours à modifier */}
       <div className={styles.modification_container}>
         <div className={styles.modification_card}>
           <div className={styles.modification_header}>
@@ -125,7 +125,7 @@ export default function ModificationCours({ onSave, onCancel }) {
             <button className={styles.close_btn} onClick={onCancel}>&times;</button>
           </div>
 
-          {/* */}  Section de sélection du cours à modifier avec un menu déroulant
+          {/* Section de sélection du cours à modifier avec un menu déroulant */}
           <div className={styles.selection_section}>
             <label className={styles.select_label_text}>Choisir le cours à modifier :</label>
             <select 
@@ -142,7 +142,7 @@ export default function ModificationCours({ onSave, onCancel }) {
             </select>
           </div>
 
-          {/* Afficher le formulaire de modification uniquement si un cours est sélectionné, avec validation et gestion des erreurs */} 
+          {/* Afficher le formulaire de modification uniquement si un cours est sélectionné, avec validation et gestion des erreurs */}
           {selectedCoursNom && (
             <form className={styles.modification_form} onSubmit={handleSubmit} noValidate>
               <div className={styles.form_group}>
@@ -153,7 +153,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.nom && <span className={styles.error_message}>{errors.nom}</span>}
               </div>
 
-              {/*Champ de saisie pour le code du cours, avec validation et affichage des erreurs */} 
+              {/* Champ de saisie pour le code du cours, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="text" name="code" required value={formData.code} onChange={handleChange} />
@@ -162,7 +162,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.code && <span className={styles.error_message}>{errors.code}</span>}
               </div>
 
-              {/*Champ de saisie pour la durée du cours, avec validation et affichage des erreurs */}
+              {/* Champ de saisie pour la durée du cours, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="number" name="duree" required value={formData.duree} onChange={handleChange} />
@@ -171,7 +171,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.duree && <span className={styles.error_message}>{errors.duree}</span>}
               </div>
 
-              {/* Champ de saisie pour le programme du cours, avec validation et affichage des erreurs*/} 
+              {/* Champ de saisie pour le programme du cours, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <input type="text" name="programme" required value={formData.programme} onChange={handleChange} />
@@ -180,7 +180,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.programme && <span className={styles.error_message}>{errors.programme}</span>}
               </div>
 
-              {/* Menu déroulant pour sélectionner l'étape d'étude, avec validation et affichage des erreurs*/} 
+              {/* Menu déroulant pour sélectionner l'étape d'étude, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <select name="etapeEtude" required value={formData.etapeEtude} onChange={handleChange}>
@@ -192,7 +192,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.etapeEtude && <span className={styles.error_message}>{errors.etapeEtude}</span>}
               </div>
 
-              {/* Menu déroulant pour sélectionner le type de salle, avec validation et affichage des erreurs */} 
+              {/* Menu déroulant pour sélectionner le type de salle, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
                   <select name="typeSalle" required value={formData.typeSalle} onChange={handleChange}>
@@ -204,7 +204,7 @@ export default function ModificationCours({ onSave, onCancel }) {
                 {errors.typeSalle && <span className={styles.error_message}>{errors.typeSalle}</span>}
               </div>
 
-              {/* Boutons d'action pour annuler ou soumettre les modifications, avec état de soumission pour désactiver le bouton pendant l'enregistrement*/} 
+              {/* Boutons d'action pour annuler ou soumettre les modifications, avec état de soumission pour désactiver le bouton pendant l'enregistrement */}
               <div className={styles.form_actions}>
                 <button type="button" className={styles.cancel_btn} onClick={onCancel}>Annuler</button>
                 <button type="submit" className={styles.submit_btn} disabled={isSubmitting}>
