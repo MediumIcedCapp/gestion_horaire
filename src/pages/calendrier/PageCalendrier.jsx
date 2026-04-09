@@ -174,7 +174,6 @@ export default function PageCalendrier() {
 
   const handleClosePanel = () => {
     setActiveView('calendrier')
-    setSelectedCours(null)
   }
 
   const handleDeconnexion = () => {
