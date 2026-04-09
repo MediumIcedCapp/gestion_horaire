@@ -104,8 +104,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 .auth_link span:hover { text-decoration: underline; }
 
 
-.calendar_page { min-height: 100vh; background: #FFDAB9; width: 100vw; }
-.calendar_main { display: flex; padding: 2rem; gap: 2rem; width: 100%; }
+.calendar_page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  background: linear-gradient(135deg, #FFEFD5 0%, #FFD1DC 100%);
+}
+
+.main_content {
+  flex: 1; /* Très important : occupe tout l'espace vide */
+  display: flex;
+}.calendar_main { display: flex; padding: 2rem; gap: 2rem; width: 100%; }
 .calendar_container { flex: 3; border: 1px solid #e2e8f0; border-radius: 100px; background: rgba(255, 255, 255, 0.55); border-radius: 20px; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); max-height: 60vh; }
 .calendar_header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 .calendar_header h2 { color: #333; }
@@ -276,3 +285,48 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   border-radius: 50%;
   object-fit: cover;
 }
+
+.add_event_inline {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  
+  /* Dégradé Pastel : Bleu vers Menthe */
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  
+  /* Texte */
+  color: #5d5d5d;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  
+  /* Bordure et Coins */
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  
+  /* Ombre douce pour l'effet de flottement */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  
+  /* Transition fluide */
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.add_event_inline:hover {
+  /* Effet d'élévation au survol */
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  filter: brightness(1.02);
+}
+
+.add_event_inline:active {
+  /* Effet de clic (s'enfonce) */
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+

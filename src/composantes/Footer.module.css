@@ -1,46 +1,73 @@
-/* Styles pour le composant de pied de page, y compris les conteneurs, 
-les contenus, les liens, les réseaux sociaux et les informations de copyright */
-
 .app_footer {
-  background-color: #ffffff;
-  color: #000000;              
-  padding: 15px 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  padding: 40px 20px 20px;
   width: 100%;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: auto;
 }
 
-.footer_content {
-  display: flex;               
-  justify-content: center;     
-  align-items: center;
-  gap: 40px;                   
-  max-width: 100%;
-  margin: 0 auto;
+.footer_container {
+  max-width: 1000px; /* Largeur contrôlée pour rester au milieu */
+  margin: 0 auto;    /* Centrage horizontal */
+  display: flex;
+  justify-content: space-between;
+  text-align: center; /* Centre le texte à l'intérieur des colonnes */
+  gap: 30px;
+  flex-wrap: wrap;   /* Adaptable sur mobile */
 }
 
-.footer_links ul {
-  display: flex;              
+.footer_column {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer_column h4 {
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  color: #3498db; /* Bleu pastel pour les titres */
+  margin-bottom: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.footer_column p {
+  font-size: 0.9rem;
+  color: #5d5d5d;
+  line-height: 1.6;
+}
+
+.footer_column ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  gap: 20px;
 }
 
-.footer_links a,
-.footer_socials a {
-  color: #000000;
+.footer_column ul li {
+  margin-bottom: 8px;
+}
+
+.footer_column a {
+  color: #2c3e50;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
-.footer_links a:hover,
-.footer_socials a:hover {
-  text-decoration: underline;
+.footer_column a:hover {
+  color: #3498db;
+}
+
+.social_links {
+  display: flex;
+  flex-direction: column; /* Liste verticale pour les réseaux */
+  gap: 8px;
 }
 
 .footer_bottom {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   text-align: center;
-  margin-top: 10px;
-  font-size: 13px;
-  color: #555;
+  font-size: 0.8rem;
+  color: #7f8c8d;
 }

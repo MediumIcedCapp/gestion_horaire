@@ -148,3 +148,32 @@
     margin-top: 8px;
     text-align: left;
 }
+
+/* --- AJOUT POUR LE SÉLECTEUR DE RÔLE --- */
+.role_select {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 35px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #111827;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+    /* Pour supprimer la flèche par défaut du navigateur sur certains OS */
+    appearance: none; 
+    -webkit-appearance: none;
+    cursor: pointer;
+    text-indent: 1px;
+}
+
+.role_select:focus {
+    border-color: #ff5555;
+    box-shadow: 0 0 0 3px rgba(255, 85, 85, 0.1);
+}
+
+/* Optionnel : ajouter une petite flèche personnalisée si tu veux un design plus propre */
+.role_container {
+    position: relative;
+    width: 100%;
+}

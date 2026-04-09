@@ -11,6 +11,7 @@ export default function SignUp() {
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [username, setUsername] = useState("");
+  const [role, setRole] = useState("responsable"); // État pour le rôle
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
@@ -19,16 +20,16 @@ export default function SignUp() {
     let newErrors = {};
 
     if (!loginVerification.validateEmail(email)) {
-      newErrors.email = "Format invalid";
+      newErrors.email = "Format invalide";
     }
 
     if (!loginVerification.validatePassword(password)) {
       newErrors.password =
-        "Le mot de passe doit contenir au moins 10 caractères et inclure au moins une lettre et un numéro";
+        "Le mot de passe doit contenir au moins 10 caractères, une lettre et un numéro";
     }
 
     if (!loginVerification.passwordMatch(password, confirmPassword)) {
-      newErrors.confirmPassword = "Mot de passe et confirmation ne correspondent pas";
+      newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
     }
 
     if (!loginVerification.validateName(prenom)) {
@@ -41,7 +42,7 @@ export default function SignUp() {
 
     if (!loginVerification.validateUsername(username)) {
       newErrors.username =
-        "Le nom d'utilisateur doit contenir entre 3 et 20 caractères et ne doit contenir que des lettres, chiffres et underscores";
+        "Nom d'utilisateur invalide (3-20 caractères)";
     }
 
     setErrors(newErrors);
@@ -57,6 +58,7 @@ export default function SignUp() {
             prenom,
             nom,
             nomUtilisateur: username,
+            role, // On envoie le rôle au backend
             confirmationMotDePasse: confirmPassword,
           }),
         });
@@ -82,7 +84,7 @@ export default function SignUp() {
         <div className={styles.login_card}>
           <div className={styles.login_header}>
             <h2>Créer un compte</h2>
-            <p>Remplissez les champs de saisie pour continuer</p>
+            <p>Remplissez les informations ci-dessous</p>
           </div>
 
           <form className={styles.login_form} noValidate onSubmit={handleSubmit}>
@@ -92,7 +94,6 @@ export default function SignUp() {
                   <input
                     type="text"
                     id="prenom"
-                    name="prenom"
                     required
                     value={prenom}
                     onChange={(e) => setPrenom(e.target.value)}
@@ -107,7 +108,6 @@ export default function SignUp() {
                   <input
                     type="text"
                     id="nom"
-                    name="nom"
                     required
                     value={nom}
                     onChange={(e) => setNom(e.target.value)}
@@ -118,12 +118,37 @@ export default function SignUp() {
               </div>
             </div>
 
+            {/* --- NOUVEAU CHAMP : SÉLECTION DU RÔLE --- */}
+            <div className={styles.form_group}>
+              <div className={styles.input_wrapper}>
+                <select
+                  id="role"
+                  className={styles.role_select}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    borderRadius: "35px",
+                    border: "1px solid #d1d5db",
+                    background: "white",
+                    outline: "none",
+                    fontSize: "16px",
+                    appearance: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  <option value="responsable">Responsable Administratif</option>
+                  <option value="administrateur">Administrateur Plateforme</option>
+                </select>
+              </div>
+            </div>
+
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>
                 <input
                   type="text"
                   id="username"
-                  name="username"
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -138,9 +163,7 @@ export default function SignUp() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
                   required
-                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -154,9 +177,7 @@ export default function SignUp() {
                 <input
                   type="password"
                   id="password"
-                  name="password"
                   required
-                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -170,13 +191,11 @@ export default function SignUp() {
                 <input
                   type="password"
                   id="confirmPassword"
-                  name="confirmPassword"
                   required
-                  autoComplete="current-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <label htmlFor="confirmPassword">Confirmer votre mot de passe</label>
+                <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
               </div>
               {errors.confirmPassword && (
                 <span className={styles.error_message}>{errors.confirmPassword}</span>
@@ -188,11 +207,11 @@ export default function SignUp() {
             </button>
           </form>
 
-          <div className={styles.detailCreerCompte} style={{ marginTop: "20px", fontSize: "12px" }}>
-            <p>
-              Tu as deja{" "}
-              <Link to="/login" style={{ color: "Blue", textDecoration: "underline" }}>
-                un compte?
+          <div className={styles.detailCreerCompte} style={{ marginTop: "20px", textAlign: "center" }}>
+            <p style={{ fontSize: "14px" }}>
+              Déjà un compte ?{" "}
+              <Link to="/login" style={{ color: "#ff5555", fontWeight: "600", textDecoration: "none" }}>
+                Se connecter
               </Link>
             </p>
           </div>
