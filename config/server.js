@@ -210,7 +210,7 @@ app.post('/api/cours', (req, res) => {
 
   const query = `
     INSERT INTO module_gestion_cours 
-    (nomDuCours, code, duree, programme, etapeEtude, typeSalle) 
+    (nomDuCours, code, duree, programme, etapeEtude, typeSalle)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
 
