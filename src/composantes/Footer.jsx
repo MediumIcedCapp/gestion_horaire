@@ -1,28 +1,41 @@
-// Composant de pied de page pour l'application, incluant des liens vers les réseaux sociaux et des informations de copyright
 import React from 'react';
 import styles from "./Footer.module.css";
 
 const Footer = () => {
   return (
     <footer className={styles.app_footer}>
-      <div className={styles.footer_content}>
-
-        <div className={styles.footer_socials}>
-          <h4>Suivez-nous</h4>
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-            Facebook
-          </a>
-          <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-            Twitter (X)
-          </a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
+      <div className={styles.footer_container}>
+        
+        {/* Colonne 1 : À propos */}
+        <div className={styles.footer_column}>
+          <h4>PLANIGO</h4>
+          <p>La solution intelligente pour la gestion des horaires et des ressources académiques.</p>
         </div>
+
+        {/* Colonne 2 : Liens rapides */}
+        <div className={styles.footer_column}>
+          <h4>NAVIGATION</h4>
+          <ul>
+            <li><a href="/pageCalendrier">Calendrier</a></li>
+            <li><a href="/aide">Centre d'aide</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+
+        {/* Colonne 3 : Réseaux sociaux */}
+        <div className={styles.footer_column}>
+          <h4>SUIVEZ-NOUS</h4>
+          <div className={styles.social_links}>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          </div>
+        </div>
+
       </div>
 
       <div className={styles.footer_bottom}>
-        <p>&copy; {new Date().getFullYear()} Planigo. Tous droits réservés.</p>
+        <p>&copy; Tous les droits réservés {new Date().getFullYear()} Planigo. Conçu pour les éducateurs.</p>
       </div>
     </footer>
   );
