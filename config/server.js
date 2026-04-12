@@ -315,6 +315,270 @@ app.get('/api/evenements/:date', (req, res) => {
     });
 });
 
+// Ajouter un professeur
+app.post('/api/professeurs', (req, res) => {
+    console.log("POST /api/professeurs reçu avec:", req.body);
+    
+    const { matricule, nom, prenom, specialite, disponibilite, email } = req.body;
+
+    // Validation des champs requis
+    if (!matricule || !nom || !prenom || !specialite) {
+        console.error("Validation échouée - champs manquants");
+        return res.status(400).json({
+            message: "Les champs matricule, nom, prénom et spécialité sont requis."
+        });
+    }
+
+    const query = 'INSERT INTO module_gestion_professeur (nom, prenom, specialite, disponibilite, email, matricule) VALUES (?, ?, ?, ?, ?, ?)';
+    
+    db.query(query, [ nom, prenom, specialite, disponibilite || 'Disponible', email || '', matricule], (err, result) => {
+        if (err) {
+            console.error("Erreur SQL :", err);
+            return res.status(500).json({
+                message: "Erreur lors de l'ajout du professeur: " + err.message
+            });
+        }
+
+        console.log("Professeur ajouté avec succès - ID:", result.insertId);
+        res.status(201).json({
+            message: "Professeur ajouté avec succès !",
+            id: result.insertId
+        });
+    });
+});
+
+// Lister les professeurs (avec filtres optionnels)
+app.get('/api/professeurs', (req, res) => {
+    const { specialite = '', disponibilite = '' } = req.query;
+
+    let query = `
+      SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite, email
+      FROM module_gestion_professeur
+    `;
+
+    const conditions = [];
+    const params = [];
+
+    if (specialite && specialite.trim() !== '') {
+      conditions.push('specialite LIKE ?');
+      params.push(`%${specialite.trim()}%`);
+    }
+
+    if (disponibilite && disponibilite.trim() !== '') {
+      conditions.push('disponibilite = ?');
+      params.push(disponibilite.trim());
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
+    }
+
+    query += ' ORDER BY nom ASC, prenom ASC';
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error('Erreur SQL (liste professeurs) :', err);
+        return res.status(500).json({ success: false, message: err.message });
+      }
+
+      res.json(results);
+    });
+});
+
+// Récupérer un professeur par son identifiant
+app.get('/api/professeurs/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `
+      SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite, email
+      FROM module_gestion_professeur
+      WHERE idProfesseur = ?
+    `;
+
+    db.query(query, [id], (err, results) => {
+      if (err) {
+        console.error('Erreur SQL (professeur par id) :', err);
+        return res.status(500).json({ success: false, message: err.message });
+      }
+
+      if (!results || results.length === 0) {
+        return res.status(404).json({ success: false, message: 'Professeur non trouve.' });
+      }
+
+      res.json({ success: true, data: results[0] });
+    });
+});
+
+// Modifier un professeur
+app.put('/api/professeurs/:id', (req, res) => {
+    const { id } = req.params;
+    const { matricule, nom, prenom, specialite, disponibilite, email } = req.body;
+
+    if (!matricule || !nom || !prenom || !specialite) {
+      return res.status(400).json({
+        success: false,
+        message: 'Les champs matricule, nom, prenom et specialite sont requis.'
+      });
+    }
+
+    const query = `
+      UPDATE module_gestion_professeur
+      SET matricule = ?, nom = ?, prenom = ?, specialite = ?, disponibilite = ?, email = ?
+      WHERE idProfesseur = ?
+    `;
+
+    db.query(
+      query,
+      [matricule, nom, prenom, specialite, disponibilite || 'Disponible', email || '', id],
+      (err, result) => {
+        if (err) {
+          console.error('Erreur SQL (modification professeur) :', err);
+          return res.status(500).json({ success: false, message: err.message });
+        }
+
+        if (!result || result.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: 'Professeur non trouve.' });
+        }
+
+        const selectQuery = `
+          SELECT idProfesseur, matricule, nom, prenom, specialite, disponibilite, email
+          FROM module_gestion_professeur
+          WHERE idProfesseur = ?
+        `;
+
+        db.query(selectQuery, [id], (selectErr, selectResults) => {
+          if (selectErr) {
+            console.error('Erreur SQL (lecture apres modification) :', selectErr);
+            return res.status(500).json({ success: false, message: selectErr.message });
+          }
+
+          res.json({
+            success: true,
+            message: 'Professeur modifie avec succes.',
+            data: selectResults && selectResults[0] ? selectResults[0] : null
+          });
+        });
+      }
+    );
+});
+
+// Verifier si un professeur peut etre supprime
+app.get('/api/professeurs/:id/verification-suppression', (req, res) => {
+    const { id } = req.params;
+
+    const checkProfQuery = 'SELECT idProfesseur FROM module_gestion_professeur WHERE idProfesseur = ?';
+
+    db.query(checkProfQuery, [id], (profErr, profRows) => {
+      if (profErr) {
+        console.error('Erreur SQL (verification professeur) :', profErr);
+        return res.status(500).json({ success: false, message: profErr.message });
+      }
+
+      if (!profRows || profRows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Professeur non trouve.' });
+      }
+
+      const linkedRowsQuery = `
+        SELECT DISTINCT c.TABLE_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS c
+        JOIN INFORMATION_SCHEMA.TABLES t
+          ON t.TABLE_SCHEMA = c.TABLE_SCHEMA
+          AND t.TABLE_NAME = c.TABLE_NAME
+        WHERE c.TABLE_SCHEMA = DATABASE()
+          AND c.COLUMN_NAME = 'idProfesseur'
+          AND c.TABLE_NAME <> 'module_gestion_professeur'
+          AND t.TABLE_TYPE = 'BASE TABLE'
+      `;
+
+      db.query(linkedRowsQuery, (linkedErr, linkedTables) => {
+        if (linkedErr) {
+          console.error('Erreur SQL (verification dependances) :', linkedErr);
+          return res.status(500).json({ success: false, message: linkedErr.message });
+        }
+
+        const tables = Array.isArray(linkedTables) ? linkedTables : [];
+
+        if (tables.length === 0) {
+          return res.json({
+            success: true,
+            data: {
+              canDelete: true,
+              disponibilites: 0,
+              message: 'Aucune dependance detectee. La suppression est autorisee.'
+            }
+          });
+        }
+
+        const countPromises = tables.map((tableInfo) => {
+          return new Promise((resolve) => {
+            const tableName = tableInfo.TABLE_NAME;
+            const countQuery = `SELECT COUNT(*) AS total FROM \`${tableName}\` WHERE idProfesseur = ?`;
+
+            db.query(countQuery, [id], (countErr, countRows) => {
+              if (countErr) {
+                console.error(`Erreur SQL (count ${tableName}) :`, countErr);
+                return resolve(0);
+              }
+
+              const total = countRows && countRows[0] ? Number(countRows[0].total) : 0;
+              resolve(total);
+            });
+          });
+        });
+
+        Promise.all(countPromises)
+          .then((counts) => {
+            const linkedCount = counts.reduce((sum, value) => sum + value, 0);
+            const canDelete = linkedCount === 0;
+
+            return res.json({
+              success: true,
+              data: {
+                canDelete,
+                disponibilites: linkedCount,
+                message: canDelete
+                  ? 'Aucune dependance detectee. La suppression est autorisee.'
+                  : 'Ce professeur est encore lie a des donnees. Supprimez d abord ces references.'
+              }
+            });
+          })
+          .catch((promiseErr) => {
+            console.error('Erreur (verification dependances async) :', promiseErr);
+            return res.status(500).json({ success: false, message: 'Erreur lors de la verification de suppression.' });
+          });
+      });
+    });
+});
+
+// Supprimer un professeur
+app.delete('/api/professeurs/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = 'DELETE FROM module_gestion_professeur WHERE idProfesseur = ?';
+
+    db.query(query, [id], (err, result) => {
+      if (err) {
+        console.error('Erreur SQL (suppression professeur) :', err);
+
+        // Message plus explicite pour les erreurs de contrainte (foreign key)
+        if (err && (err.code === 'ER_ROW_IS_REFERENCED_2' || err.errno === 1451)) {
+          return res.status(409).json({
+            success: false,
+            message: 'Suppression impossible: ce professeur est lie a d autres enregistrements.'
+          });
+        }
+
+        return res.status(500).json({ success: false, message: err.message });
+      }
+
+      if (!result || result.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: 'Professeur non trouve.' });
+      }
+
+      return res.json({ success: true, message: 'Professeur supprime avec succes.' });
+    });
+});
+
 /*Changer l'affichage dépendemment à l'authentification de l'utilisateur./
 //Dans ce cas-ci, on renvoit l'utilisateur vers la page d'acceuil
 

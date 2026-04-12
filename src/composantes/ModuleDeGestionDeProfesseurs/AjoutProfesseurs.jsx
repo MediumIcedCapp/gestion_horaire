@@ -41,33 +41,49 @@ export default function AjoutProfesseurs({ onSave, onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch("http://localhost:5000/api/professeurs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
+    // Valider les données du formulaire avant de les envoyer au backend
+    if (validateForm()) {
+      try {
+        const response = await fetch("http://localhost:5000/api/professeurs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            matricule: formData.matricule,
+            nom: formData.nom,
+            prenom: formData.prenom,
+            specialite: formData.specialite,
+            disponibilite: formData.disponibilite,
+            email: formData.email
+          }),
+        });
+        
+        // Traiter la réponse du backend et afficher un message de succès ou d'erreur
+        let data;
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          console.error("Réponse non-JSON du serveur:", jsonError);
+          throw new Error("Le serveur a retourné une réponse invalide. Vérifiez que le serveur est en cours d'exécution.");
+        }
 
-      const data = await response.json();
+        if (response.ok) { 
+          alert("Professeur ajouté avec succès");
+          setFormData(emptyForm);
+          if (onSave) onSave(data);
+        } else {
+          alert(data.message || "Erreur lors de l'ajout du professeur");
+        }
 
-      if (data.success) {
-        alert("Professeur ajoute avec succes.");
-        setFormData(emptyForm);
-        if (onSave) onSave(data.data);
-      } else {
-        alert(data.message || "Erreur lors de l'ajout du professeur.");
+      // Gérer les erreurs de réseau ou autres exceptions lors de la requête
+      } catch (err) {
+        console.error("Erreur ajout professeur:", err);
+        alert("Erreur lors de l'ajout du professeur : " + err.message);
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err) {
-      console.error("Erreur ajout professeur:", err);
-      alert("Erreur lors de l'ajout du professeur.");
-    } finally {
+    } else {
       setIsSubmitting(false);
     }
   };
