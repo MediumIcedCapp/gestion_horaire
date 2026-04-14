@@ -315,6 +315,32 @@ export default function PageCalendrier() {
               <ConsultationCours />
             </div>
           )}
+
+          {activeView === 'ajoutProfesseurs' && (
+            <div className={styles.side_panel}>
+              <AjoutProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
+            </div>
+          )}
+          {activeView === 'modificationProfesseurs' && (
+            <div className={styles.side_panel}>
+              <ModificationProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
+            </div>
+          )}
+          {activeView === 'suppressionProfesseurs' && (
+            <div className={styles.side_panel}>
+              <SuppressionProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
+            </div>
+          )}
+          {activeView === 'consultationProfesseurs' && (
+            <div className={styles.side_panel}>
+              <ConsultationProfesseurs />
+            </div>
+          )}
+          {activeView === 'disponibilitesProfesseurs' && (
+            <div className={styles.side_panel}>
+              <DisponibilitesProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
+            </div>
+          )}
           
           {activeView === 'calendrier' && (
             <div className={`${styles.calendar_container} ${styles.today_event}`}>
