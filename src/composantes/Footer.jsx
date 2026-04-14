@@ -16,9 +16,11 @@ const Footer = () => {
         <div className={styles.footer_column}>
           <h4>NAVIGATION</h4>
           <ul>
-            <li><a href="/pageCalendrier">Calendrier</a></li>
             <li><a href="/aide">Centre d'aide</a></li>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/contact">Utilisateurs</a></li>
+            <li><a href="/contact">Introduction</a></li>
+            <li><a href="/contact">Fonctionnalités</a></li>
           </ul>
         </div>
 
@@ -27,8 +29,8 @@ const Footer = () => {
           <h4>SUIVEZ-NOUS</h4>
           <div className={styles.social_links}>
             <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+            <a href="https://x.com/planigocalendar?s=21" target="_blank" rel="noreferrer">Twitter</a>
+            <a href="https://www.instagram.com/planigocontact/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noreferrer">Instagram</a>
           </div>
         </div>
 

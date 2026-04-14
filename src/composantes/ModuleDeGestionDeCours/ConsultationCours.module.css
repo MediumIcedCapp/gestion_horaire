@@ -3,7 +3,7 @@ et de résultats, les tableaux et les états de chargement ou d'absence de résu
 
 .consultation_page {
   min-height: 100vh;
-  background: linear-gradient(135deg,  #f5c499 0%, #f6c989 100%);
+  background: linear-gradient(135deg,   #eeddcf 0%, #11677d 100%);
   padding: 20px;
 }
 
@@ -73,7 +73,7 @@ et de résultats, les tableaux et les états de chargement ou d'absence de résu
 
 .reset_btn {
   margin-top: 20px;
-  background: #eea71a;
+  background: #11677d;
   color: white;
   padding: 12px 24px;
   border: none;
@@ -106,7 +106,7 @@ et de résultats, les tableaux et les états de chargement ou d'absence de résu
 }
 
 .cours_table th {
-  background: #f5c499;
+  background: #11677d;
   color: white;
 }
 

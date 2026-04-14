@@ -11,7 +11,7 @@ export default function SignUp() {
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [username, setUsername] = useState("");
-  const [role, setRole] = useState("responsable"); // État pour le rôle
+  const [role, setRole] = useState("administrateur");
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
@@ -66,8 +66,18 @@ export default function SignUp() {
         const data = await response.json();
 
         if (data.success) {
-          alert("Compte créé avec succès");
-          window.location.href = "/login";
+          alert("Compte administrateur créé avec succès");
+
+          // On stocke les informations pour simuler une connexion automatique
+          const userSession = {
+            email: email,
+            role: "administrateur",
+            prenom: prenom
+          };
+          localStorage.setItem('utilisateur', JSON.stringify(userSession));
+
+          // Redirection directe vers la page admin
+          window.location.href = "/pageAdministrateur"; 
         } else {
           alert(data.message);
         }
@@ -118,31 +128,7 @@ export default function SignUp() {
               </div>
             </div>
 
-            {/* --- NOUVEAU CHAMP : SÉLECTION DU RÔLE --- */}
-            <div className={styles.form_group}>
-              <div className={styles.input_wrapper}>
-                <select
-                  id="role"
-                  className={styles.role_select}
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    borderRadius: "35px",
-                    border: "1px solid #d1d5db",
-                    background: "white",
-                    outline: "none",
-                    fontSize: "16px",
-                    appearance: "none",
-                    cursor: "pointer"
-                  }}
-                >
-                  <option value="responsable">Responsable Administratif</option>
-                  <option value="administrateur">Administrateur Plateforme</option>
-                </select>
-              </div>
-            </div>
+            
 
             <div className={styles.form_group}>
               <div className={styles.input_wrapper}>

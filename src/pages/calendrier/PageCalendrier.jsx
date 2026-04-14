@@ -1,7 +1,6 @@
-// importations d'images, de style et de footer
+// importations d'images, de style 
 import { useState, useEffect } from 'react'; 
 import logo from '../../assets/logoGestionHoraire.png'
-import Footer from '../../composantes/Footer.jsx'
 import styles from './PageCalendrier.module.css'
 import UserProfile from '../../assets/UserProfile.png'
 import DropDownButtonLines from '../../assets/DropDownLines.png'
@@ -29,6 +28,8 @@ import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfes
 
 // Import du nouveau composant d'événement
 import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
+// Import de la page administrateur 
+import PageAdministrateur from '../pageAdministrateur/pageAdministrateur.jsx';
 
 //Importation des photos de l'utilisateur 
 import lettreAProfilePic from "../../assets/lettreAProfilePic.png";
@@ -195,6 +196,7 @@ export default function PageCalendrier() {
             </button>
           </div>
 
+
           <img src={logo} alt="Gestion des Horaires" className={styles.logo_img} />
           <div className={styles.header_title}>
             <h1>PLANIGO</h1>
@@ -339,9 +341,7 @@ export default function PageCalendrier() {
         </main>
       </div>
 
-      <div className={styles.footer_wrapper}>
-        <Footer />
-      </div>
+
 
       {/* Modales */}
       {showAjouterSalle && <AjoutSalles onClose={() => setShowAjouterSalle(false)} />}

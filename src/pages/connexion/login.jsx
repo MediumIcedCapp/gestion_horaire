@@ -10,6 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loggingIn, setLoggingIn] = useState(false);
+  const [role, setRole] = useState("responsable"); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -38,12 +39,19 @@ export default function Login() {
         const data = await response.json();
 
         if (data.success) {
+          console.log("Utilisateur reçu :", data.user);
           // Sauvegarder les données utilisateur dans localStorage
           localStorage.setItem('utilisateur', JSON.stringify(data.user));          
           alert("Connexion réussie");
-          navigate("/pageCalendrier");
+          if (data.user.role === "responsable") {
+            navigate("/pageCalendrier");
+          } else if (data.user.role === "administrateur") {
+            navigate("/pageAdministrateur");
+          } else {
+            alert("Role non reconnu ou erreur de connexion");
+          }
         } else {
-          alert(data.message);
+          alert("Role non reconnu ou erreur de connexion");
         }
       } catch (err) {
         console.error("Erreur login:", err);
@@ -100,11 +108,15 @@ export default function Login() {
               {errors.password && <span className={styles.error_message}>{errors.password}</span>}
             </div>
 
+            <div className={styles.form_group}>
+              <div className={styles.input_wrapper}></div>
+            </div>
+
             <button className={styles.login_btn} type="submit" disabled={loggingIn}>
               {loggingIn ? "Connexion..." : "Se connecter"}
             </button>
           </form>
-
+          
           <div className={styles.detailCreerCompte} style={{ marginTop:"20px", fontSize:"12px" }}>
             <p>
               Besoin de{" "}
@@ -113,6 +125,8 @@ export default function Login() {
               </Link>
             </p>
           </div>
+
+          
         </div>
       </div>
     </div>

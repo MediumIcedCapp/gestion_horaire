@@ -1,33 +1,84 @@
-/*Ajout du css pour la page calendrier en commencant par l'affichage du corps, des éléments du menu déroulant et de ses composantes
-plus encore, plusieurs bouttons et modals sont ajoutés*/
+/* --- CSS COMPLET HARMONISÉ : PALETTE PÊCHE & NOIR --- */
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body, #root { width: 100%; min-height: 100vh; }
-body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100vh; }
-.app { min-height: 100vh; }
-.header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.header_content { display: flex; align-items: center; gap: 1rem; }
-.dropdown_button { background: none; border: none;}
-.dropdown_icon { position: relative; height: 30px; cursor: pointer;}
-.dropdown_content { height:fit-content; width: 250px; background: rgba(255, 255, 255); box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 1000;}
-.dropdown_content ul:hover > li { opacity : 0.2; }
+/* Ajout du css pour la page calendrier en commencant par l'affichage du corps, 
+des éléments du menu déroulant et de ses composantes 
+plus encore, plusieurs bouttons et modals sont ajoutés */
+
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+html, body, #root { 
+  width: 100%; 
+  min-height: 100vh; 
+}
+
+body { 
+  font-family: 'Segoe UI', sans-serif; 
+  background: #f2e8df; /* Pêche Accueil */
+  min-height: 100vh; 
+}
+
+.app { 
+  min-height: 100vh; 
+}
+
+.header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 1rem 2rem; 
+  background: white; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+}
+
+.header_content { 
+  display: flex; 
+  align-items: center; 
+  gap: 1rem; 
+}
+
+.dropdown_button { 
+  background: none; 
+  border: none;
+}
+
+.dropdown_icon { 
+  position: relative; 
+  height: 30px; 
+  cursor: pointer;
+}
+
+.dropdown_content { 
+  height: fit-content; 
+  width: 250px; 
+  background: white; 
+  box-shadow: 2px 0 15px rgba(0,0,0,0.1); 
+  z-index: 1000;
+}
+
+.dropdown_content ul:hover > li { 
+  opacity: 0.2; 
+}
+
 .dropdown_content ul li {
-    position: relative;
+  position: relative;
   list-style: none;
   padding: 10px;
   width: 100%;
   background: #fff;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.5s;
 }
-
 
 .dropdown_content ul li:hover {
   transform: scale(1.1);
   z-index: 5;
-  background: #25bcff;
+  background: #333; /* Noir au survol */
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  color: #fff;
+  color: #FFF9C4; /* Jaune Pâle au survol */
   opacity: 1;
 }
 
@@ -35,130 +86,410 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   display: block;
   pointer-events: auto;
 }
+
 .dropdown_content ul li:hover > a {
-  color: white;
+  color: #FFF9C4;
   font-weight: bold;
 }
 
-.dropdown_elements a { display: flex; flex-direction: column; padding: 1rem; gap: 1rem; color: #333; text-decoration: none; }
-
-
-.main_content { display: flex; }
-.logo_img { height: 60px; }
-.header_title h1 { color: #5DADE2; font-size: 1.5rem; margin: 0; }
-.header_title p { color: #666; font-size: 0.8rem; margin: 0; }
-.header_account { position: absolute; right: 50px; color: #666; font-size: 0.8rem;}
-.user_profile { align-content: center; align-items: center; height: 40px; border-radius: 50%; }
-.nav_buttons { display: flex; gap: 1rem; }
-.footer {
-   position: absolute; 
-   bottom: 0; 
-   left: 0; 
-   right: 0; 
-   width: 100%; 
-   margin: 0; 
-   padding: 1rem 2rem; 
-   background: transparent; 
-   color: white; 
-   text-align: 
-   center; z-index: 1000;
+.dropdown_elements a { 
+  display: flex; 
+  flex-direction: column; 
+  padding: 1rem; 
+  gap: 1rem; 
+  color: #333; 
+  text-decoration: none; 
 }
 
+.main_content { 
+  display: flex; 
+}
 
-.btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
-.btn_primary { background: #FFF9C4; color: #333; border: none; }
-.btn_primary:hover { background: #FFF59D; color: #333; }
-.btn_outline { background: transparent; border: 2px solid #667eea; color: #667eea; }
-.btn_outline:hover { background: #667eea; color: white; }
-.btn_large { padding: 1rem 2rem; font-size: 1.1rem; }
-.btn_full { width: 100%; }
-.btn_icon { padding: 0.5rem 1rem; background: #5DADE2; color: white; }
+.logo_img { 
+  height: 60px; 
+}
 
-/*Les différents avatars, logo et liens  avec leur taille sont défini */
-.hero { display: flex; justify-content: space-around; align-items: center; padding: 4rem 2rem; background: white; min-height: 60vh; }
-.hero_content { max-width: 500px; }
-.hero_content h2 { font-size: 2.5rem; color: #333; margin-bottom: 1rem; }
-.subtitle { font-size: 1.3rem; color: #667eea; margin-bottom: 1rem; }
-.description { color: #666; margin-bottom: 2rem; }
-.hero_buttons { display: flex; gap: 1rem; }
-.professor_card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(102,126,234,0.3); }
-.professor_avatar { width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; }
-.avatar_icon { font-size: 1.5rem; color: #667eea; font-weight: bold; }
-.professor_card h3 { margin-bottom: 0.5rem; }
-.course_code { font-size: 0.9rem; opacity: 0.8; }
-.auth_page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.auth_container { background: white; padding: 3rem; border-radius: 20px; width: 100%; max-width: 450px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.logo_small { text-align: center; margin-bottom: 2rem; cursor: pointer; }
-.logo_small h2 { color: #667eea; }
-.auth_form h2 { text-align: center; color: #333; margin-bottom: 2rem; }
-.form_group { margin-bottom: 1.5rem; }
-.form_group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
-.form_group input:focus { outline: none; border-color: #667eea; }
-.form_group input { width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; }
-.form_group input:focus { outline: none; border-color: #667eea; }
-.form_row { display: flex; gap: 1rem; }
-.form_row .form_group { flex: 1; }
+.header_title h1 { 
+  color: #11677d; 
+  font-size: 1.5rem; 
+  margin: 0; 
+}
 
-.auth_link { text-align: center; margin-top: 1.5rem; color: #666; }
-.auth_link span { color: #667eea; cursor: pointer; font-weight: 500; }
-.auth_link span:hover { text-decoration: underline; }
+.header_title p { 
+  color: #666; 
+  font-size: 0.8rem; 
+  margin: 0; 
+}
 
+.header_account { 
+  position: absolute; 
+  right: 50px; 
+  color: #666; 
+  font-size: 0.8rem;
+}
 
+.user_profile { 
+  align-content: center; 
+  align-items: center; 
+  height: 40px; 
+  border-radius: 50%; 
+}
+
+.nav_buttons { 
+  display: flex; 
+  gap: 1rem; 
+}
+
+.footer {
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  width: 100%; 
+  margin: 0; 
+  padding: 1rem 2rem; 
+  background: transparent; 
+  color: #333; 
+  text-align: center; 
+  z-index: 1000;
+}
+
+.btn { 
+  padding: 0.75rem 1.5rem; 
+  border: none; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-size: 1rem; 
+  transition: all 0.3s; 
+}
+
+.btn_primary { 
+  background: #FFF9C4; 
+  color: #333; 
+  border: none; 
+}
+
+.btn_primary:hover { 
+  background: #f0edcd; 
+  color: #333; 
+}
+
+.btn_outline { 
+  background: transparent; 
+  border: 2px solid #333; 
+  color: #333; 
+}
+
+.btn_outline:hover { 
+  background: #333; 
+  color: #FFF9C4; 
+}
+
+.btn_large { 
+  padding: 1rem 2rem; 
+  font-size: 1.1rem; 
+}
+
+.btn_full { 
+  width: 100%; 
+}
+
+.btn_icon { 
+  padding: 0.5rem 1rem; 
+  background: #333; 
+  color: white; 
+}
+
+/* Hero Section */
+.hero { 
+  display: flex; 
+  justify-content: space-around; 
+  align-items: center; 
+  padding: 4rem 2rem; 
+  background: white; 
+  min-height: 60vh; 
+}
+
+.hero_content { 
+  max-width: 500px; 
+}
+
+.hero_content h2 { 
+  font-size: 2.5rem; 
+  color: #333; 
+  margin-bottom: 1rem; 
+}
+
+.subtitle { 
+  font-size: 1.3rem; 
+  color: #333; 
+  margin-bottom: 1rem; 
+}
+
+.description { 
+  color: #666; 
+  margin-bottom: 2rem; 
+}
+
+.hero_buttons { 
+  display: flex; 
+  gap: 1rem; 
+}
+
+.professor_card { 
+  background: linear-gradient(135deg, #333 0%, #555 100%); 
+  padding: 2rem; 
+  border-radius: 20px; 
+  text-align: center; 
+  color: white; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+}
+
+.professor_avatar { 
+  width: 100px; 
+  height: 100px; 
+  background: white; 
+  border-radius: 50%; 
+  margin: 0 auto 1rem; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.avatar_icon { 
+  font-size: 1.5rem; 
+  color: #333; 
+  font-weight: bold; 
+}
+
+.professor_card h3 { 
+  margin-bottom: 0.5rem; 
+}
+
+.course_code { 
+  font-size: 0.9rem; 
+  opacity: 0.8; 
+}
+
+/* Auth Page */
+.auth_page { 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background: linear-gradient(135deg, #f2e8df 0%, #333 100%); 
+}
+
+.auth_container { 
+  background: white; 
+  padding: 3rem; 
+  border-radius: 20px; 
+  width: 100%; 
+  max-width: 450px; 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2); 
+}
+
+.logo_small { 
+  text-align: center; 
+  margin-bottom: 2rem; 
+  cursor: pointer; 
+}
+
+.logo_small h2 { 
+  color: #333; 
+}
+
+.auth_form h2 { 
+  text-align: center; 
+  color: #333; 
+  margin-bottom: 2rem; 
+}
+
+.form_group { 
+  margin-bottom: 1.5rem; 
+}
+
+.form_group label { 
+  display: block; 
+  margin-bottom: 0.5rem; 
+  color: #333; 
+  font-weight: 500; 
+}
+
+.form_group input { 
+  width: 100%; 
+  padding: 0.75rem; 
+  border: 2px solid #e0e0e0; 
+  border-radius: 8px; 
+  font-size: 1rem; 
+}
+
+.form_group input:focus { 
+  outline: none; 
+  border-color: #333; 
+}
+
+.form_row { 
+  display: flex; 
+  gap: 1rem; 
+}
+
+.form_row .form_group { 
+  flex: 1; 
+}
+
+.auth_link { 
+  text-align: center; 
+  margin-top: 1.5rem; 
+  color: #666; 
+}
+
+.auth_link span { 
+  color: #333; 
+  cursor: pointer; 
+  font-weight: 500; 
+}
+
+.auth_link span:hover { 
+  text-decoration: underline; 
+}
+
+/* Calendar Page */
 .calendar_page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Prend toute la hauteur de l'écran */
-  background: linear-gradient(135deg, #FFEFD5 0%, #FFD1DC 100%);
+  min-height: 100vh;
+  background: #f2e8df;
 }
 
-.main_content {
-  flex: 1; /* Très important : occupe tout l'espace vide */
-  display: flex;
-}.calendar_main { display: flex; padding: 2rem; gap: 2rem; width: 100%; }
-.calendar_container { flex: 3; border: 1px solid #e2e8f0; border-radius: 100px; background: rgba(255, 255, 255, 0.55); border-radius: 20px; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); max-height: 60vh; }
-.calendar_header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-.calendar_header h2 { color: #333; }
-.calendar_grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-.calendar_day_name { text-align: center; padding: 1rem; font-weight: bold; color: #5DADE2; }
-.calendar_day { text-align: center; padding: 1rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-.calendar_day.has_day:hover { background: #5DADE2; color: white; }
-.calendar_day.today { background: #fff9ba; color: #333; font-weight: bold; border: 2px solid black; }
-.today_event { flex: none; width: 500px; }
-.today_event h3 { color: #333; margin-bottom: 1.5rem; }
+.calendar_main { 
+  display: flex; 
+  padding: 2rem; 
+  gap: 2rem; 
+  width: 100%; 
+}
 
-.calendar_sidebar { flex: 2; background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-.event_list { margin-bottom: 2rem;}
-.event_item { display: flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.5rem; }
-.event_time { color: #5DADE2; font-weight: bold; }
-.event_title { color: #333; }
+.calendar_container { 
+  flex: 3; 
+  background: rgba(255, 255, 255, 0.7); 
+  border-radius: 20px; 
+  padding: 2rem; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+  backdrop-filter: blur(10px); 
+  max-height: 75vh; 
+}
 
-/*les sous-menus (pas nécéssaire présentement)*/
+.calendar_header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 2rem; 
+}
+
+.calendar_header h2 { 
+  color: #333; 
+}
+
+.calendar_grid { 
+  display: grid; 
+  grid-template-columns: repeat(7, 1fr); 
+  gap: 8px; 
+}
+
+.calendar_day_name { 
+  text-align: center; 
+  padding: 1rem; 
+  font-weight: bold; 
+  color: #333; 
+}
+
+.calendar_day { 
+  text-align: center; 
+  padding: 1rem; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  transition: all 0.3s; 
+}
+
+.calendar_day.has_day:hover { 
+  background: #333; 
+  color: white; 
+}
+
+.calendar_day.today { 
+  background: #FFF9C4; 
+  color: #333; 
+  font-weight: bold; 
+  border: 2px solid #333; 
+}
+
+.today_event { 
+  flex: none; 
+  width: 500px; 
+}
+
+.today_event h3 { 
+  color: #333; 
+  margin-bottom: 1.5rem; 
+}
+
+.calendar_sidebar { 
+  flex: 1.5; 
+  background: white; 
+  border-radius: 20px; 
+  padding: 2rem; 
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
+}
+
+.event_list { 
+  margin-bottom: 2rem;
+}
+
+.event_item { 
+  display: flex; 
+  gap: 1rem; 
+  padding: 1rem; 
+  background: #f8f9fa; 
+  border-radius: 8px; 
+  margin-bottom: 0.5rem; 
+}
+
+.event_time { 
+  color: #333; 
+  font-weight: bold; 
+}
+
+.event_title { 
+  color: #333; 
+}
+
+/* Submenu */
 .submenu {
-    position:absolute;
-    top: 0;
-    left: 100%;
-    width: 200px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    display: none;
-    pointer-events: none;
-    transition: 0.2s;
-    color: black;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 200px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  display: none;
+  pointer-events: none;
+  transition: 0.2s;
+  color: black;
 }
 
-/* Modal de deconnexion */
+/* Modals */
 .modal_overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modal_content {
@@ -185,7 +516,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   margin: 0;
 }
 
-/**/
 .close_btn {
   background: none;
   border: none;
@@ -200,7 +530,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   color: #333;
 }
 
-
 .cancel_btn {
   flex: 1;
   padding: 14px;
@@ -214,29 +543,21 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   transition: background 0.2s;
 }
 
-.cancel_btn:hover {
-  background: #e0e0e0;
-}
-
 .confirm_btn {
   flex: 1;
   padding: 14px;
-  background: #eea51c;
-  color: white;
+  background: #333;
+  color: #FFF9C4;
   border: none;
   border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .confirm_btn:hover {
-  background: #d4940f;
+  background: #000;
 }
-
-
-/**/
 
 .modal_body {
   text-align: center;
@@ -248,13 +569,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   margin-bottom: 15px;
 }
 
-.warning_text {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-/**/
 .info_text {
   font-size: 14px;
   color: #666;
@@ -267,49 +581,21 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
   justify-content: center;
 }
 
-.profile_link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: inherit;
-}
-
-.welcome_text {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.user_profile {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
+/* Add Event Inline (Small Version) */
 .add_event_inline {
-  width: 100%;
-  padding: 1rem 1.5rem;
-  margin-top: 1.5rem;
-  
-  /* Dégradé Pastel : Bleu vers Menthe */
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  
-  /* Texte */
-  color: #5d5d5d;
+  width: auto;
+  min-width: 180px;
+  padding: 0.7rem 1.2rem;
+  margin: 1.5rem auto 0;
+  background: #333;
+  color: #FFF9C4;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  
-  /* Bordure et Coins */
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
   cursor: pointer;
-  
-  /* Ombre douce pour l'effet de flottement */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  
-  /* Transition fluide */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -318,15 +604,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #FFDAB9; min-height: 100
 }
 
 .add_event_inline:hover {
-  /* Effet d'élévation au survol */
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  filter: brightness(1.02);
+  transform: translateY(-2px);
+  background: #000;
+  color: white;
 }
-
-.add_event_inline:active {
-  /* Effet de clic (s'enfonce) */
-  transform: translateY(1px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
