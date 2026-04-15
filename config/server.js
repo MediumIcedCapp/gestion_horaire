@@ -344,18 +344,50 @@ app.delete("/api/utilisateur/:email", (req, res) => {
   );
 });
 
-// Route pour ajouter un professeur
+// Route pour ajouter un professeur (avec validation)
 app.post('/api/professeurs', (req, res) => {
     const { matricule, nom, prenom, specialite, disponibilite, email } = req.body;
     
+    // Validation du matricule (7 chiffres exactement)
+    const matriculeRegex = /^\d{7}$/; 
+    if (!matriculeRegex.test(matricule)) {
+        return res.status(400).json({ 
+            success: false, 
+            message: "Le matricule doit contenir exactement 7 chiffres." 
+        });
+    }
+
     const sql = "INSERT INTO module_gestion_professeur (matricule, nom, prenom, specialite, disponibilite, email) VALUES (?, ?, ?, ?, ?, ?)";
     
     db.query(sql, [matricule, nom, prenom, specialite, disponibilite, email], (err, result) => {
-        if (err) {
-            console.error("Erreur SQL Professeur:", err);
-            return res.status(500).json({ success: false, message: err.message });
-        }
-        res.json({ success: true, message: "Professeur ajouté !", data: { id: result.insertId, ...req.body } });
+        if (err) return res.status(500).json({ success: false, message: err.message });
+        res.json({ success: true, message: "Professeur ajouté !" });
+    });
+});
+
+// Route pour modifier un professeur (avec validation)
+app.put('/api/professeurs/:id', (req, res) => {
+    const { id } = req.params;
+    const { nom, prenom, matricule, specialite, disponibilite, email } = req.body;
+    
+    // Validation du matricule
+    const matriculeRegex = /^\d{7}$/;
+    if (!matriculeRegex.test(matricule)) {
+        return res.status(400).json({ 
+            success: false, 
+            message: "Le matricule doit contenir exactement 7 chiffres." 
+        });
+    }
+
+    const query = `
+        UPDATE module_gestion_professeur 
+        SET nom = ?, prenom = ?, matricule = ?, specialite = ?, disponibilite = ?, email = ? 
+        WHERE idProfesseur = ?
+    `;
+
+    db.query(query, [nom, prenom, matricule, specialite, disponibilite, email, id], (err, result) => {
+        if (err) return res.status(500).json({ success: false, message: err.message });
+        res.json({ success: true, message: "Professeur mis à jour !" });
     });
 });
 
@@ -390,22 +422,7 @@ app.get('/api/professeurs/:id', (req, res) => {
   });
 });
 
-// 3. Modifier un professeur 
-app.put('/api/professeurs/:id', (req, res) => {
-  const { id } = req.params;
-  const { nom, prenom, matricule, specialite, disponibilite, email } = req.body;
-  
-  const query = `
-    UPDATE module_gestion_professeur 
-    SET nom = ?, prenom = ?, matricule = ?, specialite = ?, disponibilite = ?, email = ? 
-    WHERE idProfesseur = ?
-  `;
 
-  db.query(query, [nom, prenom, matricule, specialite, disponibilite, email, id], (err, result) => {
-    if (err) return res.status(500).json({ success: false, message: err.message });
-    res.json({ success: true, message: "Professeur mis à jour avec succès !" });
-  });
-});
 
 // 4. Supprimer un professeur
 app.delete('/api/professeurs/:id', (req, res) => {
@@ -499,32 +516,6 @@ app.get ('/', (request, response) => {
   });
 });
 */
-
-//route pour que l'administrateur crée un responsable avec des modules spécifiques
-app.post("/api/admin/create-user", async (req, res) => {
-  const { nom, email, motDePasse, modules } = req.body;
-  if (!nom || !email || !motDePasse) {
-    return res.status(400).json({ success: false, message: "Tous les champs sont requis" });
-  }
-  try {
-    const hashedPassword = await bcrypt.hash(motDePasse, 10);
-
-    db.query(
-      "INSERT INTO utilisateurinscription (nom, email, motDePasse, modules) VALUES (?, ?, ?, ?)",
-      [nom, email, hashedPassword, modules],
-      (err, result) => {
-        if (err) {
-          console.error("Erreur SQL :", err);
-          return res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
-        }
-        res.json({ success: true, message: "Utilisateur créé avec succès !" });
-      }
-    );
-  } catch (error) {
-    console.error("Erreur lors du hachage du mot de passe :", error);
-    return res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
-  }
-});
 
 //faire la mise à jour du rôle d'un utilisateur grâce à l'email et le mot de passe (ex: responsable -> admin)
 app.put("/api/admin/update-user-role/:email", async (req, res) => {
