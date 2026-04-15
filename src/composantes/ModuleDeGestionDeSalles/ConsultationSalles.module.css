@@ -1,68 +1,119 @@
-.consultation_salles_page {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
+/* Suppression du dégradé pour que le composant s'intègre au panneau blanc à droite */
+.consultation_page {
+    width: 100%;
+    height: 100%;
+    background: transparent; /* On enlève le linear-gradient ici */
+    animation: fadeIn 0.3s ease;
 }
 
-.consultation_salles_container {
-  background: #fff;
-  border-radius: 15px;
-  padding: 2rem;
-  width: 400px;
-  max-width: 90%;
-  max-height: 500px;
-  overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  position: relative;
-  animation: slideDown 0.3s ease-out;
+.consultation_container {
+    width: 100%;
+    background: white;
+    padding: 20px;
+    /* On enlève les ombres et arrondis inutiles dans un panneau latéral */
+    border-radius: 0;
+    box-shadow: none; 
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.consultation_header {
+    text-align: left; /* Alignement à gauche plus naturel pour un panneau */
+    margin-bottom: 20px;
 }
 
-.consultation_salles_container h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  color: #333;
+.consultation_header h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.consultation_header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.filters_card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* On force une seule colonne pour les filtres car le panneau est étroit */
+.filters_grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.filter_group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 13px;
+}
+
+.filter_group input,
+.filter_group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.reset_btn {
+    width: 100%; /* Bouton pleine largeur */
+    margin-top: 15px;
+    background: #11677d;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.results_section {
+    margin-top: 10px;
+}
+
+.table_wrapper {
+    overflow-x: auto; /* Permet de scroller horizontalement si le panneau est trop petit */
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 .salles_table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.salles_table th, .salles_table td {
-  border: 1px solid #ccc;
-  padding: 0.75rem;
-  text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
 }
 
 .salles_table th {
-  background: #f5f5f5;
-  font-weight: 600;
+    background: #11677d;
+    color: white;
+    padding: 10px;
+    text-align: left;
 }
 
-.close_btn {
-    position: absolute;
-    top: 10px;
-    right: 40px;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #333;
+.salles_table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.orange_text {
+    color: #ff7b00;
     font-weight: bold;
 }
 
-.close_btn:hover {
-    color: #ff0000;
+.orange_badge {
+    background: #fff3e6;
+    color: #ff7b00;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

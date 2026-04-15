@@ -76,7 +76,6 @@ export default function PageCalendrier() {
   // États pour les modales de salles
   const [showAjouterSalle, setShowAjouterSalle] = useState(false);
   const [showModificationSalle, setShowModificationSalle] = useState(false);
-  const [showConsultationSalle, setShowConsultationSalle] = useState(false);
   const [showSuppressionSalle, setShowSuppressionSalle] = useState(false);
 
   //État pour stocker le prénom de l'utiilisateur
@@ -243,8 +242,7 @@ export default function PageCalendrier() {
                     <li><a onClick={(e) => { e.preventDefault(); setShowAjouterSalle(true); }} href="#">Ajouter une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowModificationSalle(true); }} href="#">Modifier une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowSuppressionSalle(true); }} href="#">Supprimer une salle</a></li>
-                    <li><a onClick={(e) => { e.preventDefault(); setShowConsultationSalle(true); }} href="#">Consulter une salle</a></li>
-                  </ul>
+                    <li><a onClick={(e) => { e.preventDefault(); handleMenuClick('consultationSalles'); }} href="#">Consulter une salle</a></li>                  </ul>
                 </li>
 
                 <li>
@@ -294,7 +292,13 @@ export default function PageCalendrier() {
               })}
             </div>
           </div>
-          
+
+          {activeView === 'consultationSalles' && (
+            <div className={styles.side_panel}>
+              <ConsultationSalles onClose={handleClosePanel} />
+            </div>
+          )}
+
           {activeView === 'ajoutCours' && (
             <div className={styles.side_panel}>
               <AjoutCours onSave={handleClosePanel} onCancel={handleClosePanel} />
@@ -372,7 +376,6 @@ export default function PageCalendrier() {
       {/* Modales */}
       {showAjouterSalle && <AjoutSalles onClose={() => setShowAjouterSalle(false)} />}
       {showModificationSalle && <ModificationSalles onClose={() => setShowModificationSalle(false)} />}
-      {showConsultationSalle && <ConsultationSalles onClose={() => setShowConsultationSalle(false)} />}
       {showSuppressionSalle && <SuppressionSalles onClose={() => setShowSuppressionSalle(false)} />}
 
       {showAjoutEvenement && (
@@ -405,7 +408,6 @@ export default function PageCalendrier() {
         </div>
       )}
 
-      {/*Ajouter le controle des pages ici */}
     </div>
   );
 
