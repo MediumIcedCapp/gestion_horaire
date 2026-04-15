@@ -33,6 +33,8 @@ import lettreZProfilePic from "../../assets/lettreZProfilePic.png";
 export default function PageAdministrateur() {
   const [formData, setFormData] = useState({
     nom: '',
+    prenom: '',
+    nomUtilisateur: '',
     email: '',
     motDePasse: '',
     modules: [] 
@@ -41,7 +43,6 @@ export default function PageAdministrateur() {
   const [adminName, setAdminName] = useState("");
   const navigate = useNavigate();
 
-  // Sécurité et récupération des données utilisateur
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('utilisateur'));
     if (!user || user.role !== 'administrateur') {
@@ -57,15 +58,10 @@ export default function PageAdministrateur() {
     { id: 'gestion_cours', label: 'Gestion des Cours' }
   ];
 
-  // Fonction pour gérer la photo de profil dynamique
   const getProfilePic = (name) => {
     if (!name) return lettreAProfilePic;
     const firstLetter = name.charAt(0).toUpperCase();
-    const pics = {
-      'A': lettreAProfilePic,
-      'Q': lettreQProfilePic,
-      // Ajoute d'autres lettres ici si nécessaire
-    };
+    const pics = { 'A': lettreAProfilePic, 'Q': lettreQProfilePic };
     return pics[firstLetter] || lettreAProfilePic;
   };
 
@@ -84,13 +80,15 @@ export default function PageAdministrateur() {
       const response = await fetch("http://localhost:5000/api/admin/create-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",  
         body: JSON.stringify({ ...formData, role: 'responsable' }),
       });
 
       const data = await response.json();
       if (data.success) {
         alert("Responsable administratif créé avec succès !");
-        setFormData({ nom: '', email: '', motDePasse: '', modules: [] });
+        // Reset du formulaire
+        setFormData({ nom: '', prenom: '', email: '', motDePasse: '', modules: [] });
       } else {
         alert(data.message);
       }
@@ -108,23 +106,16 @@ export default function PageAdministrateur() {
     <div className={styles.admin_page}>
       <header className={styles.header}>
         <div className={styles.header_content}>
-          
           <div className={styles.header_left}>
             <img src={Logo} alt="Logo" className={styles.logo_img} />
           </div>
-
           <div className={styles.header_center}>
             <h1>Portail Administrateur</h1>
           </div>
-
           <div className={styles.header_right}>
             <div className={styles.welcome_section}>
               <span className={styles.welcome_text}>Bonjour, {adminName}</span>
-              <img 
-                src={getProfilePic(adminName)} 
-                className={styles.user_profile_img} 
-                alt="Profil" 
-              />
+              <img src={getProfilePic(adminName)} className={styles.user_profile_img} alt="Profil" />
             </div>
             <button className={styles.logout_btn} onClick={handleLogout}>Déconnexion</button>
           </div>
@@ -137,17 +128,43 @@ export default function PageAdministrateur() {
           <p>Remplissez les informations et assignez les permissions.</p>
 
           <form onSubmit={handleSubmit} className={styles.admin_form}>
+            
+
+            <div className={styles.form_row}> 
+              <div className={styles.form_group}>
+                <label>Prénom</label>
+                <input 
+                  type="text" 
+                  placeholder="Prénom"
+                  value={formData.prenom}
+                  onChange={(e) => setFormData({...formData, prenom: e.target.value})}
+                  required 
+                />
+              </div>
+
+              <div className={styles.form_group}>
+                <label>Nom</label>
+                <input 
+                  type="text" 
+                  placeholder="Nom de famille"
+                  value={formData.nom}
+                  onChange={(e) => setFormData({...formData, nom: e.target.value})}
+                  required 
+                />
+              </div>
+            </div>
+
             <div className={styles.form_group}>
-              <label>Nom complet</label>
+              <label>Nom d'utilisateur</label>
               <input 
                 type="text" 
-                placeholder="Ex: Jean Dupont"
-                value={formData.nom}
-                onChange={(e) => setFormData({...formData, nom: e.target.value})}
+                placeholder="Ex: jdupont2026"
+                value={formData.nomUtilisateur}
+                onChange={(e) => setFormData({...formData, nomUtilisateur: e.target.value})}
                 required 
               />
             </div>
-
+            
             <div className={styles.form_group}>
               <label>Email professionnel</label>
               <input 

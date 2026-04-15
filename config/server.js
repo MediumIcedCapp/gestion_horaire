@@ -9,25 +9,33 @@ app.use(express.json());
 
 app.use(cors({
   origin: true, 
-  Credential: true
+  credentials: true
 }));
 
 app.use(session({
-  secret: 'une_cle_tres_secrete_et_unique_2026', // <--- Ajoute une vraie chaîne de caractères ici
+  secret: 'une_cle_tres_secrete_et_unique_2026', 
   resave: false,
   saveUninitialized: false,
   cookie: { 
     secure: false, // Garde false si tu n'es pas en HTTPS
     httpOnly: true, 
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000 
   }
 }));
 
 const authentificationAdministrateur = (req, res, next) => {
-    if (req.session && req.session.utilisateur && req.session.utilisateur.role === "administrateur") {
-        next(); // Autorisé
+    console.log("Session ID:", req.sessionID);
+    console.log("Utilisateur en session:", req.session.utilisateur);
+
+    if (req.session && req.session.utilisateur && 
+        req.session.utilisateur.role.toLowerCase() === "administrateur") {
+        next();
     } else {
-        res.status(403).json({ success: false, message: "Accès refusé: Administrateurs uniquement" });
+        res.status(403).json({ 
+            success: false, 
+            message: "Accès refusé: Administrateurs uniquement" 
+        });
     }
 };
 
@@ -59,6 +67,7 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // Connexion
+// Connexion dans server.js
 app.post("/api/login", async (req, res) => {
   const { email, motDePasse } = req.body;
   if (!email || !motDePasse) return res.status(400).json({ success: false, message: "Tous les champs sont requis" });
@@ -72,39 +81,56 @@ app.post("/api/login", async (req, res) => {
       const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
       if (!isPasswordValid) return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect" });
 
+      // Préparation de la session
       req.session.utilisateur = {
           id: user.id, 
           email: user.email,
-          role: user.role
+          role: user.role, 
+          prenom: user.prenom
       };
 
-      res.json({
-        success: true,
-        user: req.session.utilisateur
+      // ON SAUVEGARDE ET ON ENVOIE UNE SEULE RÉPONSE
+      req.session.save((err) => {
+          if (err) return res.status(500).json({ success: false, message: "Erreur session" });
+          // On s'assure d'arrêter l'exécution ici avec le return
+          return res.json({ 
+              success: true,
+              user: req.session.utilisateur
+          });
       });
+      // SURTOUT PAS DE res.json ICI
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// Création d'un responsable par l'Admin
 app.post("/api/admin/create-user", authentificationAdministrateur, async (req, res) => {
-    const { nom, email, motDePasse, modules } = req.body;
-    if (!nom || !email || !motDePasse) return res.status(400).json({ success: false, message: "Champs manquants" });
+    // On ajoute nomUtilisateur ici
+    const { nom, prenom, nomUtilisateur, email, motDePasse, modules } = req.body;
+
+    if (!nom || !prenom || !nomUtilisateur || !email || !motDePasse) {
+        return res.status(400).json({ 
+            success: false, 
+            message: "Champs manquants : nom, prenom, nom d'utilisateur, email ou mot de passe." 
+        });
+    }
 
     try {
         const hashedPassword = await bcrypt.hash(motDePasse, 10);
-        const modulesString = JSON.stringify(modules); // Stockage du tableau en texte
+        const modulesString = modules ? JSON.stringify(modules) : "[]";
 
-        db.query(
-            "INSERT INTO utilisateurinscription (nom, email, motDePasse, role, modules_assignes) VALUES (?, ?, ?, 'responsable', ?)",
-            [nom, email, hashedPassword, modulesString],
-            (err) => {
-                if (err) return res.status(500).json({ success: false, message: err.message });
-                res.json({ success: true, message: "Responsable créé avec succès !" });
+        // Ajout de nomUtilisateur dans la liste des colonnes et des paramètres
+        const sql = "INSERT INTO utilisateurinscription (nom, prenom, nomUtilisateur, email, motDePasse, role, modules_assignes) VALUES (?, ?, ?, ?, ?, 'responsable', ?)";
+        const values = [nom, prenom, nomUtilisateur, email, hashedPassword, modulesString];
+
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error("ERREUR SQL :", err.message);
+                return res.status(500).json({ success: false, message: err.message });
             }
-        );
+            res.json({ success: true, message: "Responsable créé avec succès !" });
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -377,31 +403,6 @@ app.get ('/', (request, response) => {
 });
 */
 
-//route pour que l'administrateur crée un responsable avec des modules spécifiques
-app.post("/api/admin/create-user", async (req, res) => {
-  const { nom, email, motDePasse, modules } = req.body;
-  if (!nom || !email || !motDePasse) {
-    return res.status(400).json({ success: false, message: "Tous les champs sont requis" });
-  }
-  try {
-    const hashedPassword = await bcrypt.hash(motDePasse, 10);
-
-    db.query(
-      "INSERT INTO utilisateurinscription (nom, email, motDePasse, modules) VALUES (?, ?, ?, ?)",
-      [nom, email, hashedPassword, modules],
-      (err, result) => {
-        if (err) {
-          console.error("Erreur SQL :", err);
-          return res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
-        }
-        res.json({ success: true, message: "Utilisateur créé avec succès !" });
-      }
-    );
-  } catch (error) {
-    console.error("Erreur lors du hachage du mot de passe :", error);
-    return res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
-  }
-});
 
 //faire la mise à jour du rôle d'un utilisateur grâce à l'email et le mot de passe (ex: responsable -> admin)
 app.put("/api/admin/update-user-role/:email", async (req, res) => {
