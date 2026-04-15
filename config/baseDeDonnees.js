@@ -4,7 +4,7 @@ import mysql from "mysql2";
 const baseDeDonnees = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Arbre1.2.3", 
+  password: "", 
   database: "gestion_horaire"
 });
 
