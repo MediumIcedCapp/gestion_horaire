@@ -89,17 +89,17 @@ app.post("/api/login", async (req, res) => {
 });
 
 // Création d'un responsable par l'Admin
-app.post("/api/admin/create-user", authentificationAdministrateur, async (req, res) => {
-    const { nom, email, motDePasse, modules } = req.body;
-    if (!nom || !email || !motDePasse) return res.status(400).json({ success: false, message: "Champs manquants" });
+app.post("/api/admin/create-user", async (req, res) => {
+    const { prenom, nom, email, motDePasse, modules } = req.body;
+    if (!prenom || !nom || !email || !motDePasse) return res.status(400).json({ success: false, message: "Champs manquants" });
 
     try {
         const hashedPassword = await bcrypt.hash(motDePasse, 10);
         const modulesString = JSON.stringify(modules); // Stockage du tableau en texte
 
         db.query(
-            "INSERT INTO utilisateurinscription (nom, email, motDePasse, role, modules_assignes) VALUES (?, ?, ?, 'responsable', ?)",
-            [nom, email, hashedPassword, modulesString],
+            "INSERT INTO utilisateurinscription (prenom, nom, email, motDePasse, role, modules_assignes) VALUES (?, ?, ?, ?, 'responsable', ?)",
+            [prenom, nom, email, hashedPassword, modulesString],
             (err) => {
                 if (err) return res.status(500).json({ success: false, message: err.message });
                 res.json({ success: true, message: "Responsable créé avec succès !" });
@@ -525,6 +525,7 @@ app.post("/api/admin/create-user", async (req, res) => {
     return res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
   }
 });
+//
 
 //faire la mise à jour du rôle d'un utilisateur grâce à l'email et le mot de passe (ex: responsable -> admin)
 app.put("/api/admin/update-user-role/:email", async (req, res) => {
