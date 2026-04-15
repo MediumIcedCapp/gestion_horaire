@@ -12,6 +12,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   l'état de soumission et la date d'aujourd'hui pour la validation*/
   const [coursList, setCoursList] = useState([]);
   const [sallesList, setSallesList] = useState([]);
+  const [professeursList, setProfesseursList] = useState([]);
   
   // Date d'aujourd'hui pour la validation (format YYYY-MM-DD)
   const todayStr = new Date().toISOString().split('T')[0];
@@ -21,6 +22,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     date: selectedDate ? selectedDate.toISOString().split('T')[0] : todayStr,
     cours: "",
     salle: "",
+    professeur: "",
     heureDebut: "08:00",
     heureFin: "11:00"
   });
@@ -31,14 +33,18 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   useEffect(() => {
     Promise.all([
       fetch("http://localhost:5000/api/cours").then(res => res.json()),
-      fetch("http://localhost:5000/api/salles").then(res => res.json())
+      fetch("http://localhost:5000/api/salles").then(res => res.json()),
+      fetch("http://localhost:5000/api/professeurs").then(res => res.json())
     ])
-    .then(([coursData, sallesData]) => {
+    .then(([coursData, sallesData, professeursData]) => {
       setCoursList(coursData);
       setSallesList(sallesData);
+      setProfesseursList(professeursData);
     })
     .catch(err => console.error("Erreur de chargement:", err));
   }, []);
+
+  
 
   // Fonction pour gérer les changements dans les champs du formulaire et mettre à jour le state
   const handleChange = (e) => {
@@ -144,6 +150,24 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
               </select>
             </div>
 
+            {/* Champ de sélection pour les Professeurs */}
+            <div className={styles.form_group}>
+              <label>Professeur</label>
+              <select 
+                name="professeur" 
+                required 
+                value={formData.professeur} 
+                onChange={handleChange}
+              >
+                <option value="">-- Choisir un professeur --</option>
+                {professeursList.map(p => (
+                  <option key={p.martricule} value={p.martricule}>
+                    {p.prenom} {p.nom} ({p.specialite})
+                  </option>
+                ))}
+              </select>
+            </div>
+            
             {/* Champ de sélection pour les salles, avec des options chargées depuis l'API */}
             <div className={styles.form_group}>
               <label>Salle</label>

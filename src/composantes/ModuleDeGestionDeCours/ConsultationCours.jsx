@@ -8,36 +8,29 @@ import styles from "./ConsultationCours.module.css";
 
 // Composante pour consulter les cours avec des filtres dynamiques
 export default function ConsultationCours() {
-
-  // State pour stocker les cours, les cours filtrés, l'état de chargement et les critères de filtrage
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
     programme: "",
-    etapeEtude: "",
+    etapeEtude: "", // On garde ce nom pour le state du filtre (le <select>)
     duree: "",
     typeSalle: "",
     periode: ""
   });
 
-  // Listes de valeurs pour les filtres de type salle, étape d'étude et période
   const typesSalle = ["Laboratoire", "Salle de cours", "Amphithéâtre", "Salle informatique"];
   const etapes = ["1", "2", "3", "4", "5", "6"];
-  const periodes = ["Matin", "Après-midi", "Soir"];
 
-  // Chargement initial des cours depuis l'API au montage de la composante
   useEffect(() => {
     fetchCours();
   }, []);
 
-  // Fonction pour récupérer les cours depuis l'API et gérer l'état de chargement
   const fetchCours = async () => {
     setIsLoading(true);
     try {
       const response = await fetch("http://localhost:5000/api/cours");
       const data = await response.json();
-      // On s'adapte à la structure de ta réponse API
       const coursData = Array.isArray(data) ? data : (data.cours || []);
       setCours(coursData);
       setFilteredCours(coursData);
@@ -48,58 +41,46 @@ export default function ConsultationCours() {
     }
   };
 
-  // Logique de filtrage dynamique
+  // UN SEUL useEffect pour le filtrage (CORRIGÉ)
   useEffect(() => {
     const result = cours.filter((item) => {
       return (
         (filters.programme === "" || 
           item.programme?.toLowerCase().includes(filters.programme.toLowerCase())) &&
+        // On compare la valeur du filtre (etapeEtude) avec la colonne DB (etape)
         (filters.etapeEtude === "" || 
-          String(item.etapeEtude) === String(filters.etapeEtude)) &&
+          String(item.etape) === String(filters.etapeEtude)) &&
         (filters.duree === "" || 
           Number(item.duree) === Number(filters.duree)) &&
         (filters.typeSalle === "" || 
-          item.typeSalle === filters.typeSalle) &&
-        (filters.periode === "" || 
-          item.periode === filters.periode)
+          item.typeSalle === filters.typeSalle)
       );
     });
     setFilteredCours(result);
   }, [filters, cours]);
 
-  // Fonction pour gérer les changements dans les champs de filtrage et mettre à jour le state des filtres
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Fonction pour réinitialiser tous les filtres et afficher à nouveau tous les cours
   const resetFilters = () => {
     setFilters({ programme: "", etapeEtude: "", duree: "", typeSalle: "", periode: "" });
   };
 
-  // Rendu de la page de consultation des cours avec les filtres et le tableau des résultats
   return (
     <div className={styles.consultation_page}>
-      {/* Conteneur principal pour la consultation des cours avec filtres et résultats */}
       <div className={styles.consultation_container}>
         <div className={styles.consultation_header}>
           <h2>Consultation des cours</h2>
           <p>Utilisez les filtres pour affiner les résultats en temps réel.</p>
         </div>
 
-        {/* Section des Filtres */}
         <div className={styles.filters_card}>
           <div className={styles.filters_grid}>
             <div className={styles.filter_group}>
               <label>Programme</label>
-              <input 
-                type="text" 
-                name="programme" 
-                value={filters.programme} 
-                onChange={handleFilterChange} 
-                placeholder="Rechercher..." 
-              />
+              <input type="text" name="programme" value={filters.programme} onChange={handleFilterChange} placeholder="Rechercher..." />
             </div>
 
             <div className={styles.filter_group}>
@@ -112,13 +93,7 @@ export default function ConsultationCours() {
 
             <div className={styles.filter_group}>
               <label>Durée (h)</label>
-              <input 
-                type="number" 
-                name="duree" 
-                value={filters.duree} 
-                onChange={handleFilterChange} 
-                placeholder="H" 
-              />
+              <input type="number" name="duree" value={filters.duree} onChange={handleFilterChange} placeholder="H" />
             </div>
 
             <div className={styles.filter_group}>
@@ -132,12 +107,8 @@ export default function ConsultationCours() {
           <button className={styles.reset_btn} onClick={resetFilters}>Réinitialiser les filtres</button>
         </div>
 
-        {/* Tableau des Résultats */}
         <div className={styles.results_section}>
-          <div className={styles.results_count}>
-            {filteredCours.length} cours trouvés
-          </div>
-          
+          <div className={styles.results_count}>{filteredCours.length} cours trouvés</div>
           <div className={styles.table_wrapper}>
             <table className={styles.cours_table}>
               <thead>
@@ -159,7 +130,7 @@ export default function ConsultationCours() {
                       <td className={styles.orange_text}><strong>{c.code}</strong></td>
                       <td>{c.nomDuCours}</td>
                       <td>{c.programme}</td>
-                      <td><span className={styles.orange_badge}>Étape {c.etapeEtude}</span></td>
+                      <td><span className={styles.orange_badge}>Étape {c.etape}</span></td>
                       <td>{c.duree} h</td>
                       <td>{c.typeSalle}</td>
                     </tr>
