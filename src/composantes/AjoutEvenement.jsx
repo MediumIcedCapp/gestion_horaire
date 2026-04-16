@@ -1,4 +1,4 @@
-//Résumé du fichier: 
+
 //  Autheur: Queren D
 //  Tâche: Ajouter une composante pour ajouter un événement au calendrier en sélectionnant un cours, une salle, une date et une heure de début/fin.
 
