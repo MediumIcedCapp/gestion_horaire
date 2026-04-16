@@ -77,7 +77,9 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
       return false;
     }
 
-    // Vérification de la cohérence Début/Fin
+    //if (formData.professeur)
+
+    // 3. Vérification de la cohérence Début/Fin
     if (formData.heureDebut >= formData.heureFin) {
       alert("L'heure de fin doit être après l'heure de début.");
       return false;

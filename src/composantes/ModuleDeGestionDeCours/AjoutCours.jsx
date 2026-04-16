@@ -13,7 +13,7 @@ export default function AjoutCours({ onSave, onCancel }) {
     code: "",
     duree: "",
     programme: "",
-    etape: "",
+    etapeEtude: "",
     typeSalle: ""
   });
 
@@ -59,7 +59,7 @@ export default function AjoutCours({ onSave, onCancel }) {
             code: formData.code,
             duree: Number(formData.duree),      
             programme: formData.programme,
-            etape: Number(formData.etape),      
+            etape: Number(formData.etapeEtude),     
             typeSalle: formData.typeSalle
           }),
         });
