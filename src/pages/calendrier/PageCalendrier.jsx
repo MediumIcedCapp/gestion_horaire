@@ -254,7 +254,7 @@ export default function PageCalendrier() {
                       setToggleMenu(false);
                     }}
                   >
-                    Ajout d'un événement
+                    Plages et Affectations
                   </a>
                 </li>
 

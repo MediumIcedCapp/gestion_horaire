@@ -13,6 +13,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   const [coursList, setCoursList] = useState([]);
   const [sallesList, setSallesList] = useState([]);
   const [professeursList, setProfesseursList] = useState([]);
+  const [evenementsExistants, setEvenementsExistants] = useState([]);  
   
   // Date d'aujourd'hui pour la validation (format YYYY-MM-DD)
   const todayStr = new Date().toISOString().split('T')[0];
@@ -22,6 +23,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     date: selectedDate ? selectedDate.toISOString().split('T')[0] : todayStr,
     cours: "",
     salle: "",
+    capacite: "",
     professeur: "",
     heureDebut: "08:00",
     heureFin: "11:00"
@@ -52,7 +54,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Fonction pour valider les données du formulaire avant soumission, en vérifiant la date et les heures
+  // Fonction pour valider les données du formulaire avant soumission, en vérifiant la date, les heures, les salles, les disponibilités des professeurs, etc. 
   const validateTime = () => {
     const now = new Date();
     
@@ -63,21 +65,56 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     // On combine la date et l'heure de début pour faire une validation complète
     const selectedFullDate = new Date(year, month - 1, day, h, m, 0, 0);
 
-    // 1. Vérification de la date (ne peut pas être dans le passé)
+    // Vérification de la date (ne peut pas être dans le passé)
     if (formData.date < todayStr) {
       alert("La date sélectionnée ne peut pas être dans le passé.");
       return false;
     }
 
-    // 2. Vérification de l'heure de début (ne peut pas être dans le passé si la date est aujourd'hui)
+    // Vérification de l'heure de début (ne peut pas être dans le passé si la date est aujourd'hui)
     if (formData.date === todayStr && selectedFullDate < now) {
       alert("L'heure de début est déjà passée pour aujourd'hui.");
       return false;
     }
 
-    // 3. Vérification de la cohérence Début/Fin
+    // Vérification de la cohérence Début/Fin
     if (formData.heureDebut >= formData.heureFin) {
       alert("L'heure de fin doit être après l'heure de début.");
+      return false;
+    }
+    const professeur = professeursList.find(p => String(p.matricule) === String(formData.professeur));
+    const coursSelectionne = coursList.find(c => String(c.nomDuCours) === String(formData.cours));
+    
+    if (!professeur) {
+      alert("Veuillez sélectionner un professeur.");
+      return false;
+    }
+
+    if (professeur.disponibilite === "Indisponible") {
+      alert(`Le professeur ${professeur.nom} est marqué comme indisponible.`);
+      return false;
+    }
+
+    if (coursSelectionne && professeur.specialite) {
+      const specialiteCours = coursSelectionne.nomDuCours.trim().toLowerCase();
+      const specialiteProf = professeur.specialite.trim().toLowerCase();
+      if (specialiteCours !== specialiteProf) {
+        alert(`Incompatibilité : Ce cours nécessite la spécialité '${coursSelectionne.nomDuCours}', mais le professeur est spécialisé en '${professeur.specialite}'.`);
+        return false;
+      }
+    }
+
+    const estOccupe = evenementsExistants.some(e => {
+      return (
+        String(e.professeur) === String(formData.professeur) &&
+        e.date === formData.date &&
+        ((formData.heureDebut >= e.heureDebut && formData.heureDebut < e.heureFin) ||
+         (formData.heureFin > e.heureDebut && formData.heureFin <= e.heureFin))
+      );
+    });
+
+    if (estOccupe) {
+      alert("Ce professeur est déjà assigné à un autre cours sur cette plage horaire.");
       return false;
     }
 
@@ -120,7 +157,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
         {/* Conteneur principal pour le formulaire d'ajout d'événement */}
         <div className={styles.modal_card}>
           <div className={styles.modal_header}>
-            <h2>Programmer un cours</h2>
+            <h2>Plages et Affectations</h2>
             <button className={styles.close_btn} onClick={onClose}>&times;</button>
           </div>
           {/* Formulaire pour saisir les détails de l'événement, avec des champs pour la date, le cours, la salle et les heures de début/fin */}
@@ -161,13 +198,13 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
               >
                 <option value="">-- Choisir un professeur --</option>
                 {professeursList.map(p => (
-                  <option key={p.martricule} value={p.martricule}>
+                  <option key={p.matricule} value={p.matricule}>
                     {p.prenom} {p.nom} ({p.specialite})
                   </option>
                 ))}
               </select>
             </div>
-            
+
             {/* Champ de sélection pour les salles, avec des options chargées depuis l'API */}
             <div className={styles.form_group}>
               <label>Salle</label>

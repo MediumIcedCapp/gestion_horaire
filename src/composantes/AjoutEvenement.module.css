@@ -36,7 +36,7 @@
 
 .form_group { margin-bottom: 15px; display: flex; flex-direction: column; }
 
-.form_group label { font-size: 13px; font-weight: 600; color: #f57c00; margin-bottom: 5px; }
+.form_group label { font-size: 13px; font-weight: 600; color: #11677d; margin-bottom: 5px; }
 
 .form_group input, .form_group select {
   padding: 10px;
@@ -62,7 +62,7 @@
 .confirm_btn {
   flex: 2;
   padding: 12px;
-  background: #ff9800; 
+  background: #11677d; 
   color: white;
   border: none;
   border-radius: 6px;
@@ -70,4 +70,5 @@
   cursor: pointer;
 }
 
-.confirm_btn:hover { background: #e68a00; }
+.confirm_btn:hover { background: #0d7792; }
+
