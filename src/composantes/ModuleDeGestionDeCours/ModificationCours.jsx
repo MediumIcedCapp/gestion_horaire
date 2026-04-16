@@ -183,13 +183,13 @@ export default function ModificationCours({ onSave, onCancel }) {
               {/* Menu déroulant pour sélectionner l'étape d'étude, avec validation et affichage des erreurs */}
               <div className={styles.form_group}>
                 <div className={styles.input_wrapper}>
-                  <select name="etapeEtude" required value={formData.etapeEtude} onChange={handleChange}>
+                  <select name="etapeEtude" required value={formData.etape} onChange={handleChange}>
                     <option value=""></option>
                     {etapes.map((e) => <option key={e} value={e}>Étape {e}</option>)}
                   </select>
                   <label>Étape d'étude</label>
                 </div>
-                {errors.etapeEtude && <span className={styles.error_message}>{errors.etapeEtude}</span>}
+                {errors.etape && <span className={styles.error_message}>{errors.etape}</span>}
               </div>
 
               {/* Menu déroulant pour sélectionner le type de salle, avec validation et affichage des erreurs */}
