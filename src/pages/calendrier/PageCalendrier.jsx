@@ -167,7 +167,6 @@ export default function PageCalendrier() {
       
       // mise à jour la date sélectionnée (pour charger les événements existants)
       setSelectedDate(fullDate);
-      setShowAjoutEvenement(true);
     }
   };
 

@@ -445,6 +445,16 @@ body {
   margin-bottom: 2rem;
 }
 
+.event_card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
 .event_item { 
   display: flex; 
   gap: 1rem; 
