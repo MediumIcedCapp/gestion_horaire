@@ -423,6 +423,13 @@ body {
   border: 2px solid #333; 
 }
 
+.calendar_day.selected_day {
+  background: #ffcc80;
+  color: #333;
+  font-weight: bold;
+  border: 2px solid #eea71a;
+}
+
 .today_event { 
   flex: none; 
   width: 500px; 
