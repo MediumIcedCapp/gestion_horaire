@@ -26,8 +26,10 @@ import SuppressionProfesseurs from '../../composantes/ModuleDeGestionDeProfesseu
 import ConsultationProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/ConsultationProfesseurs.jsx';
 import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/DisponibilitesProfesseurs.jsx';
 
-// Import du nouveau composant d'événement
-import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
+// Import du nouveau composant d'affectation des professeurs aux cours
+import AjoutEvenement from '../../composantes/Affectations/AjoutEvenement.jsx';
+
+
 // Import de la page administrateur 
 import PageAdministrateur from '../pageAdministrateur/pageAdministrateur.jsx';
 
@@ -80,6 +82,7 @@ export default function PageCalendrier() {
 
   //État pour stocker le prénom de l'utiilisateur
   const [prenom, setPrenom] = useState("");
+  const [modulesAssignes, setModulesAssignes] = useState([]);
 
 
   // Fonction pour récupérer les événements depuis l'API
@@ -108,6 +111,9 @@ export default function PageCalendrier() {
         .then(data => {
           if (data.success && data.utilisateur) {
             setPrenom(data.utilisateur.prenom || "");
+            // Parse the JSON string to an array
+            const modules = JSON.parse(data.utilisateur.modules_assignes || '[]');
+            setModulesAssignes(modules);
           }
         })
         .catch(err => console.error("Erreur profil:", err));
@@ -163,7 +169,6 @@ export default function PageCalendrier() {
       
       // mise à jour la date sélectionnée (pour charger les événements existants)
       setSelectedDate(fullDate);
-      setShowAjoutEvenement(true);
     }
   };
 
@@ -220,6 +225,8 @@ export default function PageCalendrier() {
             <div className={styles.dropdown_elements}>
               <ul>
                 <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('calendrier'); }}>Calendrier</a></li>
+
+                {modulesAssignes.includes("gestion_cours") && (
                 <li><a href="#">Gérer un cours</a>
                   <ul className={styles.submenu}>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('ajoutCours'); }}>Ajouter un cours</a></li>
@@ -228,6 +235,9 @@ export default function PageCalendrier() {
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationCours'); }}>Consulter un cours</a></li>
                   </ul>
                 </li>
+                )}
+                
+                {modulesAssignes.includes("gestion_professeur") && (
                 <li><a href="#">Gérer un professeur</a>
                   <ul className={styles.submenu}>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('ajoutProfesseurs'); }}>Ajouter un professeur</a></li>
@@ -237,26 +247,27 @@ export default function PageCalendrier() {
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('disponibilitesProfesseurs'); }}>Gérer les disponibilités</a></li>
                   </ul>
                 </li>
+                )}
+                
+                {modulesAssignes.includes("gestion_salles") && (
                 <li><a href="#">Gérer une salle</a>
                   <ul className={styles.submenu}>
                     <li><a onClick={(e) => { e.preventDefault(); setShowAjouterSalle(true); }} href="#">Ajouter une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowModificationSalle(true); }} href="#">Modifier une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowSuppressionSalle(true); }} href="#">Supprimer une salle</a></li>
-                    <li><a onClick={(e) => { e.preventDefault(); handleMenuClick('consultationSalles'); }} href="#">Consulter une salle</a></li>                  </ul>
+                    <li><a onClick={(e) => { e.preventDefault(); handleMenuClick('consultationSalles'); }} href="#">Consulter une salle</a></li>                  
+                  </ul>
                 </li>
+                )}
 
-                <li>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowAjoutEvenement(true);
-                      setToggleMenu(false);
-                    }}
-                  >
-                    Plages et Affectations
-                  </a>
+                {modulesAssignes.includes("affectation_professeurs_cours") && (
+              
+                <li><a href='#'> Plages et affectations </a>
+                  <ul className={styles.submenu}>
+                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs</a></li>
+                  </ul>
                 </li>
+               )}   
 
                 <li>
                   <a href="#" onClick={(e) => { e.preventDefault(); handleDeconnexion(); }}>Déconnexion</a>
