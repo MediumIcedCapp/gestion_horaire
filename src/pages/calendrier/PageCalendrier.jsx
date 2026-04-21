@@ -242,20 +242,15 @@ export default function PageCalendrier() {
                     <li><a onClick={(e) => { e.preventDefault(); setShowAjouterSalle(true); }} href="#">Ajouter une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowModificationSalle(true); }} href="#">Modifier une salle</a></li>
                     <li><a onClick={(e) => { e.preventDefault(); setShowSuppressionSalle(true); }} href="#">Supprimer une salle</a></li>
-                    <li><a onClick={(e) => { e.preventDefault(); handleMenuClick('consultationSalles'); }} href="#">Consulter une salle</a></li>                  </ul>
+                    <li><a onClick={(e) => { e.preventDefault(); handleMenuClick('consultationSalles'); }} href="#">Consulter une salle</a></li>                  
+                  </ul>
                 </li>
 
-                <li>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowAjoutEvenement(true);
-                      setToggleMenu(false);
-                    }}
-                  >
-                    Ajout d'un événement
-                  </a>
+                <li><a href='#'> Ajout d'un événement </a>
+                  <ul className={styles.submenu}>
+                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des cours aux emplois du temps</a></li>
+                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs aux cours</a></li>
+                  </ul>
                 </li>
 
                 <li>
