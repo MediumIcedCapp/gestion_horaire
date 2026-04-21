@@ -4,6 +4,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AjoutEvenement.module.css";
 
+// Import du module de validation des conflits
+import { validerEvenementComplet } from '../affectations/AffectationCoursEmploisDuTemps.js';
+
+// Composante pour ajouter un événement au calendrier en sélectionnant un cours, une salle, une date et une heure de début/fin
 export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   const [coursList, setCoursList] = useState([]);
   const [sallesList, setSallesList] = useState([]);
@@ -65,6 +69,41 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
       alert("L'heure de fin doit être après l'heure de début.");
       return false;
     }
+    const professeur = professeursList.find(p => String(p.matricule) === String(formData.professeur));
+    const coursSelectionne = coursList.find(c => String(c.nomDuCours) === String(formData.cours));
+    
+    if (!professeur) {
+      alert("Veuillez sélectionner un professeur.");
+      return false;
+    }
+
+    if (professeur.disponibilite === "Indisponible") {
+      alert(`Le professeur ${professeur.nom} est marqué comme indisponible.`);
+      return false;
+    }
+
+    if (coursSelectionne && professeur.specialite) {
+      const specialiteCours = coursSelectionne.nomDuCours.trim().toLowerCase();
+      const specialiteProf = professeur.specialite.trim().toLowerCase();
+      if (specialiteCours !== specialiteProf) {
+        alert(`Incompatibilité : Ce cours nécessite la spécialité '${coursSelectionne.nomDuCours}', mais le professeur est spécialisé en '${professeur.specialite}'.`);
+        return false;
+      }
+    }
+
+    const estOccupe = evenementsExistants.some(e => {
+      return (
+        String(e.professeur) === String(formData.professeur) &&
+        e.date === formData.date &&
+        ((formData.heureDebut >= e.heureDebut && formData.heureDebut < e.heureFin) ||
+         (formData.heureFin > e.heureDebut && formData.heureFin <= e.heureFin))
+      );
+    });
+
+    if (estOccupe) {
+      alert("Ce professeur est déjà assigné à un autre cours sur cette plage horaire.");
+      return false;
+    }
 
     const professeur = professeursList.find(p => String(p.matricule) === String(formData.professeur));
     const coursSelectionne = coursList.find(c => String(c.nomDuCours) === String(formData.cours));
@@ -115,6 +154,34 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
 
     setIsSubmitting(true);
     try {
+      // Validation complète des conflits d'horaire
+      const validationResult = await validerEvenementComplet(formData);
+
+      if (!validationResult.isValid) {
+        // Afficher les erreurs de validation
+        let messageErreur = "Erreurs de validation:\n";
+
+        if (validationResult.erreurs && validationResult.erreurs.length > 0) {
+          messageErreur += "\nErreurs de données:\n" + validationResult.erreurs.join("\n");
+        }
+
+        if (validationResult.conflits && validationResult.conflits.hasConflicts) {
+          messageErreur += "\n\nConflits détectés:";
+
+          if (validationResult.conflits.salle.length > 0) {
+            messageErreur += "\n\nConflits de salle:";
+            validationResult.conflits.salle.forEach(conflit => {
+              messageErreur += `\n• ${conflit.message}`;
+            });
+          }
+        }
+
+        alert(messageErreur);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Si validation réussie, procéder à l'envoi
       const response = await fetch("http://localhost:5000/api/evenements", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -125,9 +192,12 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
         alert("Événement ajouté et professeur affecté avec succès !");
         if (onSave) onSave();
         onClose();
+      } else {
+        alert("Erreur lors de l'ajout de l'événement");
       }
     } catch (err) {
-      alert("Erreur lors de l'ajout de l'événement");
+      console.error("Erreur:", err);
+      alert("Erreur lors de la validation ou de l'ajout de l'événement");
     } finally {
       setIsSubmitting(false);
     }

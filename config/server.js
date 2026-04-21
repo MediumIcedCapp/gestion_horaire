@@ -115,7 +115,7 @@ app.get("/api/utilisateur/:email", (req, res) => {
   const email = req.params.email;
 
   db.query(
-    "SELECT nom, prenom, nomUtilisateur, email FROM utilisateurinscription WHERE email = ?",
+    "SELECT nom, prenom, nomUtilisateur, email, modules_assignes FROM utilisateurinscription WHERE email = ?",
     [email],
     (err, results) => {
       if (err) return res.status(500).json({ success: false, message: err.message });
