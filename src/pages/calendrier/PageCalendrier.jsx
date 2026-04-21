@@ -26,8 +26,10 @@ import SuppressionProfesseurs from '../../composantes/ModuleDeGestionDeProfesseu
 import ConsultationProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/ConsultationProfesseurs.jsx';
 import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/DisponibilitesProfesseurs.jsx';
 
-// Import du nouveau composant d'événement
-import AjoutEvenement from '../../composantes/AjoutEvenement.jsx';
+// Import du nouveau composant d'affectation des professeurs aux cours
+import AjoutEvenement from '../../composantes/Affectations/AjoutEvenement.jsx';
+
+
 // Import de la page administrateur 
 import PageAdministrateur from '../pageAdministrateur/pageAdministrateur.jsx';
 
@@ -258,12 +260,14 @@ export default function PageCalendrier() {
                 </li>
                 )}
 
-                <li><a href='#'> Plages et Affectations </a>
+                {modulesAssignes.includes("affectation_professeurs_cours") && (
+              
+                <li><a href='#'> Plages et affectations </a>
                   <ul className={styles.submenu}>
-                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des cours aux emplois du temps</a></li>
-                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs aux cours</a></li>
+                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs</a></li>
                   </ul>
                 </li>
+               )}   
 
                 <li>
                   <a href="#" onClick={(e) => { e.preventDefault(); handleDeconnexion(); }}>Déconnexion</a>
