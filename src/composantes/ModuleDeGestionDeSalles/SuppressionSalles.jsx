@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './SuppressionSalles.module.css';
+import Swal from 'sweetalert2';
 
 export default function SuppressionSalles({ onClose }) {
     const [salles, setSalles] = useState([]);
@@ -18,7 +19,26 @@ export default function SuppressionSalles({ onClose }) {
     const handleDelete = async () => {
         //Alerte si aucune salle est selectionner
         if (!selectedSalleId) {
-            alert("Veuillez sélectionner une salle");
+            Swal.fire({
+                title: 'Erreur',
+                text: 'Veuillez sélectionner une salle',
+                icon: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#ffffff',
+                color: '#333',
+                iconColor: '#e4e8d6',
+                customClass: {
+                    popup: 'pop-up-toast',
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
             return;
         }
 
@@ -30,15 +50,72 @@ export default function SuppressionSalles({ onClose }) {
 
             const data = await response.json();
             if (response.ok) {
-                alert('Salle supprimée avec succès !');
+                Swal.fire({
+                    title: 'Suppression réussie',
+                    text: 'Salle supprimée avec succès !',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    color: '#333',
+                    iconColor: '#e4e8d6',
+                    customClass: {
+                        popup: 'pop-up-toast',
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
                 onClose();
 
             } else {
-                alert('Erreur: ' + data.message);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Erreur lors de la suppression de la salle.',
+                    icon: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    color: '#333',
+                    iconColor: '#e4e8d6',
+                    customClass: {
+                        popup: 'pop-up-toast',
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
             }
         } catch (error) {
             console.error(error);
-            alert('Erreur de connexion au serveur');
+            Swal.fire({
+                title: 'Erreur',
+                text: 'Erreur de connexion au serveur',
+                icon: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#ffffff',
+                color: '#333',
+                iconColor: '#e4e8d6',
+                customClass: {
+                    popup: 'pop-up-toast',
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         }
     };
 
