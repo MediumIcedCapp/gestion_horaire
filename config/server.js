@@ -466,12 +466,126 @@ app.put('/api/professeurs/:id/disponibilites', (req, res) => {
 
 // Enregistrer un nouvel événement
 app.post('/api/evenements', (req, res) => {
-    const { date, cours, salle, heureDebut, heureFin } = req.body;
-    const sql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES (?, ?, ?, ?, ?)";
-    
-    db.query(sql, [date, cours, salle, heureDebut, heureFin], (err, result) => {
-        if (err) return res.status(500).json(err);
-        res.status(200).json({ message: "Événement ajouté !" });
+    const { date, cours, salle, heureDebut, heureFin, professeur } = req.body;
+
+    if (!date || !cours || !salle || !heureDebut || !heureFin) {
+      return res.status(400).json({ message: 'Champs obligatoires manquants.' });
+    }
+
+    // Cas 1: Affectation d'un professeur a un cours deja planifie -> on met a jour au lieu d'inserer
+    if (professeur !== undefined && String(professeur).trim() !== '') {
+      const resolveProfessorColumnSql = `
+        SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'ajoutEvenement'
+          AND COLUMN_NAME IN ('professeur', 'idProfesseur', 'matriculeProfesseur', 'professeurId')
+      `;
+
+      db.query(resolveProfessorColumnSql, (columnErr, columnRows) => {
+        if (columnErr) {
+          return res.status(500).json({
+            message: "Erreur lors de la vérification de la colonne d'affectation du professeur.",
+            details: columnErr.sqlMessage || columnErr.message
+          });
+        }
+
+        const preferredOrder = ['professeur', 'idProfesseur', 'matriculeProfesseur', 'professeurId'];
+        const existingColumns = (columnRows || []).map((row) => row.COLUMN_NAME);
+        const assignProfessorToMatchingEvent = (professeurColumn) => {
+          const findSql = `
+            SELECT evenementId
+            FROM ajoutEvenement
+            WHERE date = ? AND cours = ? AND salle = ? AND heureDebut = ? AND heureFin = ?
+            ORDER BY evenementId ASC
+            LIMIT 1
+          `;
+
+          db.query(findSql, [date, cours, salle, heureDebut, heureFin], (findErr, rows) => {
+            if (findErr) {
+              return res.status(500).json({
+                message: "Erreur lors de la recherche du cours planifié.",
+                details: findErr.sqlMessage || findErr.message
+              });
+            }
+
+            const assignToEvent = (eventId) => {
+              const updateSql = `UPDATE ajoutEvenement SET \`${professeurColumn}\` = ? WHERE evenementId = ?`;
+              db.query(updateSql, [professeur, eventId], (updateErr) => {
+                if (updateErr) {
+                  return res.status(500).json({
+                    message: "Erreur lors de l'enregistrement de l'affectation du professeur.",
+                    details: updateErr.sqlMessage || updateErr.message
+                  });
+                }
+                res.status(200).json({ message: 'Professeur affecté avec succès !' });
+              });
+            };
+
+            if (rows && rows.length > 0) {
+              assignToEvent(rows[0].evenementId);
+              return;
+            }
+
+            const fallbackSql = `
+              SELECT evenementId
+              FROM ajoutEvenement
+              WHERE date = ? AND cours = ?
+              ORDER BY
+                CASE WHEN salle = ? THEN 0 ELSE 1 END,
+                CASE WHEN heureDebut = ? AND heureFin = ? THEN 0 ELSE 1 END,
+                evenementId ASC
+              LIMIT 1
+            `;
+
+            db.query(fallbackSql, [date, cours, salle, heureDebut, heureFin], (fallbackErr, fallbackRows) => {
+              if (fallbackErr) {
+                return res.status(500).json({
+                  message: "Erreur lors de la recherche de secours du cours planifié.",
+                  details: fallbackErr.sqlMessage || fallbackErr.message
+                });
+              }
+
+              if (!fallbackRows || fallbackRows.length === 0) {
+                return res.status(404).json({
+                  message: "Aucun cours planifié correspondant n'a été trouvé pour affecter ce professeur."
+                });
+              }
+
+              assignToEvent(fallbackRows[0].evenementId);
+            });
+          });
+        };
+
+        const professeurColumn = preferredOrder.find((col) => existingColumns.includes(col));
+        if (professeurColumn) {
+          assignProfessorToMatchingEvent(professeurColumn);
+          return;
+        }
+
+        const addProfessorColumnSql = "ALTER TABLE ajoutEvenement ADD COLUMN professeur VARCHAR(255) NULL";
+        db.query(addProfessorColumnSql, (alterErr) => {
+          if (alterErr) {
+            return res.status(500).json({
+              message: "La table des événements ne contient aucune colonne d'affectation de professeur compatible, et la création automatique de la colonne a échoué.",
+              details: alterErr.sqlMessage || alterErr.message,
+              sqlSuggestion: "ALTER TABLE ajoutEvenement ADD COLUMN professeur VARCHAR(255) NULL;"
+            });
+          }
+
+          assignProfessorToMatchingEvent('professeur');
+        });
+      });
+
+      return;
+    }
+
+    // Cas 2: Creation d'un nouveau cours dans l'emploi du temps
+    const insertSql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES (?, ?, ?, ?, ?)";
+
+    db.query(insertSql, [date, cours, salle, heureDebut, heureFin], (err) => {
+      if (err) return res.status(500).json(err);
+      res.status(200).json({ message: 'Événement ajouté !' });
     });
 });
 
@@ -481,7 +595,12 @@ app.get('/api/evenements/:date', (req, res) => {
     const sql = "SELECT * FROM ajoutEvenement WHERE date = ? ORDER BY heureDebut ASC";
     
     db.query(sql, [date], (err, results) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+          return res.status(500).json({
+            message: "Erreur lors de la récupération des événements.",
+            details: err.sqlMessage || err.message
+          });
+        }
         res.json(results);
     });
 });

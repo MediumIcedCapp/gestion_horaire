@@ -143,6 +143,9 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
         alert("Professeur affecté au cours avec succès !");
         if (onSave) onSave();
         onClose();
+      } else {
+        const errorPayload = await response.json().catch(() => ({}));
+        alert(errorPayload.message || "Erreur lors de l'affectation du professeur.");
       }
     } catch {
       alert("Erreur lors de l'affectation.");
@@ -188,7 +191,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
               <select name="professeur" required value={formData.professeur} onChange={handleChange}>
                 <option value="">-- Choisir un professeur --</option>
                 {professeursList.map(p => (
-                  <option key={p.matricule} value={p.matricule}>
+                  <option key={p.matricule || p.idProfesseur} value={p.matricule || p.idProfesseur}>
                     {p.prenom} {p.nom} ({p.specialite})
                   </option>
                 ))}

@@ -68,6 +68,7 @@ export default function PageCalendrier() {
   // États de date et données
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [evenementsDuJour, setEvenementsDuJour] = useState([]);
+  const [professeursParIdentifiant, setProfesseursParIdentifiant] = useState({});
   
   // États d'affichage (UI)
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -102,6 +103,65 @@ export default function PageCalendrier() {
   useEffect(() => {
     fetchEvenements(selectedDate);
   }, [selectedDate]);
+
+  // Charger les professeurs pour afficher le nom dans la liste d'événements
+  useEffect(() => {
+    const fetchProfesseurs = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/professeurs');
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const map = {};
+
+        if (Array.isArray(data)) {
+          data.forEach((prof) => {
+            const nomComplet = [prof.prenom, prof.nom].filter(Boolean).join(' ').trim();
+            const libelle = nomComplet || prof.nom || prof.prenom || 'Professeur';
+
+            if (prof.matricule !== undefined && prof.matricule !== null && String(prof.matricule).trim() !== '') {
+              map[String(prof.matricule)] = libelle;
+            }
+
+            if (prof.idProfesseur !== undefined && prof.idProfesseur !== null && String(prof.idProfesseur).trim() !== '') {
+              map[String(prof.idProfesseur)] = libelle;
+            }
+          });
+        }
+
+        setProfesseursParIdentifiant(map);
+      } catch (error) {
+        console.error('Erreur de chargement des professeurs pour affichage:', error);
+      }
+    };
+
+    fetchProfesseurs();
+  }, []);
+
+  const getIdentifiantProfesseurEvenement = (evenement) => {
+    const identifiant =
+      evenement?.professeur ??
+      evenement?.idProfesseur ??
+      evenement?.matriculeProfesseur ??
+      evenement?.professeurId;
+
+    if (identifiant === undefined || identifiant === null || String(identifiant).trim() === '') {
+      return null;
+    }
+
+    return String(identifiant);
+  };
+
+  const getNomProfesseurEvenement = (evenement) => {
+    const identifiant = getIdentifiantProfesseurEvenement(evenement);
+    if (!identifiant) {
+      return null;
+    }
+
+    return professeursParIdentifiant[identifiant] || `Professeur (${identifiant})`;
+  };
 
   // Récupérer le prénom au chargement
   useEffect(() => {
@@ -376,19 +436,24 @@ export default function PageCalendrier() {
               
               <div className={styles.event_list}>
                 {evenementsDuJour.length > 0 ? (
-                  evenementsDuJour.map((ev, index) => (
-                    <div key={index} className={styles.event_card}>
-                      <button
-                        className={styles.event_delete_btn}
-                        onClick={() => handleSupprimerEvenement(ev.evenementId)}
-                        aria-label="Supprimer l'événement"
-                        title="Supprimer"
-                      >&times;</button>
-                      <span className={styles.event_time}>{ev.heureDebut.substring(0, 5)} - {ev.heureFin.substring(0, 5)}</span>
-                      <p><strong>{ev.cours}</strong></p>
-                      <p className={styles.event_room}>Salle: {ev.salle}</p>
-                    </div>
-                  ))
+                  evenementsDuJour.map((ev, index) => {
+                    const nomProfesseur = getNomProfesseurEvenement(ev);
+
+                    return (
+                      <div key={index} className={styles.event_card}>
+                        <button
+                          className={styles.event_delete_btn}
+                          onClick={() => handleSupprimerEvenement(ev.evenementId)}
+                          aria-label="Supprimer l'événement"
+                          title="Supprimer"
+                        >&times;</button>
+                        <span className={styles.event_time}>{ev.heureDebut.substring(0, 5)} - {ev.heureFin.substring(0, 5)}</span>
+                        <p><strong>{ev.cours}</strong></p>
+                        <p className={styles.event_room}>Salle: {ev.salle}</p>
+                        {nomProfesseur && <p className={styles.event_teacher}>Professeur: {nomProfesseur}</p>}
+                      </div>
+                    );
+                  })
                 ) : (
                   <p className={styles.no_event}>Aucun cours programmé pour cette journée.</p>
                 )}

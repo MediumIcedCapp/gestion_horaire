@@ -4,7 +4,7 @@
  * Valide si la spécialité du professeur correspond au cours
  */
 export function validerSpecialite(professeur, cours) {
-  if (!professeur.specialite || !cours.specialite) return false;
+  if (!professeur.specialite || !cours.specialite) return true;
   return professeur.specialite.trim().toLowerCase() === cours.specialite.trim().toLowerCase();
 }
 
@@ -39,7 +39,10 @@ export async function verifierConflitsProfesseur(formData) {
     const coursList = await resCours.json();
     const evenements = await resEv.json();
 
-    const prof = professeurs.find(p => String(p.matricule) === String(formData.professeur));
+    const prof = professeurs.find(p =>
+      String(p.matricule) === String(formData.professeur) ||
+      String(p.idProfesseur) === String(formData.professeur)
+    );
     const cours = coursList.find(c => String(c.nomDuCours) === String(formData.cours) || String(c.code) === String(formData.cours));
 
     const erreurs = [];
@@ -50,7 +53,8 @@ export async function verifierConflitsProfesseur(formData) {
 
     // 3. Vérifier la spécialité
     if (!validerSpecialite(prof, cours)) {
-      erreurs.push(`Incompatibilité : Le cours "${cours.nomDuCours}" requiert la spécialité "${cours.specialite}", mais le professeur est expert en "${prof.specialite}".`);
+      const nomCours = cours.nomDuCours || cours.code || formData.cours;
+      erreurs.push(`Incompatibilité : Le cours "${nomCours}" ne correspond pas à la spécialité du professeur.`);
     }
 
     // 4. Vérifier le statut de disponibilité (Général)
@@ -60,7 +64,7 @@ export async function verifierConflitsProfesseur(formData) {
 
     // 5. Empêcher l'affectation simultanée (Conflit d'horaire)
     const conflitHoraire = evenements.find(e => 
-      String(e.professeur) === String(formData.professeur) &&
+      String(e.professeur ?? e.idProfesseur ?? e.matriculeProfesseur ?? e.professeurId) === String(formData.professeur) &&
       e.date === formData.date &&
       estEnConflit(formData.heureDebut, formData.heureFin, e.heureDebut, e.heureFin)
     );
