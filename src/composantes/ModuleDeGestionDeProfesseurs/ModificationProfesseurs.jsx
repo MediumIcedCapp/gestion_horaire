@@ -1,6 +1,8 @@
 // Mahad M: Modifier les informations et disponibilités d’un professeur.
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Professeurs.module.css";
+import Swal from 'sweetalert2'; 
+
 
 const disponibilites = ["Disponible", "Occupe", "Indisponible"];
 
@@ -54,19 +56,60 @@ export default function ModificationProfesseurs({ onSave, onCancel }) {
 
       if (data.success) {
         setFormData({
-          matricule: data.data.matricule || "",
-          nom: data.data.nom || "",
-          prenom: data.data.prenom || "",
-          specialite: data.data.specialite || "",
-          disponibilite: data.data.disponibilite || "Disponible",
-          email: data.data.email || ""
+          matricule: String(data.data.matricule || ""),
+          nom: String(data.data.nom || ""),
+          prenom: String(data.data.prenom || ""),
+          specialite: String(data.data.specialite || ""),
+          disponibilite: String(data.data.disponibilite || "Disponible"),
+          email: String(data.data.email || "")
         });
       } else {
-        alert(data.message || "Impossible de charger ce professeur.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Impossible de charger ce professeur.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
+
+
       }
     } catch (err) {
       console.error("Erreur chargement professeur:", err);
-      alert("Erreur lors du chargement du professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors du chargement du professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+
     } finally {
       setIsLoading(false);
     }
@@ -84,10 +127,10 @@ export default function ModificationProfesseurs({ onSave, onCancel }) {
   const validateForm = () => {
     const nextErrors = {};
 
-    if (!formData.matricule.trim()) nextErrors.matricule = "Le matricule est requis.";
-    if (!formData.nom.trim()) nextErrors.nom = "Le nom est requis.";
-    if (!formData.prenom.trim()) nextErrors.prenom = "Le prenom est requis.";
-    if (!formData.specialite.trim()) nextErrors.specialite = "La specialite est requise.";
+    if (!String(formData.matricule).trim()) nextErrors.matricule = "Le matricule est requis.";
+    if (!String(formData.nom).trim()) nextErrors.nom = "Le nom est requis.";
+    if (!String(formData.prenom).trim()) nextErrors.prenom = "Le prenom est requis.";
+    if (!String(formData.specialite).trim()) nextErrors.specialite = "La specialite est requise.";
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
@@ -97,7 +140,26 @@ export default function ModificationProfesseurs({ onSave, onCancel }) {
     e.preventDefault();
 
     if (!selectedProfesseurId) {
-      alert("Veuillez selectionner un professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Veuillez selectionner un professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
       return;
     }
 
@@ -117,14 +179,71 @@ export default function ModificationProfesseurs({ onSave, onCancel }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Professeur modifie avec succes.");
+        Swal.fire({
+          title: 'Succès',
+          text: 'Professeur modifié avec succès.',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         if (onSave) onSave(data.data);
       } else {
-        alert(data.message || "Erreur lors de la modification du professeur.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Erreur lors de la modification du professeur.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
       console.error("Erreur modification professeur:", err);
-      alert("Erreur lors de la modification du professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de la modification du professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsSubmitting(false);
     }

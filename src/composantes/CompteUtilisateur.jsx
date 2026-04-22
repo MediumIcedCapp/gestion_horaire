@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import styles from "./CompteUtilisateur.module.css";
 import logo from "../assets/logoGestionHoraire.png";
 import Footer from "./Footer";
@@ -184,14 +185,71 @@ export default function CompteUtilisateur() {
           "utilisateur",
           JSON.stringify({ email: editEmail })
         );
+        Swal.fire({
+          title: 'Succès',
+          text: "Informations mises à jour avec succès !",
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
 
-        alert("Informations mises a jour avec succes !");
       } else {
-        alert("Erreur: " + data.message);
+        Swal.fire({
+          title: 'Erreur',
+          text: "Erreur lors de la mise à jour des informations.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (error) {
       console.error("Erreur lors de la mise a jour:", error);
-      alert("Erreur lors de la mise a jour des informations");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de la mise à jour des informations.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     }
   };
 
@@ -209,10 +267,48 @@ export default function CompteUtilisateur() {
 
       if (data.success) {
         localStorage.removeItem("utilisateur");
-        alert("Compte supprime avec succes");
+        Swal.fire({
+          title: 'Succès',
+          text: "Compte supprimé avec succès !",
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         navigate("/login");
       } else {
-        alert("Erreur: " + data.message);
+        Swal.fire({
+          title: 'Erreur',
+          text: "Erreur lors de la suppression du compte.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);

@@ -1,6 +1,44 @@
 
 
 /**
+ * Vérifie la disponibilité spécifique du professeur pour une date donnée
+ */
+export async function verifierDisponibiliteProfesseur(professeurId, date) {
+  try {
+    // Récupérer les disponibilités du professeur
+    const response = await fetch(`http://localhost:5000/api/professeurs/${professeurId}/disponibilites`);
+    
+    if (!response.ok) {
+      // Si l'endpoint n'existe pas, vérifier via la field "disponibilite" du professeur
+      return null;
+    }
+    
+    const disponibilites = await response.json();
+    
+    // Vérifier si le professeur est disponible pour cette date
+    const dateObj = new Date(date);
+    const jourSemaine = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
+    
+    if (disponibilites && disponibilites.length > 0) {
+      const dispoPourJour = disponibilites.find(d => 
+        d.jour && d.jour.toLowerCase() === jourSemaine.toLowerCase()
+      );
+      
+      if (!dispoPourJour) {
+        return { isAvailable: false, reason: `Le professeur n'est pas disponible le ${jourSemaine}` };
+      }
+      
+      return { isAvailable: true };
+    }
+    
+    return null;
+  } catch (error) {
+    console.warn("Impossible de vérifier les disponibilités détaillées:", error);
+    return null;
+  }
+}
+
+/**
  * Valide si la spécialité du professeur correspond au cours
  */
 export function validerSpecialite(professeur, cours) {
@@ -62,7 +100,29 @@ export async function verifierConflitsProfesseur(formData) {
       erreurs.push(`Le professeur ${prof.nom} est globalement indisponible.`);
     }
 
-    // 5. Empêcher l'affectation simultanée (Conflit d'horaire)
+    // 5. Vérifier la disponibilité spécifique pour la date/heure
+    const dispoCheck = await verifierDisponibiliteProfesseur(prof.idProfesseur || prof.matricule, formData.date);
+    if (dispoCheck && !dispoCheck.isAvailable) {
+      erreurs.push(dispoCheck.reason);
+    }
+
+    // 6. Vérifier que le cours n'est pas déjà assigné à un autre professeur
+    const coursDejaAssigne = evenements.find(e => 
+      String(e.cours) === String(formData.cours) &&
+      e.date === formData.date &&
+      String(e.professeur ?? e.idProfesseur ?? e.matriculeProfesseur ?? e.professeurId) !== String(formData.professeur)
+    );
+
+    if (coursDejaAssigne) {
+      const autreProfesseur = professeurs.find(p => 
+        String(p.matricule) === String(coursDejaAssigne.professeur ?? coursDejaAssigne.idProfesseur ?? coursDejaAssigne.matriculeProfesseur ?? coursDejaAssigne.professeurId) ||
+        String(p.idProfesseur) === String(coursDejaAssigne.professeur ?? coursDejaAssigne.idProfesseur ?? coursDejaAssigne.matriculeProfesseur ?? coursDejaAssigne.professeurId)
+      );
+      const nomAutreProfesseur = autreProfesseur ? `${autreProfesseur.prenom} ${autreProfesseur.nom}` : "un autre professeur";
+      erreurs.push(`Ce cours est déjà assigné à ${nomAutreProfesseur} pour cette date.`);
+    }
+
+    // 7. Empêcher l'affectation simultanée (Conflit d'horaire)
     const conflitHoraire = evenements.find(e => 
       String(e.professeur ?? e.idProfesseur ?? e.matriculeProfesseur ?? e.professeurId) === String(formData.professeur) &&
       e.date === formData.date &&

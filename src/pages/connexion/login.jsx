@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from 'sweetalert2'; 
 import styles from "./Login.module.css";
 import Logo from "../../assets/logoGestionHoraire.png";
 import loginVerification from "../../utils/loginValidation"; 
@@ -43,20 +44,96 @@ export default function Login() {
           console.log("Utilisateur reçu :", data.user);
           // Sauvegarder les données utilisateur dans localStorage
           localStorage.setItem('utilisateur', JSON.stringify(data.user));          
-          alert("Connexion réussie");
+          Swal.fire({
+            title: 'Bienvenue !',
+            text: 'Connexion réussie',
+            icon: 'success',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
           if (data.user.role === "responsable") {
             navigate("/pageCalendrier");
           } else if (data.user.role === "administrateur") {
             navigate("/pageAdministrateur");
           } else {
-            alert("Role non reconnu ou erreur de connexion");
+            Swal.fire({
+            title: 'Erreur de connexion',
+            text: 'Role non reconnu ou erreur de connexion',
+            icon: 'error',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
           }
         } else {
-          alert("Role non reconnu ou erreur de connexion");
+            Swal.fire({
+            title: 'Erreur de connexion',
+            text: 'Role non reconnu ou erreur de connexion',
+            icon: 'error',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
         }
       } catch (err) {
         console.error("Erreur login:", err);
-        alert("Erreur lors de la connexion : " + err.message);
+            Swal.fire({
+            title: 'Erreur de connexion',
+            text: 'Erreur lors de la connexion: ' + err.message,
+            icon: 'error',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
       } finally {
         setLoggingIn(false);
       }

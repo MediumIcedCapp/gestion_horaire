@@ -5,6 +5,8 @@
 //importations des bibliothèques et des styles
 import React, { useState, useEffect } from "react";
 import styles from "./ConsultationCours.module.css";
+import Swal from 'sweetalert2'; 
+
 
 // Composante pour consulter les cours avec des filtres dynamiques
 export default function ConsultationCours() {
@@ -13,7 +15,7 @@ export default function ConsultationCours() {
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
     programme: "",
-    etapeEtude: "", // On garde ce nom pour le state du filtre (le <select>)
+    etapeEtude: "", 
     duree: "",
     typeSalle: "",
     periode: ""
@@ -41,7 +43,7 @@ export default function ConsultationCours() {
     }
   };
 
-  // UN SEUL useEffect pour le filtrage (CORRIGÉ)
+  
   useEffect(() => {
     const result = cours.filter((item) => {
       return (

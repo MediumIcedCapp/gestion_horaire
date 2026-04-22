@@ -1,0 +1,249 @@
+.container {
+  display: flex;
+  height: 80vh;
+  background: white;
+  border-radius: 15px; /* Aligné sur tes modales de déconnexion */
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background: #fdfdfd;
+  border-right: 1px solid #f0f0f0;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f6f4f5; /* Ton gris clair de bouton */
+}
+
+.prof_item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+  border: 1px solid transparent;
+  color: #555;
+}
+
+.prof_item:hover {
+  background: #f8f9fa; /* Gris très léger pour le survol */
+  border-color: #e0e0e0;
+}
+
+.prof_item.active {
+  background: #333333; /* Gris foncé/anthracite pour l'élément actif */
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.avatar_small {
+  width: 32px;
+  height: 32px;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.prof_item.active .avatar_small {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  background: #ffffff;
+  overflow-y: auto;
+}
+
+.profile_card {
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.avatar_large {
+  width: 75px;
+  height: 75px;
+  background: #333333; /* Gris foncé pour l'avatar principal */
+  color: white;
+  font-size: 1.8rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.profile_header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.profile_header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 8px;
+  background: #f6f4f5; /* Ton gris clair de bouton */
+  color: #333;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #eee;
+}
+
+.info_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.info_box {
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+}
+
+.info_box strong {
+  display: block;
+  color: #555; /* Gris moyen pour les labels */
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.full_width {
+  grid-column: 1 / -1;
+}
+
+.dispo_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dispo_tag {
+  display: inline-block;
+  background: #f6f4f5; /* Gris clair */
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #eee;
+}
+
+.no_data {
+  color: #999;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.schedule_section h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.schedule_card {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  border-left: 5px solid #333333; /* Barre latérale gris foncé */
+  background: white;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-top: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: transform 0.2s ease;
+}
+
+.schedule_card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.time_tag {
+  min-width: 130px;
+  font-weight: bold;
+  color: #333333; /* Texte de l'heure en gris foncé */
+  font-size: 1rem;
+}
+
+.details strong {
+  display: block;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.details span {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #999;
+  text-align: center;
+}
+
+.placeholder_text {
+  color: #7f8c8d;
+  padding: 30px;
+  background: #fcfcfc;
+  border: 2px dashed #eee;
+  border-radius: 15px;
+}
+
+.export_button {
+  margin-top: 10px;
+  background-color: #333; /* Gris anthracite pour matcher ton thème */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.3s;
+}
+
+.export_button:hover {
+  background-color: #555;
+}

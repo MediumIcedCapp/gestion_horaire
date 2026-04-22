@@ -5,6 +5,8 @@
 //importations des bibliothèques et des styles
 import React, { useState, useEffect } from "react";
 import styles from "./SuppressionCours.module.css";
+import Swal from 'sweetalert2'; 
+
 
 // Composante pour supprimer un cours avec sélection préalable, confirmation et archivage
 export default function SuppressionCours({ onConfirm, onCancel, onArchive }) {
@@ -61,14 +63,71 @@ export default function SuppressionCours({ onConfirm, onCancel, onArchive }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Cours supprimé et archivé avec succès");
+        Swal.fire({
+          title: 'Suppression réussie !',
+          text: 'Le cours a été supprimé et archivé avec succès',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         if (onConfirm) onConfirm();
         onCancel(); // Ferme la modale
       } else {
-        alert(data.message || "Erreur lors de la suppression");
+        Swal.fire({
+          title: 'Erreur lors de la suppression',
+          text: data.message || "Erreur lors de la suppression",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
-      alert("Erreur lors de la suppression : " + err.message);
+      Swal.fire({
+        title: 'Erreur lors de la suppression',
+        text: "Erreur lors de la suppression",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsProcessing(false);
     }

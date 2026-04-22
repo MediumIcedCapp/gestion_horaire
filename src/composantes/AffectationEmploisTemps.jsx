@@ -19,7 +19,9 @@ export default function AffectationEmploisTemps({ selectedDate, onClose, onSave 
     cours: '',
     salle: '',
     heureDebut: '08:00',
-    heureFin: '11:00'
+    heureFin: '11:00',
+    isRecurrent: false,
+    dateFinRecurrence: null
   });
 
   useEffect(() => {
@@ -75,6 +77,20 @@ export default function AffectationEmploisTemps({ selectedDate, onClose, onSave 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleRecurrenceChange = (event) => {
+    const isRecurrent = event.target.value === 'recurrent';
+    setFormData((prev) => ({
+      ...prev,
+      isRecurrent,
+      dateFinRecurrence: isRecurrent ? prev.dateFinRecurrence : null
+    }));
+  };
+
+  const handleDateFinChange = (event) => {
+    const { value } = event.target;
+    setFormData((prev) => ({ ...prev, dateFinRecurrence: value }));
   };
 
   const handleSubmit = async (event) => {
@@ -155,6 +171,51 @@ export default function AffectationEmploisTemps({ selectedDate, onClose, onSave 
               required
             />
           </div>
+
+          <div className={styles.fieldGroup}>
+            <label>Type de récurrence</label>
+            <div className={styles.radioGroup}>
+              <div className={styles.radioOption}>
+                <input
+                  type="radio"
+                  id="dateUnique"
+                  name="recurrence"
+                  value="unique"
+                  checked={!formData.isRecurrent}
+                  onChange={handleRecurrenceChange}
+                />
+                <label htmlFor="dateUnique">Date unique</label>
+              </div>
+              <div className={styles.radioOption}>
+                <input
+                  type="radio"
+                  id="dateRecurrent"
+                  name="recurrence"
+                  value="recurrent"
+                  checked={formData.isRecurrent}
+                  onChange={handleRecurrenceChange}
+                />
+                <label htmlFor="dateRecurrent">Répéter chaque semaine</label>
+              </div>
+            </div>
+          </div>
+
+          {formData.isRecurrent && (
+            <div className={styles.fieldGroup}>
+              <label htmlFor="dateFinRecurrence">Date de fin (optionnel)</label>
+              <input
+                id="dateFinRecurrence"
+                name="dateFinRecurrence"
+                type="date"
+                value={formData.dateFinRecurrence || ''}
+                min={formData.date}
+                onChange={handleDateFinChange}
+              />
+              <small style={{ color: '#666', marginTop: '4px', display: 'block' }}>
+                Laisser vide pour une récurrence illimitée
+              </small>
+            </div>
+          )}
 
           <div className={styles.fieldGroup}>
             <label htmlFor="cours">Cours</label>
