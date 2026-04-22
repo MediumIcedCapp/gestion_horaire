@@ -23,15 +23,74 @@ export default function AjoutSalles({ onClose }) {
         const data = await response.json();
 
         if (response.ok) {
-            alert('Salle ajoutée avec succès !');
+           
+            Swal.fire({
+                title: 'Ajout réussi',
+                text: 'Salle ajoutée avec succès !',
+                icon: 'success',
+                toast: true,                
+                position: 'top-end',        
+                showConfirmButton: false,   
+                timer: 3000,                
+                timerProgressBar: true,     
+                background: '#ffffff',
+                color: '#333',
+                iconColor: '#e4e8d6',       
+                customClass: {
+                popup: 'pop-up-toast',   
+                },
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
 
             onClose();
         } else {
-            alert('Erreur: ' + data.message);
+            Swal.fire({
+                title: 'Erreur',
+                text: 'Une erreur s\'est produite lors de l\'ajout de la salle.',
+                icon: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#ffffff',
+                color: '#333',
+                iconColor: '#e4e8d6',
+                customClass: {
+                    popup: 'pop-up-toast',
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
         }
     } catch (error) {
         console.error(error);
-        alert('Erreur de connexion au serveur');
+        Swal.fire({
+            title: 'Erreur',
+            text: 'Une erreur s\'est produite lors de l\'ajout de la salle.',
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',
+            customClass: {
+                popup: 'pop-up-toast',
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
     }
     };
 

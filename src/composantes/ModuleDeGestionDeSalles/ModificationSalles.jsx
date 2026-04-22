@@ -1,6 +1,7 @@
 //Danick A: Modifier le type ou la capacité d’une salle.
 import React, { useState, useEffect } from 'react';
 import styles from './ModificationSalles.module.css';
+import Swal from 'sweetalert2';
 
 export default function ModificationSalles({ onClose }) {
     const [type, setType] = useState('');
@@ -27,7 +28,26 @@ export default function ModificationSalles({ onClose }) {
 
         //Alert si aucune salle est sélectionner
         if (!selectedSalleId) {
-            alert("Veuillez sélectionner une salle");
+            Swal.fire({
+                title: 'Erreur',
+                text: 'Veuillez sélectionner une salle',
+                icon: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#ffffff',
+                color: '#333',
+                iconColor: '#e4e8d6',
+                customClass: {
+                    popup: 'pop-up-toast',
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
             return;
         }
 
@@ -45,10 +65,48 @@ export default function ModificationSalles({ onClose }) {
             const data = await response.json();
 
             if (response.ok) {
-                alert('Salle modifiée avec succès !');
+                Swal.fire({
+                    title: 'Modification réussie',
+                    text: 'Salle modifiée avec succès !',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    color: '#333',
+                    iconColor: '#e4e8d6',
+                    customClass: {
+                        popup: 'pop-up-toast',
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
                 onClose();
             } else {
-                alert('Erreur: ' + data.message);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Erreur lors de la modification de la salle.',
+                    icon: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    color: '#333',
+                    iconColor: '#e4e8d6',
+                    customClass: {
+                        popup: 'pop-up-toast',
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
             }
         } catch (error) {
             console.error(error);
