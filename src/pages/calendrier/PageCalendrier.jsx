@@ -258,15 +258,6 @@ export default function PageCalendrier() {
                 </li>
                 )}
 
-                {/*modulesAssignes.includes("gestion_affectations") && (
-                <li><a href='#'> Plages et Affectations </a>
-                  <ul className={styles.submenu}>
-                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des cours aux emplois du temps</a></li>
-                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs aux cours</a></li>
-                  </ul>
-                </li>
-                )*/}
-
                 <li><a href='#'> Plages et Affectations </a>
                   <ul className={styles.submenu}>
                     <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs aux cours</a></li>
