@@ -4,8 +4,8 @@ import { validerEvenementComplet } from '../affectations/AffectationProfesseursC
 
 export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   const [coursList, setCoursList] = useState([]);
+  const [isLoadingCours, setIsLoadingCours] = useState(true);
   const [professeursList, setProfesseursList] = useState([]);
-  const [evenementsExistants, setEvenementsExistants] = useState([]);  
   
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -13,6 +13,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     date: selectedDate ? selectedDate.toISOString().split('T')[0] : todayStr,
     cours: "",
     professeur: "",
+    salle: "",
     heureDebut: "08:00",
     heureFin: "11:00"
   });
@@ -20,21 +21,94 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      fetch("http://localhost:5000/api/cours").then(res => res.json()),
-      fetch("http://localhost:5000/api/professeurs").then(res => res.json()),
-      fetch("http://localhost:5000/api/evenements").then(res => res.json())
-    ])
-    .then(([coursData, professeursData, evData]) => {
-      setCoursList(coursData);
-      setProfesseursList(professeursData);
-      setEvenementsExistants(evData || []);
-    })
-    .catch(err => console.error("Erreur de chargement:", err));
+    fetch("http://localhost:5000/api/professeurs")
+      .then(res => res.json())
+      .then((professeursData) => setProfesseursList(professeursData || []))
+      .catch(err => console.error("Erreur de chargement des professeurs:", err));
   }, []);
+
+  useEffect(() => {
+    const fetchCoursAffectes = async () => {
+      setIsLoadingCours(true);
+      try {
+        const [responseEvenements, responseCours] = await Promise.all([
+          fetch(`http://localhost:5000/api/evenements/${formData.date}`),
+          fetch("http://localhost:5000/api/cours")
+        ]);
+
+        const evenements = await responseEvenements.json();
+        const coursCatalog = await responseCours.json();
+
+        const coursMap = new Map();
+        if (Array.isArray(evenements)) {
+          evenements.forEach((ev) => {
+            if (!ev.cours || coursMap.has(ev.cours)) {
+              return;
+            }
+
+            const coursTrouve = Array.isArray(coursCatalog)
+              ? coursCatalog.find((cours) => cours.nomDuCours === ev.cours)
+              : null;
+
+            coursMap.set(ev.cours, {
+              nomDuCours: ev.cours,
+              code: coursTrouve?.code || "-",
+              heureDebut: ev.heureDebut,
+              heureFin: ev.heureFin,
+              salle: ev.salle
+            });
+          });
+        }
+
+        const coursAffectes = Array.from(coursMap.values());
+
+        setCoursList(coursAffectes);
+        const nomsValides = coursAffectes.map((cours) => cours.nomDuCours);
+        setFormData((prev) => {
+          if (!nomsValides.includes(prev.cours)) {
+            return { ...prev, cours: "", salle: "", heureDebut: "", heureFin: "" };
+          }
+
+          const coursSelectionne = coursAffectes.find((cours) => cours.nomDuCours === prev.cours);
+          if (!coursSelectionne) {
+            return prev;
+          }
+
+          return {
+            ...prev,
+            salle: coursSelectionne.salle || "",
+            heureDebut: coursSelectionne.heureDebut || "",
+            heureFin: coursSelectionne.heureFin || ""
+          };
+        });
+      } catch (err) {
+        console.error("Erreur de chargement des cours affectés:", err);
+        setCoursList([]);
+      } finally {
+        setIsLoadingCours(false);
+      }
+    };
+
+    if (formData.date) {
+      fetchCoursAffectes();
+    }
+  }, [formData.date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "cours") {
+      const coursSelectionne = coursList.find((cours) => cours.nomDuCours === value);
+      setFormData((prev) => ({
+        ...prev,
+        cours: value,
+        salle: coursSelectionne?.salle || "",
+        heureDebut: coursSelectionne?.heureDebut || "",
+        heureFin: coursSelectionne?.heureFin || ""
+      }));
+      return;
+    }
+
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -43,6 +117,13 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     setIsSubmitting(true);
 
     try {
+      const nomsCoursDisponibles = coursList.map((cours) => cours.nomDuCours);
+      if (!nomsCoursDisponibles.includes(formData.cours)) {
+        alert("Veuillez sélectionner un cours déjà planifié dans l'emploi du temps pour cette date.");
+        setIsSubmitting(false);
+        return;
+      }
+
       // Validation (Spécialité + Disponibilité + Chevauchement)
       const validationResult = await validerEvenementComplet(formData);
 
@@ -63,7 +144,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
         if (onSave) onSave();
         onClose();
       }
-    } catch (err) {
+    } catch {
       alert("Erreur lors de l'affectation.");
     } finally {
       setIsSubmitting(false);
@@ -84,14 +165,22 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
             
             <div className={styles.form_group}>
               <label>Cours</label>
-              <select name="cours" required value={formData.cours} onChange={handleChange}>
-                <option value="">-- Choisir un cours --</option>
-                {coursList.map(c => (
-                  <option key={c.code} value={c.nomDuCours}>
-                    {c.nomDuCours} ({c.specialite})
+              <select name="cours" required value={formData.cours} onChange={handleChange} disabled={isLoadingCours || coursList.length === 0}>
+                <option value="">-- Choisir un cours planifié --</option>
+                {coursList.map((cours) => (
+                  <option key={cours.nomDuCours} value={cours.nomDuCours}>
+                    {cours.nomDuCours} ({cours.code})
                   </option>
                 ))}
               </select>
+              {!isLoadingCours && coursList.length === 0 && (
+                <small>Aucun cours n'a été planifié pour cette date dans l'emploi du temps.</small>
+              )}
+              {!isLoadingCours && formData.cours && (
+                <small>
+                  Plage planifiée: {formData.heureDebut?.substring(0, 5)} - {formData.heureFin?.substring(0, 5)} | Salle: {formData.salle}
+                </small>
+              )}
             </div>
 
             <div className={styles.form_group}>
@@ -106,24 +195,9 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
               </select>
             </div>
 
-            <div className={styles.time_grid}>
-              <div className={styles.form_group}>
-                <label>Date</label>
-                <input type="date" name="date" value={formData.date} onChange={handleChange} min={todayStr} required />
-              </div>
-              <div className={styles.form_group}>
-                <label>Début</label>
-                <input type="time" name="heureDebut" value={formData.heureDebut} onChange={handleChange} required />
-              </div>
-              <div className={styles.form_group}>
-                <label>Fin</label>
-                <input type="time" name="heureFin" value={formData.heureFin} onChange={handleChange} required />
-              </div>
-            </div>
-
             <div className={styles.modal_buttons}>
               <button type="button" className={styles.cancel_btn} onClick={onClose}>Annuler</button>
-              <button type="submit" className={styles.confirm_btn} disabled={isSubmitting}>
+              <button type="submit" className={styles.confirm_btn} disabled={isSubmitting || isLoadingCours || coursList.length === 0}>
                 {isSubmitting ? "Enregistrement..." : "Confirmer l'affectation"}
               </button>
             </div>
