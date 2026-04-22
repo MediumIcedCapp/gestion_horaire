@@ -344,50 +344,18 @@ app.delete("/api/utilisateur/:email", (req, res) => {
   );
 });
 
-// Route pour ajouter un professeur (avec validation)
+// Route pour ajouter un professeur
 app.post('/api/professeurs', (req, res) => {
     const { matricule, nom, prenom, specialite, disponibilite, email } = req.body;
     
-    // Validation du matricule (7 chiffres exactement)
-    const matriculeRegex = /^\d{7}$/; 
-    if (!matriculeRegex.test(matricule)) {
-        return res.status(400).json({ 
-            success: false, 
-            message: "Le matricule doit contenir exactement 7 chiffres." 
-        });
-    }
-
     const sql = "INSERT INTO module_gestion_professeur (matricule, nom, prenom, specialite, disponibilite, email) VALUES (?, ?, ?, ?, ?, ?)";
     
     db.query(sql, [matricule, nom, prenom, specialite, disponibilite, email], (err, result) => {
-        if (err) return res.status(500).json({ success: false, message: err.message });
-        res.json({ success: true, message: "Professeur ajouté !" });
-    });
-});
-
-// Route pour modifier un professeur (avec validation)
-app.put('/api/professeurs/:id', (req, res) => {
-    const { id } = req.params;
-    const { nom, prenom, matricule, specialite, disponibilite, email } = req.body;
-    
-    // Validation du matricule
-    const matriculeRegex = /^\d{7}$/;
-    if (!matriculeRegex.test(matricule)) {
-        return res.status(400).json({ 
-            success: false, 
-            message: "Le matricule doit contenir exactement 7 chiffres." 
-        });
-    }
-
-    const query = `
-        UPDATE module_gestion_professeur 
-        SET nom = ?, prenom = ?, matricule = ?, specialite = ?, disponibilite = ?, email = ? 
-        WHERE idProfesseur = ?
-    `;
-
-    db.query(query, [nom, prenom, matricule, specialite, disponibilite, email, id], (err, result) => {
-        if (err) return res.status(500).json({ success: false, message: err.message });
-        res.json({ success: true, message: "Professeur mis à jour !" });
+        if (err) {
+            console.error("Erreur SQL Professeur:", err);
+            return res.status(500).json({ success: false, message: err.message });
+        }
+        res.json({ success: true, message: "Professeur ajouté !", data: { id: result.insertId, ...req.body } });
     });
 });
 
@@ -422,7 +390,22 @@ app.get('/api/professeurs/:id', (req, res) => {
   });
 });
 
+// 3. Modifier un professeur 
+app.put('/api/professeurs/:id', (req, res) => {
+  const { id } = req.params;
+  const { nom, prenom, matricule, specialite, disponibilite, email } = req.body;
+  
+  const query = `
+    UPDATE module_gestion_professeur 
+    SET nom = ?, prenom = ?, matricule = ?, specialite = ?, disponibilite = ?, email = ? 
+    WHERE idProfesseur = ?
+  `;
 
+  db.query(query, [nom, prenom, matricule, specialite, disponibilite, email, id], (err, result) => {
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Professeur mis à jour avec succès !" });
+  });
+});
 
 // 4. Supprimer un professeur
 app.delete('/api/professeurs/:id', (req, res) => {
