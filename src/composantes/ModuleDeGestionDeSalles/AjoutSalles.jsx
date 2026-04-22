@@ -52,7 +52,13 @@ export default function AjoutSalles({ onClose }) {
                         </div>
                         <div className={styles.form_group}>
                             <label htmlFor="type">Type de la salle:</label>
-                            <input type="text" id="type" value={type} onChange={e => setType(e.target.value)} required />
+                            <select id="type" value={type} className={styles.select_input} onChange={e => setType(e.target.value)} required>
+                                <option value="">Sélectionnez un type</option>
+                                <option value="Salle de cours">Salle de cours</option>
+                                <option value="Laboratoire">Laboratoire</option>
+                                <option value="Amphitheatre">Amphithéâtre</option>
+                                <option value="Salle information">Salle information</option>
+                            </select>
                         </div>
                         <div className={styles.form_group}>
                             <label htmlFor="capacite">Capacité de la salle:</label>
