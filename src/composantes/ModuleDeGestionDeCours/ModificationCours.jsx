@@ -3,6 +3,8 @@
 //  Tâche: Ajouter une composante pour modifier les informations d'un cours existant
 import React, { useState, useEffect } from "react";
 import styles from "./ModificationCours.module.css";
+import Swal from 'sweetalert2'; 
+
 
 // Composante pour modifier les informations d'un cours existant
 export default function ModificationCours({ onSave, onCancel }) {
@@ -95,11 +97,50 @@ export default function ModificationCours({ onSave, onCancel }) {
       // Traiter la réponse du backend pour afficher un message de succès ou d'erreur
       const data = await response.json();
       if (data.success) {
-        alert("Cours modifié avec succès !");
+          Swal.fire({
+            title: 'Erreur de connexion',
+            text: 'Role non reconnu ou erreur de connexion',
+            icon: 'error',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
         if (onSave) onSave();
         onCancel();
       } else {
-        alert(data.message || "Erreur lors de la modification");
+        Swal.fire({
+          title: 'Erreur de connexion',
+          text: 'Role non reconnu ou erreur de connexion',
+          icon: 'error',
+          toast: true,                
+          position: 'top-end',        
+          showConfirmButton: false,   
+          timer: 3000,                
+          timerProgressBar: true,     
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',       
+          customClass: {
+            popup: 'pop-up-toast',   
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
+
       }
     } catch (err) {
       console("Erreur de connexion au serveur");

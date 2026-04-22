@@ -1,6 +1,7 @@
 //Danick A: Ajouter une salle avec un code unique, un type et une capacité.
 import React, { useState } from 'react';
 import styles from './AjoutSalles.module.css';
+import Swal from 'sweetalert2';
 
 
 export default function AjoutSalles({ onClose }) {
@@ -23,6 +24,7 @@ export default function AjoutSalles({ onClose }) {
 
         if (response.ok) {
             alert('Salle ajoutée avec succès !');
+
             onClose();
         } else {
             alert('Erreur: ' + data.message);

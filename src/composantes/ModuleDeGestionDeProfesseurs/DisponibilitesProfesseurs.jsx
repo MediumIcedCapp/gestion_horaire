@@ -1,6 +1,8 @@
 // Mahad M: Définir les disponibilités du professeur (jours et plages horaires). 
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Professeurs.module.css";
+import Swal from 'sweetalert2'; 
+
 
 const jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -76,12 +78,50 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
 
   const handleAddSlot = () => {
     if (!currentSlot.jour || !currentSlot.heureDebut || !currentSlot.heureFin) {
-      alert("Veuillez completer le jour et les deux heures.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Veuillez completer le jour et les deux heures.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
       return;
     }
 
     if (currentSlot.heureDebut >= currentSlot.heureFin) {
-      alert("L'heure de fin doit etre apres l'heure de debut.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "L'heure de fin doit etre apres l'heure de debut.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
       return;
     }
 
@@ -95,7 +135,26 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
 
   const handleSave = async () => {
     if (!selectedProfesseurId) {
-      alert("Veuillez selectionner un professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Veuillez selectionner un professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
       return;
     }
 
@@ -113,14 +172,71 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Disponibilites enregistrees avec succes.");
+        Swal.fire({
+          title: 'Succès',
+          text: 'Disponibilites enregistrees avec succes.',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         if (onSave) onSave(data.data);
       } else {
-        alert(data.message || "Erreur lors de l'enregistrement des disponibilites.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Erreur lors de l'enregistrement des disponibilites.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
       console.error("Erreur sauvegarde disponibilites:", err);
-      alert("Erreur lors de l'enregistrement des disponibilites.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de l'enregistrement des disponibilites.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsSaving(false);
     }

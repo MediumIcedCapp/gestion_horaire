@@ -1,6 +1,8 @@
 // Mahad M: Ajouter un professeur avec ses informations personnelles (matricule, nom, prénom, spécialité).
 import React, { useState } from "react";
 import styles from "./Professeurs.module.css";
+import Swal from 'sweetalert2'; 
+
 
 const disponibilites = ["Disponible", "Occupe", "Indisponible"];
 
@@ -58,15 +60,72 @@ export default function AjoutProfesseurs({ onSave, onCancel }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Professeur ajoute avec succes.");
+        Swal.fire({
+          title: 'Succès',
+          text: 'Professeur ajouté avec succès.',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         setFormData(emptyForm);
         if (onSave) onSave(data.data);
       } else {
-        alert(data.message || "Erreur lors de l'ajout du professeur.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Erreur lors de l'ajout du professeur.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
       console.error("Erreur ajout professeur:", err);
-      alert("Erreur lors de l'ajout du professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de l'ajout du professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsSubmitting(false);
     }

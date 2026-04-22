@@ -5,6 +5,7 @@
 //importations des bibliothèques et des styles
 import React, { useState } from "react";
 import styles from "./AjoutCours.module.css";
+import Swal from 'sweetalert2'; 
 
 //Composante pour ajouter un cours
 export default function AjoutCours({ onSave, onCancel }) {
@@ -68,16 +69,73 @@ export default function AjoutCours({ onSave, onCancel }) {
         const data = await response.json();
 
         if (response.ok) { 
-          alert("Cours créé avec succès");
+            Swal.fire({
+            title: 'Création réussie !',
+            text: 'Le cours a été créé avec succès',
+            icon: 'success',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
           if (onSave) onSave(data);
         } else {
-          alert(data.message || "Erreur lors de la création du cours");
+          Swal.fire({
+            title: 'Erreur lors de la création du cours',
+            text: (data.message || 'Erreur lors de la création du cours'),
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',
+            customClass: {
+              popup: 'pop-up-toast',
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
         }
 
       // Gérer les erreurs de réseau ou autres exceptions lors de la requête
       } catch (err) {
         console.error("Erreur création cours:", err);
-        alert("Erreur lors de la création du cours : " + err.message);
+        Swal.fire({
+          title: 'Erreur lors de la création du cours',
+          text: "Erreur lors de la création du cours",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       } finally {
         setIsSubmitting(false);
       }

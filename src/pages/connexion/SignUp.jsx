@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
+import Swal from 'sweetalert2';
 import Logo from "../../assets/logoGestionHoraire.png";
 import { Link } from "react-router-dom";
 import loginVerification from "../../utils/loginValidation";
@@ -67,7 +68,26 @@ export default function SignUp() {
         const data = await response.json();
 
         if (data.success) {
-          alert("Compte administrateur créé avec succès");
+          Swal.fire({
+            title: 'Succès !',
+            text: 'Compte administrateur créé avec succès',
+            icon: 'success',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
 
           // On stocke les informations pour simuler une connexion automatique
           const userSession = {
@@ -80,7 +100,26 @@ export default function SignUp() {
           // Redirection directe vers la page admin
           window.location.href = "/pageAdministrateur"; 
         } else {
-          alert(data.message);
+            Swal.fire({
+            title: 'Erreur lors de la création du compte',
+            text:(data.message || 'Erreur lors de la création du compte'),
+            icon: 'error',
+            toast: true,                
+            position: 'top-end',        
+            showConfirmButton: false,   
+            timer: 3000,                
+            timerProgressBar: true,     
+            background: '#ffffff',
+            color: '#333',
+            iconColor: '#e4e8d6',       
+            customClass: {
+              popup: 'pop-up-toast',   
+            },
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
         }
       } catch (err) {
         console.error("Erreur:", err);

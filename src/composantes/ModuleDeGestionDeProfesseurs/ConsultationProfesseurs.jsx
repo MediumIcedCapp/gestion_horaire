@@ -2,6 +2,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Professeurs.module.css";
 
+
+
 const defaultFilters = {
   specialite: "",
   disponibilite: ""

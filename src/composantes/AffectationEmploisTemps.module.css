@@ -149,6 +149,38 @@
 	}
 }
 
+.radioGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px;
+	background: #f8fafb;
+	border-radius: 10px;
+	border: 1px solid #e0e8ec;
+}
+
+.radioOption {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.radioOption input[type="radio"] {
+	cursor: pointer;
+	width: 18px;
+	height: 18px;
+	accent-color: #11677d;
+}
+
+.radioOption label {
+	margin: 0;
+	font-weight: 500;
+	font-size: 0.95rem;
+	cursor: pointer;
+	color: #1f3e4c;
+}
+
 @media (max-width: 560px) {
 	.modal {
 		padding: 18px;

@@ -1,6 +1,8 @@
 // Mahad M: Supprimer un professeur après vérification de ses affectations.
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Professeurs.module.css";
+import Swal from 'sweetalert2'; 
+
 
 export default function SuppressionProfesseurs({ onSave, onCancel }) {
   const [professeurs, setProfesseurs] = useState([]);
@@ -42,11 +44,49 @@ export default function SuppressionProfesseurs({ onSave, onCancel }) {
       if (data.success) {
         setVerification(data.data);
       } else {
-        alert(data.message || "Impossible de verifier la suppression.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Impossible de verifier la suppression.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
       console.error("Erreur verification suppression:", err);
-      alert("Erreur lors de la verification de la suppression.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de la verification de la suppression.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsChecking(false);
     }
@@ -54,12 +94,50 @@ export default function SuppressionProfesseurs({ onSave, onCancel }) {
 
   const handleDelete = async () => {
     if (!selectedProfesseurId) {
-      alert("Veuillez selectionner un professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Veuillez selectionner un professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
       return;
     }
 
     if (!verification?.canDelete) {
-      alert("La suppression est bloquee.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "La suppression est bloquee.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      }); 
       return;
     }
 
@@ -77,14 +155,71 @@ export default function SuppressionProfesseurs({ onSave, onCancel }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Professeur supprime avec succes.");
+        Swal.fire({
+          title: 'Succès',
+          text: 'Professeur supprime avec succes.',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         if (onSave) onSave();
       } else {
-        alert(data.message || "Erreur lors de la suppression du professeur.");
+        Swal.fire({
+          title: 'Erreur',
+          text: data.message || "Erreur lors de la suppression du professeur.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
       }
     } catch (err) {
       console.error("Erreur suppression professeur:", err);
-      alert("Erreur lors de la suppression du professeur.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de la suppression du professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsDeleting(false);
     }

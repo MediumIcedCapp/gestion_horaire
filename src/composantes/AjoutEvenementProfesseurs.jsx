@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AjoutEvenementProfesseurs.module.css";
 import { validerEvenementComplet } from '../affectations/AffectationProfesseursCours.js';
+import Swal from "sweetalert2";
 
 export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
   const [coursList, setCoursList] = useState([]);
@@ -31,6 +32,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     const fetchCoursAffectes = async () => {
       setIsLoadingCours(true);
       try {
+        // Charger TOUS les cours disponibles, pas seulement ceux de la date
         const [responseEvenements, responseCours] = await Promise.all([
           fetch(`http://localhost:5000/api/evenements/${formData.date}`),
           fetch("http://localhost:5000/api/cours")
@@ -39,10 +41,11 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
         const evenements = await responseEvenements.json();
         const coursCatalog = await responseCours.json();
 
-        const coursMap = new Map();
+        // Charger les cours planifiés pour cette date
+        const coursMapDate = new Map();
         if (Array.isArray(evenements)) {
           evenements.forEach((ev) => {
-            if (!ev.cours || coursMap.has(ev.cours)) {
+            if (!ev.cours || coursMapDate.has(ev.cours)) {
               return;
             }
 
@@ -50,7 +53,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
               ? coursCatalog.find((cours) => cours.nomDuCours === ev.cours)
               : null;
 
-            coursMap.set(ev.cours, {
+            coursMapDate.set(ev.cours, {
               nomDuCours: ev.cours,
               code: coursTrouve?.code || "-",
               heureDebut: ev.heureDebut,
@@ -60,7 +63,19 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
           });
         }
 
-        const coursAffectes = Array.from(coursMap.values());
+        const coursAffectesDate = Array.from(coursMapDate.values());
+
+        // Si aucun cours n'est planifié cette date, permettre la sélection de tous les cours
+        let coursAffectes = coursAffectesDate;
+        if (coursAffectesDate.length === 0 && Array.isArray(coursCatalog)) {
+          coursAffectes = coursCatalog.map((cours) => ({
+            nomDuCours: cours.nomDuCours,
+            code: cours.code || "-",
+            heureDebut: "08:00",
+            heureFin: "11:00",
+            salle: "-"
+          }));
+        }
 
         setCoursList(coursAffectes);
         const nomsValides = coursAffectes.map((cours) => cours.nomDuCours);
@@ -119,7 +134,26 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
     try {
       const nomsCoursDisponibles = coursList.map((cours) => cours.nomDuCours);
       if (!nomsCoursDisponibles.includes(formData.cours)) {
-        alert("Veuillez sélectionner un cours déjà planifié dans l'emploi du temps pour cette date.");
+        Swal.fire({
+          title: 'Erreur',
+          text: "Veuillez sélectionner un cours valide.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         setIsSubmitting(false);
         return;
       }
@@ -128,7 +162,26 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
       const validationResult = await validerEvenementComplet(formData);
 
       if (!validationResult.isValid) {
-        alert(validationResult.erreurs.join("\n"));
+        Swal.fire({
+          title: 'Erreur',
+          text: validationResult.erreurs.join("\n"),
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         setIsSubmitting(false);
         return;
       }
@@ -140,15 +193,73 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
       });
 
       if (response.ok) {
-        alert("Professeur affecté au cours avec succès !");
+        Swal.fire({
+          title: 'Succès',
+          text: "Professeur affecté au cours avec succès !",
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
         if (onSave) onSave();
         onClose();
       } else {
         const errorPayload = await response.json().catch(() => ({}));
-        alert(errorPayload.message || "Erreur lors de l'affectation du professeur.");
+        Swal.fire({
+          title: 'Erreur',
+          text: errorPayload.message || "Erreur lors de l'affectation du professeur.",
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#ffffff',
+          color: '#333',
+          iconColor: '#e4e8d6',
+          customClass: {
+            popup: 'pop-up-toast',
+          },
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
+
       }
     } catch {
-      alert("Erreur lors de l'affectation.");
+      Swal.fire({
+        title: 'Erreur',
+        text: "Erreur lors de l'affectation du professeur.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -168,8 +279,8 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
             
             <div className={styles.form_group}>
               <label>Cours</label>
-              <select name="cours" required value={formData.cours} onChange={handleChange} disabled={isLoadingCours || coursList.length === 0}>
-                <option value="">-- Choisir un cours planifié --</option>
+              <select name="cours" required value={formData.cours} onChange={handleChange} disabled={isLoadingCours}>
+                <option value="">-- Choisir un cours --</option>
                 {coursList.map((cours) => (
                   <option key={cours.nomDuCours} value={cours.nomDuCours}>
                     {cours.nomDuCours} ({cours.code})
@@ -177,11 +288,11 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
                 ))}
               </select>
               {!isLoadingCours && coursList.length === 0 && (
-                <small>Aucun cours n'a été planifié pour cette date dans l'emploi du temps.</small>
+                <small style={{ color: '#ef4444' }}>Aucun cours disponible.</small>
               )}
               {!isLoadingCours && formData.cours && (
                 <small>
-                  Plage planifiée: {formData.heureDebut?.substring(0, 5)} - {formData.heureFin?.substring(0, 5)} | Salle: {formData.salle}
+                  Plage horaire : {formData.heureDebut?.substring(0, 5)} - {formData.heureFin?.substring(0, 5)} | Salle: {formData.salle}
                 </small>
               )}
             </div>
@@ -200,7 +311,7 @@ export default function AjoutEvenement({ selectedDate, onClose, onSave }) {
 
             <div className={styles.modal_buttons}>
               <button type="button" className={styles.cancel_btn} onClick={onClose}>Annuler</button>
-              <button type="submit" className={styles.confirm_btn} disabled={isSubmitting || isLoadingCours || coursList.length === 0}>
+              <button type="submit" className={styles.confirm_btn} disabled={isSubmitting || isLoadingCours}>
                 {isSubmitting ? "Enregistrement..." : "Confirmer l'affectation"}
               </button>
             </div>

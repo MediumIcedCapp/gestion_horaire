@@ -1,5 +1,6 @@
 // importations d'images, de style 
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2'; 
 import logo from '../../assets/logoGestionHoraire.png'
 import styles from './PageCalendrier.module.css'
 import UserProfile from '../../assets/UserProfile.png'
@@ -25,6 +26,7 @@ import ModificationProfesseurs from '../../composantes/ModuleDeGestionDeProfesse
 import SuppressionProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/SuppressionProfesseurs.jsx';
 import ConsultationProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/ConsultationProfesseurs.jsx';
 import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/DisponibilitesProfesseurs.jsx';
+import EmploiDuTempsProfesseurs from '../../composantes/ModuleDeGestionDeProfesseurs/EmploiDuTempsProfesseurs.jsx';
 
 // Import du nouveau composant d'événement
 import AjoutEvenement from '../../composantes/AjoutEvenementProfesseurs.jsx';
@@ -229,7 +231,13 @@ export default function PageCalendrier() {
       if (response.ok) {
         fetchEvenements(selectedDate);
       } else {
-        alert('Erreur lors de la suppression.');
+        Swal.fire({
+          title: 'Oups !',
+          text: 'Erreur lors de la suppression.',
+          icon: 'error',
+          confirmButtonColor: '#f6f4f5', 
+          borderRadius: '15px'
+        });
       }
     } catch (err) {
       console.error('Erreur suppression événement:', err);
@@ -323,6 +331,8 @@ export default function PageCalendrier() {
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('suppressionProfesseurs'); }}>Supprimer un professeur</a></li>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationProfesseurs'); }}>Consulter un professeur</a></li>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('disponibilitesProfesseurs'); }}>Gérer les disponibilités</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('emploiDuTemps'); }}>Emploi du temps</a></li>
+
                   </ul>
                 </li>
                 )}
@@ -430,6 +440,11 @@ export default function PageCalendrier() {
           {activeView === 'disponibilitesProfesseurs' && (
             <div className={styles.side_panel}>
               <DisponibilitesProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
+            </div>
+          )}
+          {activeView === 'emploiDuTemps' && (
+            <div className={styles.full_width_panel}>
+              <EmploiDuTempsProfesseurs onSave={handleClosePanel} onCancel={handleClosePanel} />
             </div>
           )}
           
