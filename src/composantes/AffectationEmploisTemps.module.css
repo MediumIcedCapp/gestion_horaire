@@ -1,0 +1,169 @@
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 2100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: radial-gradient(circle at 20% 20%, rgba(17, 103, 125, 0.28), transparent 45%),
+		radial-gradient(circle at 80% 80%, rgba(16, 47, 65, 0.3), transparent 40%),
+		rgba(10, 20, 30, 0.62);
+}
+
+.modal {
+	width: min(560px, 100%);
+	border-radius: 16px;
+	padding: 24px;
+	background: linear-gradient(165deg, #ffffff 0%, #f3f8fb 100%);
+	box-shadow: 0 24px 70px rgba(8, 26, 36, 0.32);
+	animation: modalEnter 0.25s ease-out;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.header h2 {
+	margin: 0;
+	font-size: 1.35rem;
+	color: #143748;
+}
+
+.closeButton {
+	width: 34px;
+	height: 34px;
+	border: none;
+	border-radius: 50%;
+	background: #e8f0f4;
+	color: #355464;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.closeButton:hover {
+	background: #d9e8ef;
+}
+
+.subtitle {
+	margin: 0 0 20px;
+	color: #4b6877;
+	font-size: 0.95rem;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.fieldGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+
+.fieldGroup label {
+	color: #12485d;
+	font-weight: 700;
+	font-size: 0.88rem;
+}
+
+.fieldGroup input,
+.fieldGroup select {
+	border: 1px solid #c9d9e1;
+	border-radius: 10px;
+	padding: 10px 12px;
+	font-size: 0.95rem;
+	color: #1f3e4c;
+	background: #fff;
+}
+
+.fieldGroup input:focus,
+.fieldGroup select:focus {
+	outline: 2px solid #88bacf;
+	border-color: #4d8ba4;
+}
+
+.timeGrid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.error {
+	margin: 0;
+	color: #b00020;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 4px;
+}
+
+.cancelButton,
+.submitButton {
+	border: none;
+	border-radius: 10px;
+	padding: 11px 14px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.cancelButton {
+	flex: 1;
+	background: #e8edf0;
+	color: #274656;
+}
+
+.submitButton {
+	flex: 2;
+	color: #fff;
+	background: linear-gradient(135deg, #11677d 0%, #1b8ea6 100%);
+}
+
+.submitButton:disabled,
+.cancelButton:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.submitButton:hover:not(:disabled) {
+	filter: brightness(1.05);
+}
+
+@keyframes modalEnter {
+	from {
+		opacity: 0;
+		transform: translateY(10px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@media (max-width: 560px) {
+	.modal {
+		padding: 18px;
+	}
+
+	.timeGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.actions {
+		flex-direction: column;
+	}
+
+	.cancelButton,
+	.submitButton {
+		width: 100%;
+	}
+}

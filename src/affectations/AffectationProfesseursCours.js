@@ -32,7 +32,7 @@ export async function verifierConflitsProfesseur(formData) {
     const [resProfs, resCours, resEv] = await Promise.all([
       fetch("http://localhost:5000/api/professeurs"),
       fetch("http://localhost:5000/api/cours"),
-      fetch("http://localhost:5000/api/evenements")
+      fetch(`http://localhost:5000/api/evenements/${formData.date}`)
     ]);
 
     const professeurs = await resProfs.json();
@@ -85,8 +85,8 @@ export async function verifierConflitsProfesseur(formData) {
  */
 export async function validerEvenementComplet(formData) {
   // Validation des champs vides
-  if (!formData.professeur || !formData.cours || !formData.salle) {
-    return { isValid: false, erreurs: ["Veuillez remplir tous les champs obligatoires (Prof, Cours, Salle)."] };
+  if (!formData.professeur || !formData.cours || !formData.date || !formData.heureDebut || !formData.heureFin) {
+    return { isValid: false, erreurs: ["Veuillez remplir tous les champs obligatoires (Prof, Cours, Date, heures)."] };
   }
 
   // Validation technique (Spécialité + Horaire)

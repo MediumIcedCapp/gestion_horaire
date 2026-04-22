@@ -486,6 +486,18 @@ app.get('/api/evenements/:date', (req, res) => {
     });
 });
 
+// Supprimer un événement
+app.delete('/api/evenements/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = "DELETE FROM ajoutEvenement WHERE evenementId = ?";
+
+    db.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json(err);
+        if (result.affectedRows === 0) return res.status(404).json({ message: 'Événement non trouvé.' });
+        res.status(200).json({ message: 'Événement supprimé.' });
+    });
+});
+
 /*Changer l'affichage dépendemment à l'authentification de l'utilisateur./
 //Dans ce cas-ci, on renvoit l'utilisateur vers la page d'acceuil
 

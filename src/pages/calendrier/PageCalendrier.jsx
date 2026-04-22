@@ -28,6 +28,8 @@ import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfes
 
 // Import du nouveau composant d'événement
 import AjoutEvenement from '../../composantes/AjoutEvenementProfesseurs.jsx';
+// Import de la page d'affectation des cours aux emplois du temps
+import AffectationCoursEmploisDuTemps from '../../composantes/AffectationEmploisTemps.jsx';
 // Import de la page administrateur 
 import PageAdministrateur from '../pageAdministrateur/pageAdministrateur.jsx';
 
@@ -71,6 +73,7 @@ export default function PageCalendrier() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [activeView, setActiveView] = useState('calendrier');
   const [showAjoutEvenement, setShowAjoutEvenement] = useState(false);
+  const [showAffectationCoursEmploisDuTemps, setShowAffectationCoursEmploisDuTemps] = useState(false);
   const [showDeconnexionConfirm, setShowDeconnexionConfirm] = useState(false);
 
   // États pour les modales de salles
@@ -159,6 +162,20 @@ export default function PageCalendrier() {
     newDate.setMonth(newDate.getMonth() + direction)
     setSelectedDate(newDate)
   }
+
+  const handleSupprimerEvenement = async (id) => {
+    if (!window.confirm('Supprimer cet événement ?')) return;
+    try {
+      const response = await fetch(`http://localhost:5000/api/evenements/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        fetchEvenements(selectedDate);
+      } else {
+        alert('Erreur lors de la suppression.');
+      }
+    } catch (err) {
+      console.error('Erreur suppression événement:', err);
+    }
+  };
 
   const handleDayClick = (day) => {
     if (day) {
@@ -260,6 +277,7 @@ export default function PageCalendrier() {
 
                 <li><a href='#'> Plages et Affectations </a>
                   <ul className={styles.submenu}>
+                    <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAffectationCoursEmploisDuTemps(true); setToggleMenu(false); }}>Affectation des cours aux emploi de temps</a></li>
                     <li><a href='#' onClick={(e) => { e.preventDefault(); setShowAjoutEvenement(true); setToggleMenu(false); }}>Affectation des professeurs aux cours</a></li>
                   </ul>
                 </li>
@@ -360,6 +378,12 @@ export default function PageCalendrier() {
                 {evenementsDuJour.length > 0 ? (
                   evenementsDuJour.map((ev, index) => (
                     <div key={index} className={styles.event_card}>
+                      <button
+                        className={styles.event_delete_btn}
+                        onClick={() => handleSupprimerEvenement(ev.evenementId)}
+                        aria-label="Supprimer l'événement"
+                        title="Supprimer"
+                      >&times;</button>
                       <span className={styles.event_time}>{ev.heureDebut.substring(0, 5)} - {ev.heureFin.substring(0, 5)}</span>
                       <p><strong>{ev.cours}</strong></p>
                       <p className={styles.event_room}>Salle: {ev.salle}</p>
@@ -392,6 +416,17 @@ export default function PageCalendrier() {
             fetchEvenements(selectedDate);
             setShowAjoutEvenement(false);
           }} 
+        />
+      )}
+
+      {showAffectationCoursEmploisDuTemps && (
+        <AffectationCoursEmploisDuTemps 
+          selectedDate={selectedDate} 
+          onClose={() => setShowAffectationCoursEmploisDuTemps(false)} 
+          onSave={() => {
+            fetchEvenements(selectedDate);
+            setShowAffectationCoursEmploisDuTemps(false);
+          }}
         />
       )}
       

@@ -1,7 +1,7 @@
 // Module de validation des conflits d'horaire pour les événements
 
 export async function verifierConflitsHoraire(nouvelEvenement) {
-  const { date, heureDebut, heureFin, salle } = nouvelEvenement;
+  const { date, heureDebut, heureFin, salle, cours } = nouvelEvenement;
 
   try {
     // Récupérer tous les événements existants pour cette date
@@ -13,6 +13,7 @@ export async function verifierConflitsHoraire(nouvelEvenement) {
     const evenementsExistants = await response.json();
     const conflits = {
       salle: [],
+      cours: [],
       hasConflicts: false
     };
 
@@ -37,10 +38,19 @@ export async function verifierConflitsHoraire(nouvelEvenement) {
             message: `Salle ${salle} déjà occupée de ${evenement.heureDebut} à ${evenement.heureFin} par le cours "${evenement.cours}"`
           });
         }
+
+        // Conflit de cours
+        if (evenement.cours === cours) {
+          conflits.cours.push({
+            type: 'cours',
+            evenementConflit: evenement,
+            message: `Le cours "${cours}" est déjà planifié de ${evenement.heureDebut} à ${evenement.heureFin} dans la salle ${evenement.salle}.`
+          });
+        }
       }
     }
 
-    conflits.hasConflicts = conflits.salle.length > 0;
+    conflits.hasConflicts = conflits.salle.length > 0 || conflits.cours.length > 0;
 
     return conflits;
 
@@ -49,7 +59,8 @@ export async function verifierConflitsHoraire(nouvelEvenement) {
     return {
       hasConflicts: true,
       error: error.message,
-      salle: []
+      salle: [],
+      cours: []
     };
   }
 }
