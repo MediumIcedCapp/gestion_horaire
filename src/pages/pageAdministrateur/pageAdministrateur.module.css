@@ -17,6 +17,16 @@
   margin: 0 auto;
 }
 
+.home_btn {
+  background: transparent;
+  border: 1px solid #333;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
 /* --- LOGO --- */
 .logo_img {
   height: 60px; /* Taille contrôlée pour ne pas être trop gros */
@@ -49,6 +59,8 @@
 /* --- CONTENU PRINCIPAL --- */
 .main_content {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: center;
   padding: 2rem;
 }
@@ -138,4 +150,40 @@
 .logout_btn:hover {
   background: #333;
   color: white;
+}
+
+.responsables_table_wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.responsables_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.responsables_table th,
+.responsables_table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ececec;
+  vertical-align: top;
+}
+
+.responsables_table th {
+  color: #222;
+  background: #faf7f3;
+}
+
+.info_text {
+  color: #666;
+  font-size: 0.92rem;
+  margin-top: 0.5rem;
+}
+
+.error_text {
+  color: #b91c1c;
+  font-size: 0.92rem;
+  margin-top: 0.5rem;
 }

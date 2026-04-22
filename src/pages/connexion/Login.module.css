@@ -177,3 +177,20 @@
     position: relative;
     width: 100%;
 }
+
+
+.select_role {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 35px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #111827;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+    /* Pour supprimer la flèche par défaut du navigateur sur certains OS */
+    appearance: none; 
+    -webkit-appearance: none;
+    cursor: pointer;
+}

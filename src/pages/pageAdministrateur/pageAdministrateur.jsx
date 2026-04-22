@@ -39,6 +39,9 @@ export default function PageAdministrateur() {
     motDePasse: '',
     modules: [] 
   });
+  const [responsables, setResponsables] = useState([]);
+  const [isLoadingResponsables, setIsLoadingResponsables] = useState(true);
+  const [responsablesError, setResponsablesError] = useState('');
   
   const [adminName, setAdminName] = useState("");
   const navigate = useNavigate();
@@ -51,6 +54,32 @@ export default function PageAdministrateur() {
       setAdminName(user.prenom || "Admin");
     }
   }, [navigate]);
+
+  const fetchResponsables = async () => {
+    setIsLoadingResponsables(true);
+    setResponsablesError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/admin/responsables', {
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Impossible de charger la liste des responsables.');
+      }
+
+      setResponsables(Array.isArray(data.data) ? data.data : []);
+    } catch (error) {
+      setResponsablesError(error.message || 'Erreur lors du chargement des responsables.');
+    } finally {
+      setIsLoadingResponsables(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResponsables();
+  }, []);
 
   const modulesDisponibles = [
     { id: 'gestion_professeur', label: 'Gestion des Professeurs' },
@@ -88,7 +117,8 @@ export default function PageAdministrateur() {
       if (data.success) {
         alert("Responsable administratif créé avec succès !");
         // Reset du formulaire
-        setFormData({ nom: '', prenom: '', email: '', motDePasse: '', modules: [] });
+        setFormData({ nom: '', prenom: '', nomUtilisateur: '', email: '', motDePasse: '', modules: [] });
+        fetchResponsables();
       } else {
         alert(data.message);
       }
@@ -102,6 +132,32 @@ export default function PageAdministrateur() {
     navigate('/login');
   };
 
+  const getModulesLabel = (modulesAssignes) => {
+    if (!modulesAssignes) return 'Aucun module';
+
+    let parsedModules = modulesAssignes;
+    if (typeof modulesAssignes === 'string') {
+      try {
+        parsedModules = JSON.parse(modulesAssignes);
+      } catch {
+        parsedModules = [];
+      }
+    }
+
+    if (!Array.isArray(parsedModules) || parsedModules.length === 0) {
+      return 'Aucun module';
+    }
+
+    const moduleLabels = {
+      gestion_professeur: 'Gestion des Professeurs',
+      gestion_salles: 'Gestion des Salles',
+      gestion_cours: 'Gestion des Cours',
+      page_administrateur: 'Page Administrateur'
+    };
+
+    return parsedModules.map((moduleId) => moduleLabels[moduleId] || moduleId).join(', ');
+  };
+
   return (
     <div className={styles.admin_page}>
       <header className={styles.header}>
@@ -111,6 +167,7 @@ export default function PageAdministrateur() {
           </div>
           <div className={styles.header_center}>
             <h1>Portail Administrateur</h1>
+            <button className={styles.home_btn} onClick={() => navigate('/pageCalendrier')}>Retour au calendrier</button>
           </div>
           <div className={styles.header_right}>
             <div className={styles.welcome_section}>
@@ -207,6 +264,41 @@ export default function PageAdministrateur() {
               Créer le compte responsable
             </button>
           </form>
+        </section>
+
+        <section className={styles.creation_card}>
+          <h2>Responsables administratifs créés</h2>
+          <p>Liste des comptes responsables actuellement enregistrés.</p>
+
+          {isLoadingResponsables && <p className={styles.info_text}>Chargement de la liste...</p>}
+          {responsablesError && <p className={styles.error_text}>{responsablesError}</p>}
+
+          {!isLoadingResponsables && !responsablesError && (
+            <div className={styles.responsables_table_wrapper}>
+              {responsables.length === 0 ? (
+                <p className={styles.info_text}>Aucun responsable n'a encore été créé.</p>
+              ) : (
+                <table className={styles.responsables_table}>
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Courriel</th>
+                      <th>Modules assignés</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {responsables.map((responsable) => (
+                      <tr key={responsable.idInscriptionUtilisateur || responsable.email}>
+                        <td>{[responsable.prenom, responsable.nom].filter(Boolean).join(' ') || '-'}</td>
+                        <td>{responsable.email || '-'}</td>
+                        <td>{getModulesLabel(responsable.modules_assignes)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
         </section>
       </main>
     </div>

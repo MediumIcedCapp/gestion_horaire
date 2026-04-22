@@ -33,9 +33,9 @@ const authentificationAdministrateur = (req, res, next) => {
 
 // Création d'un compte
 app.post("/api/signup", async (req, res) => {
-  const { email, motDePasse, prenom, nom, nomUtilisateur, confirmationMotDePasse } = req.body;
+  const { email, motDePasse, prenom, nom, nomUtilisateur, confirmationMotDePasse, modules_assignes } = req.body;
 
-  if (!email || !motDePasse || !prenom || !nom || !nomUtilisateur || !confirmationMotDePasse ) {
+  if (!email || !motDePasse || !prenom || !nom || !nomUtilisateur || !confirmationMotDePasse || !modules_assignes) {
     return res.status(400).json({ success: false, message: "Tous les champs sont requis" });
   }
 
@@ -45,9 +45,10 @@ app.post("/api/signup", async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(motDePasse, 10);
+    const modulesString = JSON.stringify(modules_assignes); // Stockage du tableau en texte
     db.query(
-      "INSERT INTO utilisateurinscription (nom, nomUtilisateur, prenom, email, motDePasse, role) VALUES (?, ?, ?, ?, ?, ?)",
-      [nom, nomUtilisateur, prenom, email, hashedPassword, 'administrateur'], 
+      "INSERT INTO utilisateurinscription (nom, nomUtilisateur, prenom, email, motDePasse, role, modules_assignes) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [nom, nomUtilisateur, prenom, email, hashedPassword, 'administrateur', modulesString], 
       (err) => {
         if (err) return res.status(500).json({ success: false, message: err.message });
         res.json({ success: true, message: "Compte créé !" });
@@ -91,7 +92,7 @@ app.post("/api/login", async (req, res) => {
 // Création d'un responsable par l'Admin
 app.post("/api/admin/create-user", async (req, res) => {
     const { prenom, nom, email, motDePasse, modules } = req.body;
-    if (!prenom || !nom || !email || !motDePasse) return res.status(400).json({ success: false, message: "Champs manquants" });
+    if (!prenom || !nom || !email || !motDePasse || !modules) return res.status(400).json({ success: false, message: "Champs manquants" });
 
     try {
         const hashedPassword = await bcrypt.hash(motDePasse, 10);
@@ -108,6 +109,24 @@ app.post("/api/admin/create-user", async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
+});
+
+// Lister tous les responsables créés
+app.get("/api/admin/responsables", (req, res) => {
+  const query = `
+    SELECT idInscriptionUtilisateur, prenom, nom, nomUtilisateur, email, modules_assignes
+    FROM utilisateurinscription
+    WHERE role = 'responsable'
+    ORDER BY nom ASC, prenom ASC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    res.json({ success: true, data: results || [] });
+  });
 });
 
 // Récupérer les infos d'un utilisateur

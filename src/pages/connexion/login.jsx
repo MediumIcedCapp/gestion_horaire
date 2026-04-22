@@ -110,7 +110,8 @@ export default function Login() {
             </div>
 
             <div className={styles.form_group}>
-              <div className={styles.input_wrapper}></div>
+              <div className={styles.input_wrapper}>
+              </div>
             </div>
 
             <button className={styles.login_btn} type="submit" disabled={loggingIn}>

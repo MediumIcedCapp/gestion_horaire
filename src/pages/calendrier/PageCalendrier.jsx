@@ -30,8 +30,6 @@ import DisponibilitesProfesseurs from '../../composantes/ModuleDeGestionDeProfes
 import AjoutEvenement from '../../composantes/AjoutEvenementProfesseurs.jsx';
 // Import de la page d'affectation des cours aux emplois du temps
 import AffectationCoursEmploisDuTemps from '../../composantes/AffectationEmploisTemps.jsx';
-// Import de la page administrateur 
-import PageAdministrateur from '../pageAdministrateur/pageAdministrateur.jsx';
 
 //Importation des photos de l'utilisateur 
 import lettreAProfilePic from "../../assets/lettreAProfilePic.png";
@@ -301,6 +299,10 @@ export default function PageCalendrier() {
               <ul>
                 <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('calendrier'); }}>Calendrier</a></li>
 
+                {modulesAssignes.includes("page_administrateur") && (
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setToggleMenu(false); navigate('/pageAdministrateur'); }}>Page Administrateur</a></li>
+                )}
+
                 {modulesAssignes.includes("gestion_cours") && (
                 <li><a href="#">Gérer un cours</a>
                   <ul className={styles.submenu}>
@@ -432,7 +434,7 @@ export default function PageCalendrier() {
           
           {activeView === 'calendrier' && (
             <div className={`${styles.calendar_container} ${styles.today_event}`}>
-              <h3>Événements du jour</h3>
+              <h3>Événements du {selectedDate.toLocaleDateString()}</h3>
               
               <div className={styles.event_list}>
                 {evenementsDuJour.length > 0 ? (
@@ -458,8 +460,11 @@ export default function PageCalendrier() {
                   <p className={styles.no_event}>Aucun cours programmé pour cette journée.</p>
                 )}
               </div>
+              <button className={styles.add_event_inline} onClick={() => setShowAffectationCoursEmploisDuTemps(true)}>
+                + Ajouter un cours
+              </button>
               <button className={styles.add_event_inline} onClick={() => setShowAjoutEvenement(true)}>
-                + Programmer un cours
+                + Assigner un professeur à un cours
               </button>
             </div>
           )}

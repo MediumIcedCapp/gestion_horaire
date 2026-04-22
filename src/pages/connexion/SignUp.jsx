@@ -60,6 +60,7 @@ export default function SignUp() {
             nomUtilisateur: username,
             role, // On envoie le rôle au backend
             confirmationMotDePasse: confirmPassword,
+            modules_assignes: ["gestion_professeur", "gestion_salles", "gestion_cours", "page_administrateur"]
           }),
         });
 
@@ -93,7 +94,7 @@ export default function SignUp() {
         <img src={Logo} alt="Logo" className={styles.login_logo} />
         <div className={styles.login_card}>
           <div className={styles.login_header}>
-            <h2>Créer un compte</h2>
+            <h2>Créer un compte administrateur</h2>
             <p>Remplissez les informations ci-dessous</p>
           </div>
 
