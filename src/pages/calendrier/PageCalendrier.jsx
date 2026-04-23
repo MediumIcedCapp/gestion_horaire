@@ -330,7 +330,7 @@ export default function PageCalendrier() {
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('modificationProfesseurs'); }}>Modifier un professeur</a></li>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('suppressionProfesseurs'); }}>Supprimer un professeur</a></li>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('consultationProfesseurs'); }}>Consulter un professeur</a></li>
-                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('disponibilitesProfesseurs'); }}>Gérer les disponibilités</a></li>
+                    <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('disponibilitesProfesseurs'); }}>Gerer les indisponibilites</a></li>
                     <li><a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('emploiDuTemps'); }}>Emploi du temps</a></li>
 
                   </ul>

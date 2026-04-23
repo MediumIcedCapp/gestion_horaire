@@ -119,7 +119,7 @@ export default function EmploiDuTempsProfesseurs() {
                 <div className={styles.info_box}><strong>Matricule</strong> {selectedProf.matricule}</div>
                 <div className={styles.info_box}><strong>Courriel</strong> {selectedProf.email || 'N/A'}</div>
                 <div className={`${styles.info_box} ${styles.full_width}`}>
-                  <strong>Disponibilités hebdomadaires</strong>
+                  <strong>Indisponibilites hebdomadaires</strong>
                   <div className={styles.dispo_list}>
                     {disponibilites.length > 0 ? (
                       disponibilites.map((d, index) => (
@@ -127,7 +127,7 @@ export default function EmploiDuTempsProfesseurs() {
                           {d.jour} - {String(d.heureDebut).slice(0, 5)} à {String(d.heureFin).slice(0, 5)}
                         </div>
                       ))
-                    ) : <span className={styles.no_data}>Aucune disponibilité définie</span>}
+                    ) : <span className={styles.no_data}>Aucune indisponibilite definie</span>}
                   </div>
                 </div>
               </div>

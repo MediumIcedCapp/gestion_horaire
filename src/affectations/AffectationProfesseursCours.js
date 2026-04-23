@@ -1,11 +1,11 @@
 
 
 /**
- * Vérifie la disponibilité spécifique du professeur pour une date donnée
+ * Vérifie l'indisponibilité spécifique du professeur pour une date donnée.
  */
 export async function verifierDisponibiliteProfesseur(professeurId, date) {
   try {
-    // Récupérer les disponibilités du professeur
+    // Récupérer les plages enregistrées (interprétées comme des indisponibilités)
     const response = await fetch(`http://localhost:5000/api/professeurs/${professeurId}/disponibilites`);
     
     if (!response.ok) {
@@ -13,27 +13,28 @@ export async function verifierDisponibiliteProfesseur(professeurId, date) {
       return null;
     }
     
-    const disponibilites = await response.json();
+    const data = await response.json();
+    const indisponibilites = Array.isArray(data) ? data : data.data || [];
     
-    // Vérifier si le professeur est disponible pour cette date
+    // Vérifier si le professeur est indisponible pour cette date
     const dateObj = new Date(date);
     const jourSemaine = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
     
-    if (disponibilites && disponibilites.length > 0) {
-      const dispoPourJour = disponibilites.find(d => 
+    if (indisponibilites && indisponibilites.length > 0) {
+      const indispoPourJour = indisponibilites.find(d => 
         d.jour && d.jour.toLowerCase() === jourSemaine.toLowerCase()
       );
       
-      if (!dispoPourJour) {
-        return { isAvailable: false, reason: `Le professeur n'est pas disponible le ${jourSemaine}` };
+      if (indispoPourJour) {
+        return { isAvailable: false, reason: `Le professeur est indisponible le ${jourSemaine}.` };
       }
       
       return { isAvailable: true };
     }
     
-    return null;
+    return { isAvailable: true };
   } catch (error) {
-    console.warn("Impossible de vérifier les disponibilités détaillées:", error);
+    console.warn("Impossible de vérifier les indisponibilités détaillées:", error);
     return null;
   }
 }
@@ -59,6 +60,18 @@ function toMinutes(heure) {
  */
 function estEnConflit(debut1, fin1, debut2, fin2) {
   return toMinutes(debut1) < toMinutes(fin2) && toMinutes(fin1) > toMinutes(debut2);
+}
+
+function getIdentifiantProfesseurEvenement(evenement) {
+  const identifiant = evenement.professeur ?? evenement.idProfesseur ?? evenement.matriculeProfesseur ?? evenement.professeurId;
+  if (identifiant === undefined || identifiant === null) return null;
+
+  const identifiantTexte = String(identifiant).trim();
+  if (!identifiantTexte || identifiantTexte.toLowerCase() === "null" || identifiantTexte.toLowerCase() === "undefined") {
+    return null;
+  }
+
+  return identifiantTexte;
 }
 
 /**
@@ -110,13 +123,15 @@ export async function verifierConflitsProfesseur(formData) {
     const coursDejaAssigne = evenements.find(e => 
       String(e.cours) === String(formData.cours) &&
       e.date === formData.date &&
-      String(e.professeur ?? e.idProfesseur ?? e.matriculeProfesseur ?? e.professeurId) !== String(formData.professeur)
+      getIdentifiantProfesseurEvenement(e) !== null &&
+      getIdentifiantProfesseurEvenement(e) !== String(formData.professeur)
     );
 
     if (coursDejaAssigne) {
+      const identifiantProfCours = getIdentifiantProfesseurEvenement(coursDejaAssigne);
       const autreProfesseur = professeurs.find(p => 
-        String(p.matricule) === String(coursDejaAssigne.professeur ?? coursDejaAssigne.idProfesseur ?? coursDejaAssigne.matriculeProfesseur ?? coursDejaAssigne.professeurId) ||
-        String(p.idProfesseur) === String(coursDejaAssigne.professeur ?? coursDejaAssigne.idProfesseur ?? coursDejaAssigne.matriculeProfesseur ?? coursDejaAssigne.professeurId)
+        String(p.matricule) === String(identifiantProfCours) ||
+        String(p.idProfesseur) === String(identifiantProfCours)
       );
       const nomAutreProfesseur = autreProfesseur ? `${autreProfesseur.prenom} ${autreProfesseur.nom}` : "un autre professeur";
       erreurs.push(`Ce cours est déjà assigné à ${nomAutreProfesseur} pour cette date.`);
@@ -124,7 +139,7 @@ export async function verifierConflitsProfesseur(formData) {
 
     // 7. Empêcher l'affectation simultanée (Conflit d'horaire)
     const conflitHoraire = evenements.find(e => 
-      String(e.professeur ?? e.idProfesseur ?? e.matriculeProfesseur ?? e.professeurId) === String(formData.professeur) &&
+      getIdentifiantProfesseurEvenement(e) === String(formData.professeur) &&
       e.date === formData.date &&
       estEnConflit(formData.heureDebut, formData.heureFin, e.heureDebut, e.heureFin)
     );

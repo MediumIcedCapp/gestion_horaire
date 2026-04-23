@@ -485,7 +485,7 @@ app.put('/api/professeurs/:id/disponibilites', (req, res) => {
 
 // Enregistrer un nouvel événement
 app.post('/api/evenements', (req, res) => {
-    const { date, cours, salle, heureDebut, heureFin, professeur } = req.body;
+  const { date, cours, salle, heureDebut, heureFin, professeur, isRecurrent, dateFinRecurrence } = req.body;
 
     if (!date || !cours || !salle || !heureDebut || !heureFin) {
       return res.status(400).json({ message: 'Champs obligatoires manquants.' });
@@ -600,11 +600,102 @@ app.post('/api/evenements', (req, res) => {
     }
 
     // Cas 2: Creation d'un nouveau cours dans l'emploi du temps
-    const insertSql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES (?, ?, ?, ?, ?)";
+    const toDateOnly = (value) => {
+      const [year, month, day] = String(value).split('-').map(Number);
+      if (!year || !month || !day) return null;
+      return new Date(year, month - 1, day);
+    };
 
-    db.query(insertSql, [date, cours, salle, heureDebut, heureFin], (err) => {
+    const formatDateOnly = (dateObj) => {
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const startDate = toDateOnly(date);
+    if (!startDate) {
+      return res.status(400).json({ message: 'Format de date invalide.' });
+    }
+
+    const recurrenceEnabled = Boolean(isRecurrent);
+    if (!recurrenceEnabled) {
+      const insertSql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES (?, ?, ?, ?, ?)";
+      db.query(insertSql, [date, cours, salle, heureDebut, heureFin], (err) => {
+        if (err) return res.status(500).json(err);
+        res.status(200).json({ message: 'Événement ajouté !' });
+      });
+      return;
+    }
+
+    const endDate = dateFinRecurrence ? toDateOnly(dateFinRecurrence) : null;
+    if (dateFinRecurrence && !endDate) {
+      return res.status(400).json({ message: 'Format de date de fin de récurrence invalide.' });
+    }
+
+    const effectiveEndDate = endDate || new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+    if (effectiveEndDate < startDate) {
+      return res.status(400).json({ message: 'La date de fin de récurrence doit être postérieure ou égale à la date de début.' });
+    }
+
+    const values = [];
+    const cursor = new Date(startDate);
+    while (cursor <= effectiveEndDate) {
+      values.push([formatDateOnly(cursor), cours, salle, heureDebut, heureFin]);
+      cursor.setDate(cursor.getDate() + 7);
+    }
+
+    if (values.length === 0) {
+      return res.status(400).json({ message: 'Aucune occurrence hebdomadaire à créer.' });
+    }
+
+    const insertRecurringSql = "INSERT INTO ajoutEvenement (date, cours, salle, heureDebut, heureFin) VALUES ?";
+    db.query(insertRecurringSql, [values], (err) => {
       if (err) return res.status(500).json(err);
-      res.status(200).json({ message: 'Événement ajouté !' });
+      res.status(200).json({ message: `${values.length} événements hebdomadaires ajoutés !` });
+    });
+});
+
+// Récupérer tous les événements d'un professeur par matricule
+app.get('/api/evenements/professeur/:matricule', (req, res) => {
+    const { matricule } = req.params;
+
+    const resolveSql = `
+        SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'ajoutEvenement'
+          AND COLUMN_NAME IN ('professeur', 'idProfesseur', 'matriculeProfesseur', 'professeurId')
+    `;
+
+    db.query(resolveSql, (resolveErr, cols) => {
+        if (resolveErr) return res.status(500).json({ message: 'Erreur serveur', details: resolveErr.message });
+
+        const preferredOrder = ['professeur', 'idProfesseur', 'matriculeProfesseur', 'professeurId'];
+        const existing = (cols || []).map(r => r.COLUMN_NAME);
+        const col = preferredOrder.find(c => existing.includes(c));
+
+        if (!col) return res.json([]);
+
+        const sql = `SELECT * FROM ajoutEvenement WHERE \`${col}\` = ? ORDER BY date ASC, heureDebut ASC`;
+        db.query(sql, [matricule], (err, results) => {
+            if (err) return res.status(500).json({ message: 'Erreur serveur', details: err.message });
+            res.json(results);
+        });
+    });
+});
+
+// Récupérer tous les événements (pour l'emploi du temps des professeurs)
+app.get('/api/evenements/tous', (req, res) => {
+    const sql = "SELECT * FROM ajoutEvenement ORDER BY date ASC, heureDebut ASC";
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                message: "Erreur lors de la récupération de tous les événements.",
+                details: err.sqlMessage || err.message
+            });
+        }
+        res.json(results);
     });
 });
 
@@ -633,21 +724,6 @@ app.delete('/api/evenements/:id', (req, res) => {
         if (err) return res.status(500).json(err);
         if (result.affectedRows === 0) return res.status(404).json({ message: 'Événement non trouvé.' });
         res.status(200).json({ message: 'Événement supprimé.' });
-    });
-});
-
-// Récupérer tous les événements (pour l'emploi du temps des professeurs)
-app.get('/api/evenements/tous', (req, res) => {
-    const sql = "SELECT * FROM ajoutEvenement ORDER BY date ASC, heureDebut ASC";
-
-    db.query(sql, (err, results) => {
-        if (err) {
-            return res.status(500).json({
-                message: "Erreur lors de la récupération de tous les événements.",
-                details: err.sqlMessage || err.message
-            });
-        }
-        res.json(results);
     });
 });
 
