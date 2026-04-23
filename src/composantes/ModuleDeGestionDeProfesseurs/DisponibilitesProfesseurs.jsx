@@ -1,4 +1,4 @@
-// Mahad M: Définir les disponibilités du professeur (jours et plages horaires). 
+// Mahad M: Definir les indisponibilites du professeur (jours et plages horaires).
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Professeurs.module.css";
 import Swal from 'sweetalert2'; 
@@ -11,6 +11,10 @@ const emptyDisponibilite = {
   heureDebut: "08:00",
   heureFin: "12:00"
 };
+
+function estEnConflit(debutA, finA, debutB, finB) {
+  return debutA < finB && finA > debutB;
+}
 
 export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
   const [professeurs, setProfesseurs] = useState([]);
@@ -47,7 +51,7 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
         }))
       );
     } catch (err) {
-      console.error("Erreur chargement disponibilites:", err);
+      console.error("Erreur chargement indisponibilites:", err);
       setSlots([]);
     } finally {
       setIsLoading(false);
@@ -125,6 +129,36 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
       return;
     }
 
+    const conflitExistant = slots.some(
+      (slot) =>
+        slot.jour === currentSlot.jour &&
+        estEnConflit(currentSlot.heureDebut, currentSlot.heureFin, slot.heureDebut, slot.heureFin)
+    );
+
+    if (conflitExistant) {
+      Swal.fire({
+        title: 'Erreur',
+        text: "Cette plage est en conflit avec une indisponibilite existante.",
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#ffffff',
+        color: '#333',
+        iconColor: '#e4e8d6',
+        customClass: {
+          popup: 'pop-up-toast',
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+      return;
+    }
+
     setSlots((prev) => [...prev, { ...currentSlot, idDisponibilite: `${currentSlot.jour}-${currentSlot.heureDebut}-${prev.length}` }]);
     setCurrentSlot(emptyDisponibilite);
   };
@@ -174,7 +208,7 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
       if (data.success) {
         Swal.fire({
           title: 'Succès',
-          text: 'Disponibilites enregistrees avec succes.',
+          text: 'Indisponibilites enregistrees avec succes.',
           icon: 'success',
           toast: true,
           position: 'top-end',
@@ -196,7 +230,7 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
       } else {
         Swal.fire({
           title: 'Erreur',
-          text: data.message || "Erreur lors de l'enregistrement des disponibilites.",
+          text: data.message || "Erreur lors de l'enregistrement des indisponibilites.",
           icon: 'error',
           toast: true,
           position: 'top-end',
@@ -216,10 +250,10 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
         });
       }
     } catch (err) {
-      console.error("Erreur sauvegarde disponibilites:", err);
+      console.error("Erreur sauvegarde indisponibilites:", err);
       Swal.fire({
         title: 'Erreur',
-        text: "Erreur lors de l'enregistrement des disponibilites.",
+        text: "Erreur lors de l'enregistrement des indisponibilites.",
         icon: 'error',
         toast: true,
         position: 'top-end',
@@ -247,8 +281,8 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
       <div className={styles.container}>
         <div className={styles.card}>
           <div className={styles.header}>
-            <h2>Definir les disponibilites</h2>
-            <p>Choisissez le professeur puis enregistrez ses plages horaires par jour.</p>
+            <h2>Definir les indisponibilites</h2>
+            <p>Choisissez le professeur puis enregistrez ses plages d'indisponibilite par jour.</p>
           </div>
 
           <div className={styles.selectionRow}>
@@ -285,16 +319,16 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
                   <input id="heureFin" name="heureFin" type="time" value={currentSlot.heureFin} onChange={handleSlotChange} className={styles.timeInput} />
                 </div>
 
-                <button type="button" className={styles.neutralButton} onClick={handleAddSlot}>Ajouter la plage</button>
+                <button type="button" className={styles.neutralButton} onClick={handleAddSlot}>Ajouter l'indisponibilite</button>
               </div>
 
               <div className={styles.infoBox}>
-                Enregistrez une ou plusieurs disponibilites. Vous pouvez revenir plus tard pour les modifier.
+                Enregistrez une ou plusieurs indisponibilites. Vous pouvez revenir plus tard pour les modifier.
               </div>
 
               <div className={styles.slotList}>
                 {isLoading ? (
-                  <div className={styles.centerText}>Chargement des disponibilites...</div>
+                  <div className={styles.centerText}>Chargement des indisponibilites...</div>
                 ) : slots.length > 0 ? (
                   slots.map((slot) => (
                     <div key={slot.idDisponibilite} className={styles.slotItem}>
@@ -305,14 +339,14 @@ export default function DisponibilitesProfesseurs({ onSave, onCancel }) {
                     </div>
                   ))
                 ) : (
-                  <div className={styles.centerText}>Aucune disponibilite definie pour ce professeur.</div>
+                  <div className={styles.centerText}>Aucune indisponibilite definie pour ce professeur.</div>
                 )}
               </div>
 
               <div className={styles.actions}>
                 <button type="button" className={styles.secondaryButton} onClick={onCancel}>Annuler</button>
                 <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isSaving}>
-                  {isSaving ? "Enregistrement..." : "Enregistrer les disponibilites"}
+                  {isSaving ? "Enregistrement..." : "Enregistrer les indisponibilites"}
                 </button>
               </div>
             </>
