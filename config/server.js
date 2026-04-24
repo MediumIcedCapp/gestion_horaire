@@ -511,74 +511,91 @@ app.post('/api/evenements', (req, res) => {
 
         const preferredOrder = ['professeur', 'idProfesseur', 'matriculeProfesseur', 'professeurId'];
         const existingColumns = (columnRows || []).map((row) => row.COLUMN_NAME);
-        const assignProfessorToMatchingEvent = (professeurColumn) => {
-          const findSql = `
-            SELECT evenementId
-            FROM ajoutEvenement
-            WHERE date = ? AND cours = ? AND salle = ? AND heureDebut = ? AND heureFin = ?
-            ORDER BY evenementId ASC
+        const assignProfessorToMatchingCourseCode = (professeurColumn) => {
+          const resolveCourseCodeSql = `
+            SELECT code
+            FROM module_gestion_cours
+            WHERE nomDuCours = ?
             LIMIT 1
           `;
 
-          db.query(findSql, [date, cours, salle, heureDebut, heureFin], (findErr, rows) => {
-            if (findErr) {
-              return res.status(500).json({
-                message: "Erreur lors de la recherche du cours planifié.",
-                details: findErr.sqlMessage || findErr.message
+          const updateByCourseNames = (courseNames, scopeLabel) => {
+            if (!courseNames || courseNames.length === 0) {
+              return res.status(404).json({
+                message: "Aucune occurrence planifiée n'a été trouvée pour ce cours."
               });
             }
 
-            const assignToEvent = (eventId) => {
-              const updateSql = `UPDATE ajoutEvenement SET \`${professeurColumn}\` = ? WHERE evenementId = ?`;
-              db.query(updateSql, [professeur, eventId], (updateErr) => {
-                if (updateErr) {
-                  return res.status(500).json({
-                    message: "Erreur lors de l'enregistrement de l'affectation du professeur.",
-                    details: updateErr.sqlMessage || updateErr.message
-                  });
-                }
-                res.status(200).json({ message: 'Professeur affecté avec succès !' });
-              });
-            };
+            const placeholders = courseNames.map(() => '?').join(', ');
+            const updateSql = `UPDATE ajoutEvenement SET \`${professeurColumn}\` = ? WHERE cours IN (${placeholders})`;
 
-            if (rows && rows.length > 0) {
-              assignToEvent(rows[0].evenementId);
+            db.query(updateSql, [professeur, ...courseNames], (updateErr, updateResult) => {
+              if (updateErr) {
+                return res.status(500).json({
+                  message: "Erreur lors de l'enregistrement de l'affectation du professeur.",
+                  details: updateErr.sqlMessage || updateErr.message
+                });
+              }
+
+              if (!updateResult || updateResult.affectedRows === 0) {
+                return res.status(404).json({
+                  message: "Aucune occurrence planifiée n'a été trouvée pour ce cours."
+                });
+              }
+
+              res.status(200).json({
+                message: 'Professeur affecté avec succès à toutes les occurrences du cours !',
+                occurrencesMisesAJour: updateResult.affectedRows,
+                portee: scopeLabel
+              });
+            });
+          };
+
+          db.query(resolveCourseCodeSql, [cours], (codeErr, codeRows) => {
+            if (codeErr) {
+              return res.status(500).json({
+                message: "Erreur lors de la récupération du code du cours.",
+                details: codeErr.sqlMessage || codeErr.message
+              });
+            }
+
+            const courseCode = codeRows?.[0]?.code;
+            if (!courseCode) {
+              updateByCourseNames([cours], 'nomDuCours');
               return;
             }
 
-            const fallbackSql = `
-              SELECT evenementId
-              FROM ajoutEvenement
-              WHERE date = ? AND cours = ?
-              ORDER BY
-                CASE WHEN salle = ? THEN 0 ELSE 1 END,
-                CASE WHEN heureDebut = ? AND heureFin = ? THEN 0 ELSE 1 END,
-                evenementId ASC
-              LIMIT 1
+            const findCoursesWithSameCodeSql = `
+              SELECT nomDuCours
+              FROM module_gestion_cours
+              WHERE code = ?
             `;
 
-            db.query(fallbackSql, [date, cours, salle, heureDebut, heureFin], (fallbackErr, fallbackRows) => {
-              if (fallbackErr) {
+            db.query(findCoursesWithSameCodeSql, [courseCode], (sameCodeErr, sameCodeRows) => {
+              if (sameCodeErr) {
                 return res.status(500).json({
-                  message: "Erreur lors de la recherche de secours du cours planifié.",
-                  details: fallbackErr.sqlMessage || fallbackErr.message
+                  message: "Erreur lors de la recherche des cours partageant le même code.",
+                  details: sameCodeErr.sqlMessage || sameCodeErr.message
                 });
               }
 
-              if (!fallbackRows || fallbackRows.length === 0) {
-                return res.status(404).json({
-                  message: "Aucun cours planifié correspondant n'a été trouvé pour affecter ce professeur."
-                });
+              const sameCodeCourseNames = [...new Set((sameCodeRows || [])
+                .map((row) => row.nomDuCours)
+                .filter((name) => typeof name === 'string' && name.trim() !== ''))];
+
+              if (sameCodeCourseNames.length === 0) {
+                updateByCourseNames([cours], 'nomDuCours');
+                return;
               }
 
-              assignToEvent(fallbackRows[0].evenementId);
+              updateByCourseNames(sameCodeCourseNames, 'codeCours');
             });
           });
         };
 
         const professeurColumn = preferredOrder.find((col) => existingColumns.includes(col));
         if (professeurColumn) {
-          assignProfessorToMatchingEvent(professeurColumn);
+          assignProfessorToMatchingCourseCode(professeurColumn);
           return;
         }
 
@@ -592,7 +609,7 @@ app.post('/api/evenements', (req, res) => {
             });
           }
 
-          assignProfessorToMatchingEvent('professeur');
+          assignProfessorToMatchingCourseCode('professeur');
         });
       });
 
