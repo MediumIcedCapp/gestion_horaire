@@ -459,7 +459,7 @@ export default function PageCalendrier() {
                       <div key={index} className={styles.event_card}>
                         <button
                           className={styles.event_delete_btn}
-                          onClick={() => handleSupprimerEvenement(ev.evenementId)}
+                          onClick={() => handleSupprimerEvenement(ev.idAjoutEvenement)}
                           aria-label="Supprimer l'événement"
                           title="Supprimer"
                         >&times;</button>

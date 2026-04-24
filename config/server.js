@@ -13,7 +13,7 @@ app.use(cors({
 }));
 
 app.use(session({
-  secret: 'une_cle_tres_secrete_et_unique_2026', // <--- Ajoute une vraie chaîne de caractères ici
+  secret: 'une_cle_tres_secrete_et_unique_2026', 
   resave: false,
   saveUninitialized: false,
   cookie: { 
@@ -494,10 +494,10 @@ app.post('/api/evenements', (req, res) => {
         const existingColumns = (columnRows || []).map((row) => row.COLUMN_NAME);
         const assignProfessorToMatchingEvent = (professeurColumn) => {
           const findSql = `
-            SELECT evenementId
+            SELECT idAjoutEvenement
             FROM ajoutEvenement
             WHERE date = ? AND cours = ? AND salle = ? AND heureDebut = ? AND heureFin = ?
-            ORDER BY evenementId ASC
+            ORDER BY idAjoutEvenement ASC
             LIMIT 1
           `;
 
@@ -510,7 +510,7 @@ app.post('/api/evenements', (req, res) => {
             }
 
             const assignToEvent = (eventId) => {
-              const updateSql = `UPDATE ajoutEvenement SET \`${professeurColumn}\` = ? WHERE evenementId = ?`;
+              const updateSql = `UPDATE ajoutEvenement SET \`${professeurColumn}\` = ? WHERE idAjoutEvenement = ?`;
               db.query(updateSql, [professeur, eventId], (updateErr) => {
                 if (updateErr) {
                   return res.status(500).json({
@@ -523,18 +523,18 @@ app.post('/api/evenements', (req, res) => {
             };
 
             if (rows && rows.length > 0) {
-              assignToEvent(rows[0].evenementId);
+              assignToEvent(rows[0].idAjoutEvenement);
               return;
             }
 
             const fallbackSql = `
-              SELECT evenementId
+              SELECT idAjoutEvenement
               FROM ajoutEvenement
               WHERE date = ? AND cours = ?
               ORDER BY
                 CASE WHEN salle = ? THEN 0 ELSE 1 END,
                 CASE WHEN heureDebut = ? AND heureFin = ? THEN 0 ELSE 1 END,
-                evenementId ASC
+                idAjoutEvenement ASC
               LIMIT 1
             `;
 
@@ -552,7 +552,7 @@ app.post('/api/evenements', (req, res) => {
                 });
               }
 
-              assignToEvent(fallbackRows[0].evenementId);
+              assignToEvent(fallbackRows[0].idAjoutEvenement);
             });
           });
         };
@@ -608,7 +608,7 @@ app.get('/api/evenements/:date', (req, res) => {
 // Supprimer un événement
 app.delete('/api/evenements/:id', (req, res) => {
     const { id } = req.params;
-    const sql = "DELETE FROM ajoutEvenement WHERE evenementId = ?";
+    const sql = "DELETE FROM ajoutEvenement WHERE idAjoutEvenement = ?";
 
     db.query(sql, [id], (err, result) => {
         if (err) return res.status(500).json(err);
